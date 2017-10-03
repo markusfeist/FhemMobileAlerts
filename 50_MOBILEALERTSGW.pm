@@ -251,7 +251,7 @@ MOBILEALERTSGW_Read($$)
   #Send to Server
   if ( AttrVal($MA_wname, "forward", 0) == 1) {
     my $httpparam = {
-      url => "http://www.feist-net.de/gateway/put",
+      url => "http://www.data199.com/gateway/put",
       timeout => 20,
       hash => $hash,
       method => "PUT",
