@@ -253,11 +253,11 @@ MOBILEALERTSGW_Read($$)
     my $httpparam = {
       url => "http://www.data199.com/gateway/put",
       timeout => 20,
+      httpversion => "1.1",
       hash => $hash,
       method => "PUT",
-      header => "Connection: close\r\nHTTP_IDENTIFY: " . $MA_httpheader{"HTTP_IDENTIFY"} . "\r\nContent-Type: application/octet-stream",
+      header => "HTTP_IDENTIFY: " . $MA_httpheader{"HTTP_IDENTIFY"} . "\r\nContent-Type: application/octet-stream",
       data => $POSTdata,
-      noshutdown => 0,
       callback => \&MOBILEALERTSGW_NonblockingGet_Callback
     };
     HttpUtils_NonblockingGet($httpparam);
