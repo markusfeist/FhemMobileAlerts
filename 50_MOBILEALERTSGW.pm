@@ -34,13 +34,7 @@ MOBILEALERTSGW_Initialize($)
   #$hash->{NotifyFn}= ($init_done ? "FW_Notify" : "FW_SecurityCheck");
   #$hash->{AsyncOutputFn} = "MOBILEALERTSGW_AsyncOutput";
   #$hash->{ActivateInformFn} = "MOBILEALERTSGW_ActivateInform";
-  no warnings 'qw';
-  my @attrList = qw(
-    loglevel:0,1,2,3,4,5,6
-    forward:0,1
-  );
-  use warnings 'qw';
-  $hash->{AttrList} = join(" ", @attrList);
+  $hash->{AttrList} = "forward:0,1 " . $readingFnAttributes);
 }
 
 sub
