@@ -17,7 +17,7 @@ MOBILEALERTS_Initialize($)
   $hash->{AttrFn}  = "MOBILEALERTS_Attr";
   $hash->{ParseFn} = "MOBILEALERTS_Parse";
   $hash->{Match} = "^.*";
-  $hash->{AttrList} = "lastMsg:0,1 ". "stateFormat " . "ignore " . $readingFnAttributes;  
+  $hash->{AttrList} = "lastMsg:0,1 ". "stateFormat " . "ignore:0,1 " . $readingFnAttributes;  
 }
 
 sub
@@ -346,6 +346,8 @@ MOBILEALERTS_humidityToString($)
   <a name="MOBILEALERTSattr"></a>
   <b>Attributes</b>
   <ul>
+    <li><a href="#ignore">ignore</a></li>
+    <li><a href="#readingFnAttributes">readingFnAttributes</a></li>  
     <li><a href="#MOBILEALERTSlastMsg">lastMsg</a><br>
       If value 1 is set, the last received message will be logged as reading.
     </li>

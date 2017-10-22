@@ -34,7 +34,7 @@ MOBILEALERTSGW_Initialize($)
   #$hash->{NotifyFn}= ($init_done ? "FW_Notify" : "FW_SecurityCheck");
   #$hash->{AsyncOutputFn} = "MOBILEALERTSGW_AsyncOutput";
   #$hash->{ActivateInformFn} = "MOBILEALERTSGW_ActivateInform";
-  $hash->{AttrList} = "forward:0,1 " . $readingFnAttributes);
+  $hash->{AttrList} = "forward:0,1 " . $readingFnAttributes;
 }
 
 sub
@@ -380,7 +380,6 @@ MOBILEALERTSGW_DecodeData($$)
   <a name="MOBILEALERTSGWattr"></a>
   <b>Attributes</b>
   <ul>
-    <li><a href="#loglevel">loglevel</a></li>
     <li><a href="#MOBILEALERTSGWforward">forward</a><br>
       If value 1 is set, the data will be forwarded to the MobileAlerts Server http://www.data199.com/gateway/put .
     </li>
