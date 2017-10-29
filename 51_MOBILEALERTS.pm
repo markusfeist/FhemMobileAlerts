@@ -245,15 +245,13 @@ MOBILEALERTS_Parse_0b_e2 ($$)
                   , "E","ESE","SE","SSE"
                   , "S","SSW","SW","WSW"
                   , "W","WNW","NW","NNW" );
-  my ( $txCounter, $txCounter2, $data0, $data1, $data2, $data3) = 
-    unpack("nCCCCC", $message);
+  my ( $txCounter, $data0, $data1, $data2, $data3) = unpack("NCCCC", "\0".$message);
 
   my $dir = $data0 >> 4;
   my $overFlowBits = $data0 & 3;
   my $windSpeed = ((($overFlowBits & 2) >> 1) << 8) + $data1 * 0.1;
   my $gustSpeed = ((($overFlowBits & 1) >> 1) << 8) + $data2 * 0.1;
   my $lastTransmit = $data3 * 2;
-  my $txCounter = $txCounter << 8 + $txCounter2;
 
   readingsBulkUpdateIfChanged($hash, "txCounter", MOBILEALERTS_decodeTxCounter($txCounter));
   readingsBulkUpdateIfChanged($hash, "direction", $dirTable[$dir]);
