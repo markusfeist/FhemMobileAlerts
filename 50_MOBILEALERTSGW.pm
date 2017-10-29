@@ -65,7 +65,10 @@ MOBILEALERTSGW_Set ($$@)
         return undef;
     } else {
 	      return "Unknown value $args[0] for $cmd, choose one of readings";
-	  }  
+    }
+  } elsif ($cmd eq "debuginsert")   {
+    Dispatch($hash, pack("H*", $args[0]), undef);
+    return undef;
   } else {
 		return "Unknown argument $cmd, choose one of clear:readings";
 	}
