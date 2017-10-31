@@ -7,6 +7,7 @@ use strict;
 use warnings;
 use TcpServerUtils;
 use HttpUtils;
+use IO::Socket;
 
 use constant MA_PACKAGE_LENGTH => 64;
 
@@ -22,7 +23,7 @@ MOBILEALERTSGW_Initialize($)
   my ($hash) = @_;
 
   $hash->{ReadFn}  = "MOBILEALERTSGW_Read";
-  #$hash->{GetFn}   = "MOBILEALERTSGW_Get";
+  $hash->{GetFn}   = "MOBILEALERTSGW_Get";
   $hash->{SetFn}   = "MOBILEALERTSGW_Set";
   $hash->{AttrFn}  = "MOBILEALERTSGW_Attr";
   $hash->{DefFn}   = "MOBILEALERTSGW_Define";
@@ -51,6 +52,94 @@ MOBILEALERTSGW_Define($$)
 }
 
 sub
+MOBILEALERTSGW_GetUDPSocket($$) 
+{
+  my ( $hash, $name ) = @_;
+  my $socket;
+  if(defined($hash->{UDPHASH})) {
+      $socket=$hash->{UDPHASH}->{UDPSOCKET};
+  } else {
+    #IO::Socket::INET geht leider nicht
+    Log3 $name, 3, "Create UDP Socket.";
+    unless(socket($socket, AF_INET, SOCK_DGRAM, getprotobyname('udp'))) {
+      Log3 $name, 1, "Could not create socket: $!";
+      return undef;
+    }
+    unless(setsockopt($socket, SOL_SOCKET, SO_BROADCAST, 1)) {
+      Log3 $name, 1, "Could not setsockopt: $!";
+      return undef;
+    }
+    my $cname = "${name}_UDPPORT";
+    my %nhash;
+    $nhash{NR}    = $devcount++;
+    $nhash{NAME}  = $cname;
+    $nhash{FD}    = fileno($socket);
+    $nhash{UDPSOCKET} = $socket;
+    $nhash{TYPE}  = $hash -> {TYPE};
+    $nhash{STATE} = "Connected";
+    $nhash{SNAME} = $name;
+    $nhash{TEMPORARY} = 1;              # Don't want to save it
+    $nhash{HASH} = $hash;
+    $attr{$cname}{room} = "hidden";
+    $defs{$cname} = \%nhash;
+    $selectlist{$nhash{NAME}} = \%nhash;   
+    $hash ->{UDPHASH} = \%nhash;   
+  }
+  return $socket;
+}
+
+sub
+MOBILEALERTSGW_Get ($$@)
+{
+	my ( $hash, $name, $cmd, @args ) = @_;
+
+  return "\"get $name\" needs at least one argument" unless(defined($cmd));
+	
+  if($cmd eq "config") {
+    my @gateways = split(",", ReadingsVal($name, "Gateways", ""));
+    my $gateway = $args[0];
+    my $destpaddr;
+    my $command;
+
+    if($gateway =~ /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/) {
+      $destpaddr = sockaddr_in(8003,  inet_aton($gateway));
+      $gateway = "000000000000";                  
+      $command = 1;
+    } elsif($gateway =~ /([0-9A-F]{12})/) {
+      if (@gateways == 0) {
+        $destpaddr = sockaddr_in(8003, INADDR_BROADCAST);
+        $command = 2;
+      } elsif ( !grep( /^$gateway$/, @gateways ) ) {
+        $destpaddr = sockaddr_in(8003, INADDR_BROADCAST);
+        $command = 2;
+      } else {
+        my $ip = ReadingsVal($name, "GW_". $gateway . "_ip", "");
+        if (length($ip) == 0) {
+          $destpaddr = sockaddr_in(8003, INADDR_BROADCAST);
+        } else {
+          $destpaddr = sockaddr_in(8003,  inet_aton($ip));
+        }
+        $command = 2;
+      }
+    } else {
+      $gateway = "000000000000";
+      $destpaddr = sockaddr_in(8003, INADDR_BROADCAST);
+      $command = 1;
+    }
+    my $socket = MOBILEALERTSGW_GetUDPSocket($hash, $name);
+    if (!defined($socket)) {
+      return "Could not create socket.";
+    }
+    my $data = pack("nH[12]n", $command, $gateway, 10);
+    Log3 $name, 5, "Send GetConfig " . unpack("H*", $data) ;
+    send($socket, $data, 0, $destpaddr);
+    return undef;           
+  } else {
+		return "Unknown argument $cmd, choose one of config";
+	}
+}
+
+sub
 MOBILEALERTSGW_Set ($$@)
 {
 	my ( $hash, $name, $cmd, @args ) = @_;
@@ -66,11 +155,69 @@ MOBILEALERTSGW_Set ($$@)
     } else {
 	      return "Unknown value $args[0] for $cmd, choose one of readings";
     }
+  } elsif ($cmd eq "initgateway") {
+    my @gateways = split(",", ReadingsVal($name, "Gateways", ""));
+    my $gateway = $args[0];
+  
+    if (@gateways == 0) {
+      return "No gateway known. Find with 'get $name findgateways' first."
+    }
+    if ( !grep( /^$gateway$/, @gateways ) ) {      
+      return "Unknown $gateway for $cmd, choose one of " . join(",", @gateways);
+    }
+    my $ip = ReadingsVal($name, "GW_". $gateway . "_ip", "");
+    my $config = ReadingsVal($name, "GW_". $gateway . "_config", "");    
+    if (length($ip) == 0) {
+      return "IP of gateway unknown. Find with 'get $name findgateways' first."
+    }
+    if (length($config) == 0) {
+      return "Config of gateway unknown. Find with 'get $name findgateways' first."
+    }
+    my $sock = IO::Socket::INET->new(Proto     => 'udp',
+                                     PeerPort  => 8003,
+                                     PeerAddr  => $ip)
+                                     or return "Could not create socket: $!\n";
+    my $myip = $sock->sockhost;
+    my $myport = $hash->{PORT};
+
+    Log3 $name, 4, "Config gateway $gateway $ip Proxy auf $myip:$myport";
+    $config = pack("H*" , $config);
+    $config = "\0\x04" . substr($config, 2,6) . "\0\xB5" . substr($config, 15, 1+4+4+4+21+65) . "\x01" . 
+      pack("a65n", $myip, $myport) . substr($config, 182,4);
+    Log3 $name, 5, "Send " . unpack("H*", $config);
+    $sock->send($config) or return "Could not send $!";
+    $sock->close();
+    return undef;
+  } elsif ($cmd eq "rebootgateway") {
+    my @gateways = split(",", ReadingsVal($name, "Gateways", ""));
+    my $gateway = $args[0];
+  
+    if (@gateways == 0) {
+      return "No gateway known. Find with 'get $name findgateways' first."
+    }
+    if ( !grep( /^$gateway$/, @gateways ) ) {      
+      return "Unknown $gateway for $cmd, choose one of " . join(",", @gateways);
+    }
+    my $ip = ReadingsVal($name, "GW_". $gateway . "_ip", "");
+    if (length($ip) == 0) {
+      return "IP of gateway unknown. Find with 'get $name findgateways' first."
+    }
+    my $sock = IO::Socket::INET->new(Proto     => 'udp',
+                                     PeerPort  => 8003,
+                                     PeerAddr  => $ip)
+                                     or return "Could not create socket: $!\n";
+    Log3 $name, 4, "Reboot gateway $gateway auf $ip:8003";
+    my $data = pack("nH[12]n", 5, $gateway,10);
+    Log3 $name, 5, "Send " . unpack("H*", $data);
+    $sock->send($data) or return "Could not send $!";
+    $sock->close();
+    return undef;    
   } elsif ($cmd eq "debuginsert")   {
     Dispatch($hash, pack("H*", $args[0]), undef);
     return undef;
   } else {
-		return "Unknown argument $cmd, choose one of clear:readings";
+    my $gateways = ReadingsVal($name, "Gateways", "");
+		return "Unknown argument $cmd, choose one of clear:readings rebootgateway:" . $gateways . " initgateway:" . $gateways;
 	}
 }
 
@@ -78,6 +225,16 @@ sub
 MOBILEALERTSGW_Undef($$)
 {
   my ($hash, $name) = @_;
+
+  if(defined($hash->{UDPHASH})) {
+    my $cname = "${name}_UDPPORT";
+    delete($selectlist{$cname});
+    delete $attr{$cname};
+    delete $defs{$cname};
+    close($hash->{UDPHASH}->{UDPSOCKET});
+    delete $hash->{UDPHASH};
+  }
+
   my $ret = TcpServer_Close($hash);
   return $ret;
 }
@@ -123,6 +280,14 @@ MOBILEALERTSGW_Read($$)
   my ($hash, $reread) = @_;
   my $name = $hash->{NAME};
   my $verbose = GetVerbose($name);
+
+  if(exists $hash->{UDPSOCKET}) {
+    Log3 $name, 5, "Data from UDP received";
+    my $phash = $hash->{HASH};
+    my $srcpaddr = recv($hash->{UDPSOCKET}, my $udpdata, 186, 0);
+    MOBILEALERTSGW_DecodeUDP($phash,$udpdata,$srcpaddr);
+    return;     
+  }
 
   if($hash->{SERVERSOCKET}) {   # Accept and create a child
     my $nhash = TcpServer_Accept($hash, "MOBILEALERTSGW");
@@ -223,7 +388,16 @@ MOBILEALERTSGW_Read($$)
   }
   Log3 $MA_wname, 5, "Header HTTP_IDENTIFY" . $MA_httpheader{"HTTP_IDENTIFY"};
   my ($gwserial, $gwmac, $actioncode) = split(/:/, $MA_httpheader{"HTTP_IDENTIFY"}); 
-  readingsSingleUpdate($defs{$MA_wname}, "GW_" . $gwserial . "_lastSeen", TimeNow(), 1);
+  my @gateways = split(",", ReadingsVal($MA_wname, "Gateways", ""));
+  readingsBeginUpdate($defs{$MA_wname});
+    if ( !grep( /^$gwmac$/, @gateways ) ) {
+      push(@gateways, $gwmac);
+      readingsBulkUpdateIfChanged($defs{$MA_wname}, "Gateways", join(",",@gateways));      
+    }
+    readingsBulkUpdateIfChanged($defs{$MA_wname}, "GW_" . $gwmac . "_lastSeen", TimeNow());
+    readingsBulkUpdateIfChanged($defs{$MA_wname}, "GW_" . $gwmac . "_ip", $hash->{PEER});
+    readingsBulkUpdateIfChanged($defs{$MA_wname}, "GW_" . $gwmac . "_serial", $gwserial);
+  readingsEndUpdate($defs{$MA_wname}, 1);
   if ($actioncode eq "00") {
     Log3 $MA_wname, 4, "$MA_cname: Initrequest from $gwserial $gwmac";
     MOBILEALERTSGW_DecodeInit($hash, $POSTdata);
@@ -334,6 +508,65 @@ MOBILEALERTSGW_DecodeData($$)
   }
 }
 
+sub
+MOBILEALERTSGW_DecodeUDP($$$)
+{
+  my ($hash, $udpdata, $srcpaddr) = @_;
+  my ($port, $ipaddr) = sockaddr_in($srcpaddr);
+  my $name = $hash->{NAME};  
+  Log3 $name, 4, "Data from " . inet_ntoa($ipaddr) . ":" . $port;
+  Log3 $name, 5, "Data: " . unpack("H*", $udpdata);
+
+  if (length $udpdata == 186) {
+    my @ip;
+    my @fip;
+    my @netmask;
+    my @gateway;
+    my @dnsip;
+    (my $command, my $gatewayid, my $length, @ip[0..3], my $dhcp, @fip[0..3], @netmask[0..3], @gateway[0..3],
+     my $devicename, my $dataserver, my $proxy, my $proxyname, my $proxyport, @dnsip[0..3]) = 
+     unpack("nH12nxCCCCCCCCCCCCCCCCCa21a65Ca65nCCCC", $udpdata);
+
+    if ($command != 3) {
+      Log3 $name, 3, "Unknown Command $command: " . unpack("H*", $udpdata);
+      return;
+    }
+    Log3 $name, 4, "Command: " . $command .
+                   " Gatewayid: " . $gatewayid .
+                   " length: " . $length .
+                   " IP: " . join(".", @ip) .
+                   " DHCP: " . $dhcp .
+                   " fixedIP: " . join(".", @fip) .
+                   " netmask: " . join(".", @netmask) .
+                   " gateway: " . join(".", @gateway) .
+                   " devicename: " . $devicename .
+                   " dataserver: " . $dataserver .
+                   " proxy: " . $proxy .
+                   " proxyname: " . $proxyname .
+                   " proxyport: " . $proxyport .
+                   " dnsip: ". join(".", @dnsip);
+    $gatewayid = uc $gatewayid;
+    readingsBeginUpdate($hash);
+      readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_lastSeen", TimeNow());
+      readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_ip", inet_ntoa($ipaddr));
+      readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_config", unpack("H*", $udpdata));
+      readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_proxy", $proxy==1 ? "on" : "off");
+      readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_proxyname", $proxyname);
+      readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_proxyport", $proxyport);
+      my @gateways = split(",", ReadingsVal($name, "Gateways", ""));
+      if ( !grep( /^$gatewayid$/, @gateways ) ) {
+        push(@gateways, $gatewayid);
+        readingsBulkUpdateIfChanged($hash, "Gateways", join(",",@gateways));      
+      }      
+    readingsEndUpdate($hash, 1);                   
+  } elsif (length $udpdata == 118) {
+    Log3 $name, 5, "Package was defect, this seems to be normal.";
+  } else {
+    Log3 $name, 3, "Unknown Data: " . unpack("H*", $udpdata);
+  }
+  return;
+}
+
 # Eval-Rückgabewert für erfolgreiches
 # Laden des Moduls
 1;
@@ -351,6 +584,7 @@ MOBILEALERTSGW_DecodeData($$)
   <br><br>
   The fhem module makes simulates as http-proxy to intercept messages from the gateway.
   In order to use this module you need to configure the gateway to use the fhem-server with the defined port as proxy.
+  You can do so with the command initgateway or by app.
   It automatically detects devices. The other devices are handled by the <a href="#MOBILEALERTS">MOBILELAERTS</a> module,
   which uses this module as its backend.<br>
   <br>
@@ -369,13 +603,19 @@ MOBILEALERTSGW_DecodeData($$)
   <ul>
     <li><code>set &lt;name&gt; clear &lt;readings&gt;</code><br>
     Clears the readings. </li>
+    <li><code>set &lt;name&gt; initgateway &lt;gatewayid&gt;</code><br>
+    Sets the proxy in the gateway to the fhem-server. A reboot of the gateway may be needed in order to take effect.</li>    
+    <li><code>set &lt;name&gt; rebootgateway &lt;gatewayid&gt;</code><br>
+    Reboots the gateway.</li>        
   </ul>
   <br>
 
   <a name="MOBILEALERTSGWget"></a>
   <b>Get</b>
   <ul>
-  N/A
+    <li><code>get &lt;name&gt; config &lt;IP or gatewayid&gt; </code><br>
+    Gets the config of a gateway or all gateways. IP or gatewayid are optional. 
+    If not specified it will search for alle Gateways in the local lan (Broadcast).</li>
   </ul>
   <br>
   <br>
