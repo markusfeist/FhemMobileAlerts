@@ -16,8 +16,10 @@ MA10100, MA10200, MA10230, MA10300
 Von jemanden anderen getestet:
 MA10410
 
-Nur unterstützt (aber nicht getestet):
+Unterstützt (aber nicht getestet):
 MA10350, MA10650, MA10660, MA10700, MA10800
+
+Gerade für die letzten Module würde ich mich über Rückmeldungen freuen.
 
 ## Installation
 ### Modul
@@ -90,8 +92,7 @@ attr <Modul-Name> stateFormat temperatureString
 ```
 Und ein Readings-Proxy für die Luftfeuchte:
 ```
-define <RP-Name> readingsProxy  	
-<Modul-Name>:humidityString
+define <RP-Name> readingsProxy <Modul-Name>:humidityString
 attr <RP-Name> alias Luftfeuchte
 attr <RP-Name> group Heizung und Klima
 attr <RP-Name> icon humidity
@@ -111,5 +112,5 @@ Folgende Punkte sind noch offen, bzw. bekannte Fehler:
 * Es wird kein Batteriestatus ausgegeben. (Leider ist noch unbekannt, wie dieser in die Nachrichten kodiert sind). Wenn dies jemand von ELV liest. Ich wäre für einen Tip dankbar.
 * Das Modul hat nach dem automatsichen Anlegen zunächst den Status `???`. Dies korrigiert sich aber der zweiten Nachricht.
 
-##Lizenz
+## Lizenz
 Ich veröffentliche hier die FHEM Module unter der GPL V2 siehe auch [LICENSE](LICENSE).
