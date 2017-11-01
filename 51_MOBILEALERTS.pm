@@ -512,4 +512,54 @@ MOBILEALERTS_convertEventTimeString($$)
 </ul>
 
 =end html
+=begin html_DE
+
+<a name="MOBILEALERTS"></a>
+<h3>MOBILEALERTS</h3>
+<ul>
+  MOBILEALERTS ist ein FHEM-Modul f&uuml; die deutschen MobileAlerts Ger&auml;.
+  <br><br>
+  Dieses FHEM Modul stellt jeweils ein MobileAlerts Ger&auml;t dar. Die Verbindung wird durch das 
+  <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> Modul bereitgestellt.<br>
+  Aktuell werden unterst&uuml;zt: MA10100, MA10200, MA10230, MA10300, MA10410.<br>
+  Unterst&uuml;zt aber ungetestet: MA10350, MA10650, MA10660, MA10700, MA10800<br>
+  <br>
+
+  <a name="MOBILEALERTSdefine"></a>
+  <b>Define</b>
+  <ul>
+    <code>define &lt;name&gt; MOBILEALERTS &lt;deviceID&gt;</code><br>
+    <br>
+    deviceID ist der Sensorcode auf dem Sensor.
+  </ul>
+  <br>
+
+  <a name="MOBILEALERTSset"></a>
+  <b>Set</b>
+  <ul>
+    <li><code>set &lt;name&gt; clear &lt;readings&gt;</code><br>
+    L&ouml;scht die Readings. </li>
+  </ul>
+  <br>
+
+  <a name="MOBILEALERTSget"></a>
+  <b>Get</b>
+  <ul>
+  N/A
+  </ul>
+  <br>
+  <br>
+
+  <a name="MOBILEALERTSattr"></a>
+  <b>Attributes</b>
+  <ul>
+    <li><a href="#ignore">ignore</a></li>
+    <li><a href="#readingFnAttributes">readingFnAttributes</a></li>  
+    <li><a href="#MOBILEALERTSlastMsg">lastMsg</a><br>
+      Wenn dieser Wert auf 1 gesetzt ist, wird die letzte erhaltene Nachricht als Reading gelogt.
+    </li>
+  </ul>
+</ul>
+
+=end html_DE
 =cut

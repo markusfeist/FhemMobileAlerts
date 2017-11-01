@@ -630,4 +630,61 @@ MOBILEALERTSGW_DecodeUDP($$$)
 </ul>
 
 =end html
+
+=begin html_DE
+
+<a name="MOBILEALERTSGW"></a>
+<h3>MOBILEALERTSGW</h3>
+<ul>
+  MOBILEALERTSGW ist ein FHEM-Modul f&uuml;r das deutsche MobileAlerts Gateway.
+  <br><br>
+  Dieses FHEM-Modul simuliert einen http-proxy, um Nachrichten vom Gateway abzufangen.
+  Um dies zu erreichen, muss das Gateway so konfiguriert werden, dass es den FHEM-Server mit dem definierten Port als
+  Proxy nutzt. Sie k&ouml;nnen dies entweder mit der App oder dem Kommando initgateway erreichen.
+  Es erkennt automatisch Ger&auml;te. Die Ger&auml; werden durch das <a href="#MOBILEALERTS">MOBILELAERTS</a> Modul
+  bereitgestellt. MOBILEALERTS nutzt dieses Modul als Backend.<br>
+  <br>
+
+  <a name="MOBILEALERTSGWdefine"></a>
+  <b>Define</b>
+  <ul>
+    <code>define &lt;name&gt; MOBILEALERTSGW &lt;port&gt;</code><br>
+    <br>
+    port ist der Port auf dem der Proxy-Server h&ouml;rt. Der Port muss frei sein.
+  </ul>
+  <br>
+
+  <a name="MOBILEALERTSGWset"></a>
+  <b>Set</b>
+  <ul>
+    <li><code>set &lt;name&gt; clear &lt;readings&gt;</code><br>
+    L&ouml;scht die Readings. </li>
+    <li><code>set &lt;name&gt; initgateway &lt;gatewayid&gt;</code><br>
+    Setzt den Proxy im Gateway auf dem FHEM-Server. Es kann ein Neustart (reboot) des Gateways n&ouml;tig sein, damit die
+    Einstellung wirksam wird.</li>    
+    <li><code>set &lt;name&gt; rebootgateway &lt;gatewayid&gt;</code><br>
+    Startet das Gateway neu.</li>        
+  </ul>
+  <br>
+
+  <a name="MOBILEALERTSGWget"></a>
+  <b>Get</b>
+  <ul>
+    <li><code>get &lt;name&gt; config &lt;IP or gatewayid&gt; </code><br>
+    Holt die Konfiguration eines oder aller Gateways im lokalen Netz. IP bzw. die GatewayId sind optional. 
+    Wenn keines von beiden angegeben ist, werden alle Gateways im lokalen Netz gesucht (Broadcast).</li>
+  </ul>
+  <br>
+  <br>
+
+  <a name="MOBILEALERTSGWattr"></a>
+  <b>Attributes</b>
+  <ul>
+    <li><a href="#MOBILEALERTSGWforward">forward</a><br>
+      Wenn dieser Wert auf 1 gesetzt ist, werden die Daten zus&auml;tzlich zum MobileAlerts Server http://www.data199.com/gateway/put gesendet.
+    </li>
+  </ul>
+</ul>
+
+=end html_DE
 =cut
