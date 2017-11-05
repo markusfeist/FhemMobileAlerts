@@ -17,7 +17,7 @@ MOBILEALERTS_Initialize($)
   $hash->{AttrFn}  = "MOBILEALERTS_Attr";
   $hash->{ParseFn} = "MOBILEALERTS_Parse";
   $hash->{Match} = "^.*";
-  $hash->{AttrList} = "lastMsg:0,1 ". "stateFormat " . "ignore:0,1 " . $readingFnAttributes;  
+  $hash->{AttrList} = "actCycle " . "lastMsg:0,1 ". "stateFormat " . "ignore:0,1 " . $readingFnAttributes;  
 }
 
 sub
@@ -51,7 +51,11 @@ MOBILEALERTS_Attr($$$$)
 				Log3 $name, 3, "MOBILEALERTS ($name) - Invalid parameter attr $name $attrName $attrValue";
 				return "Invalid value $attrValue allowed 0,1";
 			}
-		}
+		} elsif ($attrName eq "actCycle") {
+        unless ( $attrValue eq "off" ) {
+          (@_[3], undef) = MOBILEALERTSGW_time2sec($attrValue);
+        }
+    }
 	}
 	return undef;
 }
@@ -507,6 +511,10 @@ MOBILEALERTS_convertEventTimeString($$)
     <li><a href="#MOBILEALERTSlastMsg">lastMsg</a><br>
       If value 1 is set, the last received message will be logged as reading.
     </li>
+    <li><a href="#MOBILEALERTSactCycle">actCycle &lt;[hhh:mm]|off&gt;</a><br>
+      This value triggers a 'alive' and 'not alive' detection. [hhh:mm] is the maximum silent time for the device.
+      The reading actStatus will show the states: 'unknown', 'alive', 'dead'.
+    </li>    
   </ul>
 </ul>
 
@@ -557,6 +565,11 @@ MOBILEALERTS_convertEventTimeString($$)
     <li><a href="#MOBILEALERTSlastMsg">lastMsg</a><br>
       Wenn dieser Wert auf 1 gesetzt ist, wird die letzte erhaltene Nachricht als Reading gelogt.
     </li>
+    <li><a href="#MOBILEALERTSactCycle">actCycle &lt;[hhh:mm]|off&gt;</a><br>
+      Dieses Attribut erm&ouml;licht eine 'nicht erreichbarkeit' Erkennung.
+      [hhh:mm] ist die maximale Zeit, innerhalb der keine Nachrichten empfrangen wird.
+      Das Reading actStatus zeigt den Status 'unknown', 'alive', 'dead' an.
+    </li>        
   </ul>
 </ul>
 
