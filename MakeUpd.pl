@@ -5,7 +5,7 @@ use warnings;
 use File::stat;
 use Fcntl ':mode';
 
-  open(UPDFILE, ">controls_ma.txt") || die("Can't open Updatefile: $!\n");
+  open(UPDFILE, ">controls_mobilealerts.txt") || die("Can't open Updatefile: $!\n");
   opendir DH, "FHEM" || die("Can't open FHEM: $!\n");
   foreach my $file (readdir(DH)) {
     my @line_parts;

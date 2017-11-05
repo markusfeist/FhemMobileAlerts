@@ -24,6 +24,21 @@ Gerade für die letzten Module würde ich mich über Rückmeldungen freuen.
 ## Installation
 ### Modul
 Die Installation des Moduls erfolgt, indem man die beiden Dateien 50_MOBILEALERTSGW.pm und 51_MOBILEALERTS.pm in den Ordner FHEM der FHEM Installtion einfügt.
+Dies kann manuell erfolgen.
+
+Alternativ kann der Befehl:
+```
+update all https://raw.githubusercontent.com/markusfeist/FhemMobileAlerts/master/controls_mobilealerts.txt
+```
+genutzt werden.
+
+Wenn man die Komponenten dauerhaft automatisch updaten will kann man das Repository mit:
+```
+update add https://raw.githubusercontent.com/markusfeist/FhemMobileAlerts/master/controls_mobilealerts.txt
+```
+hinzufügen.
+
+### Einrichtung
 Das Modul legt man dann im FHEM mit dem Befehl
 ```
 define <Name> MOBILEALERTSGW <Port>
