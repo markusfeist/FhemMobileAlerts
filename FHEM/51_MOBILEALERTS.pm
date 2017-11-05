@@ -13,7 +13,7 @@ MOBILEALERTS_Initialize($)
 
   $hash->{DefFn}   = "MOBILEALERTS_Define";
   $hash->{UndefFn} = "MOBILEALERTS_Undef";
-  $hash->{SetFn}   = "MOBILEALERTSGW_Set";
+  $hash->{SetFn}   = "MOBILEALERTS_Set";
   $hash->{AttrFn}  = "MOBILEALERTS_Attr";
   $hash->{ParseFn} = "MOBILEALERTS_Parse";
   $hash->{Match} = "^.*";
@@ -60,7 +60,6 @@ sub
 MOBILEALERTS_Set ($$@)
 {
 	my ( $hash, $name, $cmd, @args ) = @_;
-
   return "\"set $name\" needs at least one argument" unless(defined($cmd));
 	
   if($cmd eq "clear") {
