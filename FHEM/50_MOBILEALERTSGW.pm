@@ -605,7 +605,7 @@ sub MOBILEALERTSGW_ActionDetector($)
         readingsBulkUpdateIfChanged($chash, "actStatus", "alive");
       }            
     } else {
-      readingsSingleUpdate($chash, "actStatus", "unknown");
+      readingsBulkUpdateIfChanged($chash, "actStatus", "unknown");
     }
     readingsEndUpdate($chash, 1);
   }
