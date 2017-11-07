@@ -588,22 +588,26 @@ sub MOBILEALERTSGW_ActionDetector($)
     next unless($actCycle);
     Log3 $hash->{NAME}, 5, "ActionDetector " . $chash->{NAME};
     if ($actCycle eq "off") {
-      readingsSingleUpdate($chash, "actStatus", "switchedOff", 1);
+      readingsBeginUpdate($chash);
+        readingsBulkUpdateIfChanged($chash, "actStatus", "switchedOff");
+      readingsEndUpdate($chash, 1);
       next;
     }
     my $lastAct = ReadingsAge($chash->{NAME}, "lastRcv", undef);
+    readingsBeginUpdate($chash);
     if ($lastAct) {
-      (undef, my $sec) = MOBILEALERTSGW_time2sec($actCycle);
+      (undef, my $sec) = MOBILEALERTSGW_time2sec($actCycle);      
       if ($sec == 0) {
-        readingsSingleUpdate($chash, "actStatus", "switchedOff", 1);
+        readingsBulkUpdateIfChanged($chash, "actStatus", "switchedOff");
       } elsif ($sec < $lastAct) {
-        readingsSingleUpdate($chash, "actStatus", "dead", 1);
+        readingsBulkUpdateIfChanged($chash, "actStatus", "dead");
       } else {
-        readingsSingleUpdate($chash, "actStatus", "alive", 1);
-      }      
+        readingsBulkUpdateIfChanged($chash, "actStatus", "alive");
+      }            
     } else {
-      readingsSingleUpdate($chash, "actStatus", "unknown", 1);
+      readingsBulkUpdateIfChanged($chash, "actStatus", "unknown");
     }
+    readingsEndUpdate($chash, 1);
   }
 }
 
