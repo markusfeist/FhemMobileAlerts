@@ -36,7 +36,6 @@ MOBILEALERTSGW_Initialize($)
   #$hash->{AsyncOutputFn} = "MOBILEALERTSGW_AsyncOutput";
   #$hash->{ActivateInformFn} = "MOBILEALERTSGW_ActivateInform";
   $hash->{AttrList} = "forward:0,1 " . $readingFnAttributes;
-  InternalTimer(gettimeofday()+60, "MOBILEALERTSGW_ActionDetector", $hash);
 }
 
 sub
@@ -566,49 +565,6 @@ MOBILEALERTSGW_DecodeUDP($$$)
     Log3 $name, 3, "Unknown Data: " . unpack("H*", $udpdata);
   }
   return;
-}
-
-sub MOBILEALERTSGW_time2sec($) {
-  my ($timeout) = @_;
-  my ($h,$m) = split(":",$timeout);
-  no warnings 'numeric';
-  $h = int($h);
-  $m = int($m);
-  use warnings 'numeric';
-  return ((sprintf("%03s:%02d",$h,$m)),((int($h)*60+int($m))*60));
-}
-
-sub MOBILEALERTSGW_ActionDetector($)
-{
-  my ( $hash ) = @_;
-  InternalTimer(gettimeofday()+60, "MOBILEALERTSGW_ActionDetector", $hash);
-  Log3 $hash->{NAME}, 5, "ActionDetector run";
-  for my $chash (values %{$modules{MOBILEALERTS}{defptr}}) {
-    my $actCycle = AttrVal($chash->{NAME}, "actCycle", undef);
-    next unless($actCycle);
-    Log3 $hash->{NAME}, 5, "ActionDetector " . $chash->{NAME};
-    if ($actCycle eq "off") {
-      readingsBeginUpdate($chash);
-        readingsBulkUpdateIfChanged($chash, "actStatus", "switchedOff");
-      readingsEndUpdate($chash, 1);
-      next;
-    }
-    my $lastAct = ReadingsAge($chash->{NAME}, "lastRcv", undef);
-    readingsBeginUpdate($chash);
-    if ($lastAct) {
-      (undef, my $sec) = MOBILEALERTSGW_time2sec($actCycle);      
-      if ($sec == 0) {
-        readingsBulkUpdateIfChanged($chash, "actStatus", "switchedOff");
-      } elsif ($sec < $lastAct) {
-        readingsBulkUpdateIfChanged($chash, "actStatus", "dead");
-      } else {
-        readingsBulkUpdateIfChanged($chash, "actStatus", "alive");
-      }            
-    } else {
-      readingsBulkUpdateIfChanged($chash, "actStatus", "unknown");
-    }
-    readingsEndUpdate($chash, 1);
-  }
 }
 
 # Eval-Rückgabewert für erfolgreiches

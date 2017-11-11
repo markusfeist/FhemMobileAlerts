@@ -14,10 +14,10 @@ Aktuell sind unterstützt und von mir getestet:
 MA10100, MA10200, MA10230, MA10300
 
 Von jemanden anderen getestet:
-MA10410
+MA 10350, MA10410
 
 Unterstützt (aber nicht getestet):
-MA10350, MA10650, MA10660, MA10700, MA10800
+MA10650, MA10660, MA10700, MA10800
 
 Gerade für die letzten Module würde ich mich über Rückmeldungen freuen.
 

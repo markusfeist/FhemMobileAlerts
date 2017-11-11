@@ -17,7 +17,9 @@ MOBILEALERTS_Initialize($)
   $hash->{AttrFn}  = "MOBILEALERTS_Attr";
   $hash->{ParseFn} = "MOBILEALERTS_Parse";
   $hash->{Match} = "^.*";
-  $hash->{AttrList} = "actCycle " . "lastMsg:0,1 ". "stateFormat " . "ignore:0,1 " . $readingFnAttributes;  
+  $hash->{AttrList} = "actCycle " . "lastMsg:0,1 ". "stateFormat " . "ignore:0,1 " . $readingFnAttributes;
+  InternalTimer(gettimeofday()+60, "MOBILEALERTS_ActionDetector", $hash);
+  Log3 "MOBILEALERTS", 5, "MOBILEALERTS_Initialize finished.";
 }
 
 sub
@@ -53,11 +55,25 @@ MOBILEALERTS_Attr($$$$)
 			}
 		} elsif ($attrName eq "actCycle") {
         unless ( $attrValue eq "off" ) {
-          (@_[3], undef) = MOBILEALERTSGW_time2sec($attrValue);
+          ($_[3], my $sec) = MOBILEALERTS_time2sec($attrValue);
+          if ($sec>0) {
+            my $hash = $modules{MOBILEALERTS};
+            if ($init_done) {
+              RemoveInternalTimer($hash);
+              InternalTimer(gettimeofday()+60, "MOBILEALERTS_ActionDetector", $hash);
+            }
+          }
         }
     }
 	}
 	return undef;
+}
+
+sub MOBILEALERTS_Notify($$)
+{
+   my ($hash, $dev) = @_;
+   my $name = $hash->{NAME};
+   my $devName = $dev->{NAME};
 }
 
 sub
@@ -108,6 +124,13 @@ MOBILEALERTS_Parse ($$)
     }
     readingsBulkUpdateIfChanged($hash, "lastRcv", FmtDateTime($timeStamp));
     readingsBulkUpdateIfChanged($hash, "lastMsg", unpack("H*", $message)) if ( AttrVal($hash->{NAME}, "lastMsg", 0) == 1);
+    my $actCycle = AttrVal($hash->{NAME}, "actCycle", undef);
+    if ($actCycle) {
+      (undef, my $sec) = MOBILEALERTS_time2sec($actCycle);
+      if ($sec > 0) {
+        readingsBulkUpdateIfChanged($hash, "actStatus", "alive");
+      }
+    }
     readingsEndUpdate($hash, 1);
     
 		# Rückgabe des Gerätenamens, für welches die Nachricht bestimmt ist.
@@ -456,6 +479,68 @@ MOBILEALERTS_convertEventTimeString($$)
   } elsif($timeScaleFactor == 3) {  # seconds
     return $value . " s";
   }
+}
+
+sub MOBILEALERTS_time2sec($) {
+  my ($timeout) = @_;
+  return ("off",0) unless ($timeout);
+  return ("off",0) if ($timeout eq "off");
+
+  my ($h,$m) = split(":",$timeout);
+  no warnings 'numeric';
+  $h = int($h);
+  $m = int($m);
+  use warnings 'numeric';
+  return ((sprintf("%03s:%02d",$h,$m)),((int($h)*60+int($m))*60));
+}
+
+sub MOBILEALERTS_ActionDetector($)
+{  
+  my ( $hash ) = @_;
+  my $name = $hash->{NAME};
+  unless ($init_done) {
+    Log3 $name, 5, "ActionDetector run - fhem not intialized";
+    InternalTimer(gettimeofday()+60, "MOBILEALERTS_ActionDetector", $hash);
+    return;
+  }
+  Log3 $name, 5, "ActionDetector run";
+  my $now = gettimeofday();
+  my $nextTimer = $now + 60*60; # Check at least Hourly
+  for my $chash (values %{$modules{MOBILEALERTS}{defptr}}) {
+    Log3 $name, 5, "ActionDetector " . $chash->{NAME};
+    my $actCycle = AttrVal($chash->{NAME}, "actCycle", undef);
+    (undef, my $sec) = MOBILEALERTS_time2sec($actCycle);   
+    if ($sec == 0) {
+      readingsBeginUpdate($chash);
+        readingsBulkUpdateIfChanged($chash, "actStatus", "switchedOff");
+      readingsEndUpdate($chash, 1);
+      next;
+    }
+    my $lastRcv = ReadingsTimestamp($chash->{NAME},"lastRcv",undef);
+    my $deadTime = undef;    
+    readingsBeginUpdate($chash);
+    if (defined($lastRcv)) {
+      Log3 $name, 5, "ActionDetector " . $chash->{NAME} . " lastRcv " . $lastRcv;
+      $lastRcv = time_str2num($lastRcv);
+      $deadTime = $lastRcv + $sec;
+      if ($deadTime < $now) {
+        readingsBulkUpdateIfChanged($chash, "actStatus", "dead");
+        $deadTime = $now + $sec;
+      } else {
+        readingsBulkUpdateIfChanged($chash, "actStatus", "alive");
+      }
+    } else {
+      readingsBulkUpdateIfChanged($chash, "actStatus", "unknown");
+      $deadTime = $now + $sec;
+    }
+    readingsEndUpdate($chash, 1);
+    if ((defined($deadTime)) && ($deadTime < $nextTimer)) {
+      $nextTimer = $deadTime;
+      Log3 $name, 5, "ActionDetector " . $chash->{NAME} . " nextTime Set to " . FmtDateTime($nextTimer);
+    }         
+  }
+  Log3 $name, 5, "MOBILEALERTS_ActionDetector nextRun " . FmtDateTime($nextTimer);
+  InternalTimer($nextTimer, "MOBILEALERTS_ActionDetector", $hash);
 }
 
 # Eval-Rückgabewert für erfolgreiches

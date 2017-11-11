@@ -1,4 +1,7 @@
 MOBILEALERTSGW last change:
+11.11.2017 - ActionDetector Timer runs depending on actCycle
+           - ActionDetector moved from MOBILEALERTSGW to MOBILEALERTS
+
 07.11.2017 - Update ActionDetector fixed
 
 05.11.2017 - actCycle added
