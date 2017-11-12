@@ -37,6 +37,10 @@ MOBILEALERTS_Define($$)
         if($deviceID !~ m/^[0-9a-f]{12}$/);
   $modules{MOBILEALERTS}{defptr}{$deviceID}=$hash;
   $hash->{DeviceID} = $deviceID;
+  if ((exists $modules{MOBILEALERTS}{AutoCreateMessages}) && (exists $modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID})) {
+    MOBILEALERTS_Parse($modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID}[0], $modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID}[1]);
+    delete $modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID};
+  }
   return undef;
 }
 
@@ -44,6 +48,7 @@ sub
 MOBILEALERTS_Undef($$)
 {
   my ($hash, $name) = @_;
+  delete $modules{MOBILEALERTS}{defptr}{$hash->{DeviceID}};
   return undef;
 }
 
@@ -141,6 +146,7 @@ MOBILEALERTS_Parse ($$)
 		# Rückgabe des Gerätenamens, für welches die Nachricht bestimmt ist.
 		return $hash->{NAME}; 
 	}
+  $modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID} = [$io_hash, $message];
   my $res = "UNDEFINED MA_".$deviceID." MOBILEALERTS $deviceID";
   Log3 $io_hash->{NAME}, 5, "Parse return: " . $res;
 	return $res;
