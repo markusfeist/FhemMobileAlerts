@@ -1,4 +1,6 @@
 MOBILEALERTSGW last change:
+12.11.2017 - readingsBulkUpdateIfChanged readingsBulkUpdateIf reworked
+
 11.11.2017 - ActionDetector Timer runs depending on actCycle
            - ActionDetector moved from MOBILEALERTSGW to MOBILEALERTS
 

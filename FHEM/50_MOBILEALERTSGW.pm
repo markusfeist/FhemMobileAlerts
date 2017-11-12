@@ -392,9 +392,9 @@ MOBILEALERTSGW_Read($$)
   readingsBeginUpdate($defs{$MA_wname});
     if ( !grep( /^$gwmac$/, @gateways ) ) {
       push(@gateways, $gwmac);
-      readingsBulkUpdateIfChanged($defs{$MA_wname}, "Gateways", join(",",@gateways));      
+      readingsBulkUpdate($defs{$MA_wname}, "Gateways", join(",",@gateways));      
     }
-    readingsBulkUpdateIfChanged($defs{$MA_wname}, "GW_" . $gwmac . "_lastSeen", TimeNow());
+    readingsBulkUpdate($defs{$MA_wname}, "GW_" . $gwmac . "_lastSeen", TimeNow());
     readingsBulkUpdateIfChanged($defs{$MA_wname}, "GW_" . $gwmac . "_ip", $hash->{PEER});
     readingsBulkUpdateIfChanged($defs{$MA_wname}, "GW_" . $gwmac . "_serial", $gwserial);
   readingsEndUpdate($defs{$MA_wname}, 1);
@@ -547,7 +547,7 @@ MOBILEALERTSGW_DecodeUDP($$$)
                    " dnsip: ". join(".", @dnsip);
     $gatewayid = uc $gatewayid;
     readingsBeginUpdate($hash);
-      readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_lastSeen", TimeNow());
+      readingsBulkUpdate($hash, "GW_" . $gatewayid . "_lastSeen", TimeNow());
       readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_ip", inet_ntoa($ipaddr));
       readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_config", unpack("H*", $udpdata));
       readingsBulkUpdateIfChanged($hash, "GW_" . $gatewayid . "_proxy", $proxy==1 ? "on" : "off");
@@ -556,7 +556,7 @@ MOBILEALERTSGW_DecodeUDP($$$)
       my @gateways = split(",", ReadingsVal($name, "Gateways", ""));
       if ( !grep( /^$gatewayid$/, @gateways ) ) {
         push(@gateways, $gatewayid);
-        readingsBulkUpdateIfChanged($hash, "Gateways", join(",",@gateways));      
+        readingsBulkUpdate($hash, "Gateways", join(",",@gateways));      
       }      
     readingsEndUpdate($hash, 1);                   
   } elsif (length $udpdata == 118) {
