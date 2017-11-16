@@ -270,6 +270,7 @@ MOBILEALERTS_Parse_08_e1 ($$)
       readingsBulkUpdate($hash, "lastEvent" . $z . "String", $eventTimeString);
     }
   }
+  readingsBulkUpdate($hash, "eventCounter", $eventCounter);
   readingsBulkUpdateIfChanged($hash, "deviceType", "MA10650");
   readingsBulkUpdate($hash, "state", "T: " . $temperature . " C: " . $eventCounter);
 }
