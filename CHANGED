@@ -1,4 +1,6 @@
 MOBILEALERTSGW last change:
+16.11.2017 - Bugfix negative Temperatures
+
 12.11.2017 - readingsBulkUpdateIfChanged readingsBulkUpdateIf reworked
            - Show values direct after autocreate
            - Bugfix delete of device
