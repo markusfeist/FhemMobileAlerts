@@ -369,7 +369,6 @@ sub
 MOBILEALERTS_Parse_09_d6 ($$)
 {
   my ( $hash, $message) = @_;
-
   readingsBulkUpdateIfChanged($hash, "deviceType", "MA10320PRO");
   MOBILEALERTS_Parse_d6($hash, $message);
 }
@@ -397,7 +396,6 @@ MOBILEALERTS_Parse_d6 ($$)
   readingsBulkUpdate($hash, "prevTemperatureOut", $prevTemperatureOut);
   $prevHumidityIn = MOBILEALERTS_decodeHumidity($prevHumidityIn);
   readingsBulkUpdate($hash, "prevHumidityIn", $prevHumidityIn);
-  readingsBulkUpdateIfChanged($hash, "deviceType", "MA10320PRO");
   readingsBulkUpdate($hash, "state", "In T: " . $temperatureIn . " H: " . $humidityIn . 
                                               " Out T: " . $temperatureOut);
 }
