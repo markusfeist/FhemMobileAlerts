@@ -360,35 +360,24 @@ MOBILEALERTS_Parse_12_d9 ($$)
 sub
 MOBILEALERTS_Parse_06_d6 ($$)
 {
-        my ( $hash, $message) = @_;
-  my ( $txCounter, $temperatureIn, $temperatureOut, $humidityIn, $prevTemperatureIn, $prevTemperatureOut, $prevHumidityIn) = unpack("nnnnnnn", $message);
-
-  readingsBulkUpdate($hash, "txCounter", MOBILEALERTS_decodeTxCounter($txCounter));
-  readingsBulkUpdate($hash, "triggered", MOBILEALERTS_triggeredTxCounter($txCounter));
-  $temperatureIn = MOBILEALERTS_decodeTemperature($temperatureIn);
-  readingsBulkUpdate($hash, "temperatureIn", $temperatureIn);
-  readingsBulkUpdate($hash, "temperatureStringIn", MOBILEALERTS_temperatureToString($temperatureIn));
-  $temperatureOut = MOBILEALERTS_decodeTemperature($temperatureOut);
-  readingsBulkUpdate($hash, "temperatureOut", $temperatureOut);
-  readingsBulkUpdate($hash, "temperatureStringOut", MOBILEALERTS_temperatureToString($temperatureOut));
-  $humidityIn = MOBILEALERTS_decodeHumidity($humidityIn);
-  readingsBulkUpdate($hash, "humidity", $humidityIn);
-  readingsBulkUpdate($hash, "humidityString", MOBILEALERTS_humidityToString($humidityIn));
-  $prevTemperatureIn = MOBILEALERTS_decodeTemperature($prevTemperatureIn);
-  readingsBulkUpdate($hash, "prevTemperatureIn", $prevTemperatureIn);
-  $prevTemperatureOut = MOBILEALERTS_decodeTemperature($prevTemperatureOut);
-  readingsBulkUpdate($hash, "prevTemperatureOut", $prevTemperatureOut);
-  $prevHumidityIn = MOBILEALERTS_decodeHumidity($prevHumidityIn);
-  readingsBulkUpdate($hash, "prevHumidityIn", $prevHumidityIn);
+  my ( $hash, $message) = @_;
   readingsBulkUpdateIfChanged($hash, "deviceType", "MA10300/MA10700");
-  readingsBulkUpdate($hash, "state", "In T: " . $temperatureIn . " H: " . $humidityIn . 
-                                              " Out T: " . $temperatureOut);
+  MOBILEALERTS_Parse_d6($hash, $message);
 }
 
 sub
 MOBILEALERTS_Parse_09_d6 ($$)
 {
-        my ( $hash, $message) = @_;
+  my ( $hash, $message) = @_;
+
+  readingsBulkUpdateIfChanged($hash, "deviceType", "MA10320PRO");
+  MOBILEALERTS_Parse_d6($hash, $message);
+}
+
+sub
+MOBILEALERTS_Parse_d6 ($$)
+{
+  my ( $hash, $message) = @_;
   my ( $txCounter, $temperatureIn, $temperatureOut, $humidityIn, $prevTemperatureIn, $prevTemperatureOut, $prevHumidityIn) = unpack("nnnnnnn", $message);
 
   readingsBulkUpdate($hash, "txCounter", MOBILEALERTS_decodeTxCounter($txCounter));
