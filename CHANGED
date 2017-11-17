@@ -1,4 +1,7 @@
 MOBILEALERTSGW last change:
+17.11.2017 - Added Reading eventCounter for MA10650
+           - Added Sensor MA10320PRO
+
 16.11.2017 - Bugfix negative Temperatures
 
 12.11.2017 - readingsBulkUpdateIfChanged readingsBulkUpdateIf reworked
