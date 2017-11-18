@@ -7,3 +7,4 @@ before_install:
   - wget http://fhem.de/fhem-5.8.deb
   - sudo apt-get install libdevice-serialport-perl libwww-perl libio-socket-ssl-perl libjson-perl libdbd-sqlite3-perl libtext-diff-perl
   - sudo dpkg -i fhem-5.8.deb
+install: true  
