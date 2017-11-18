@@ -4,7 +4,8 @@ perl:
 sudo: enabled
 
 before_install:
-  - wget http://fhem.de/fhem-5.8.deb
-  - sudo apt-get install libdevice-serialport-perl libwww-perl libio-socket-ssl-perl libjson-perl libdbd-sqlite3-perl libtext-diff-perl
-  - sudo dpkg -i fhem-5.8.deb
+  - wget -qO - http://debian.fhem.de/archive.key | sudo apt-key add -
+  - echo "deb http://debian.fhem.de/nightly/ /" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update -qq
+  - sudo apt-get install fhem -y
 install: true  
