@@ -1,5 +1,5 @@
 # FhemMobileAlerts
-Ein Modul für FHEM für die ELV Mbolie Alerts Senosren.
+Ein Modul für FHEM für die ELV Mbolie Alerts Senosren.e
 
 ## Mobile Alerts
 Die Komponeten werden von [ELV](https://www.elv.de/ip-wettersensoren-system.html) in Deutschland verkauft. ACHTUNG: Es gibt anscheinend Mobile Alerts Sensoren aus den USA. Diese sind mit diesem Modul nicht kompatibel.
