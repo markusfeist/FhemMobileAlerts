@@ -9,7 +9,9 @@ echo "- Ausgabe:"
 echo "$AUSGABE"
 echo "- Diff:"
 diff <( grep -v -f $MY_PATH/$1-ign.txt -x <(echo "$AUSGABE")) <( grep -v -f $MY_PATH/$1-ign.txt -x $MY_PATH/$1-erg.txt) || {
-    echo "=== Differenz erkannt ==="
+    echo "- Differenz erkannt"
+    echo "- FHEM Log"
+    cat /opt/fhem/log/fhem-*.log
     echo "=== Ende Test $1: Fehler ==="
     exit 1
 }
