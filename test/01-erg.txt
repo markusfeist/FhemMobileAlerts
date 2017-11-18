@@ -1,0 +1,11 @@
+Internals:
+   DEF        9001
+   FD         11
+   NAME       test
+   NR         20
+   PORT       9001
+   STATE      Initialized
+   TYPE       MOBILEALERTSGW
+Attributes:
+   forward    0
+
