@@ -2,8 +2,8 @@
 MY_PATH="`dirname \"$0\"`"
 echo "=== Running Test $1 ==="
 
-if [ -e test/$1-nutzdaten.dat ]; then
-    curl --silent --show-error -o /dev/null --request PUT --data-binary "@/home/mf/nutzdaten.dat" --header "HTTP_IDENTIFY: 800E2EEF:001D8C0E2EEF:C0"   http://localhost:9001/gateway/put || {
+if [ -e $MY_PATH/$1-nutzdaten.dat ]; then
+    curl --silent --show-error -o /dev/null --request PUT --data-binary "@$MY_PATH/$1-nutzdaten.dat" --header "HTTP_IDENTIFY: 800E2EEF:001D8C0E2EEF:C0"   http://localhost:9001/gateway/put || {
         echo "- Fehler beim senden $?."
         echo "=== Ende Test $1: Fehler ==="
         exit 1        
