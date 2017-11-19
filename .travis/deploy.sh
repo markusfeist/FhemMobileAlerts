@@ -46,4 +46,4 @@ eval `ssh-agent -s`
 ssh-add $MY_PATH/travis_id_rsa
 
 # Now that we're all set up, we can push.
-git push $SSH_REPO $TARGET_BRANCH
+git push $SSH_REPO $TRAVIS_BRANCH
