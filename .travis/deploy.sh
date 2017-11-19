@@ -33,7 +33,7 @@ fi
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
 git add -A $MY_PATH/../controls_mobilealerts.txt
-git commit -m "Travis build $TRAVIS_BUILD_NUMBER update Controlfile [skip ci]"
+git commit -m "Travis build $TRAVIS_BUILD_NUMBER update Controlfile"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
 #ENCRYPTED_KEY_VAR="encrypted_${ENCRYPTION_LABEL}_key"
@@ -41,7 +41,7 @@ git commit -m "Travis build $TRAVIS_BUILD_NUMBER update Controlfile [skip ci]"
 #ENCRYPTED_KEY=${!ENCRYPTED_KEY_VAR}
 #ENCRYPTED_IV=${!ENCRYPTED_IV_VAR}
 #openssl aes-256-cbc -K $ENCRYPTED_KEY -iv $ENCRYPTED_IV -in $MY_PATH/deploy_key.enc -out ../deploy_key -d
-#chmod 600 ../deploy_key
+chmod 600 $MY_PATH/travis_id_rsa
 eval `ssh-agent -s`
 ssh-add $MY_PATH/travis_id_rsa
 
