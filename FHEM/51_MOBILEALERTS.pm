@@ -384,7 +384,7 @@ MOBILEALERTS_Parse_d3 ($$)
       MOBILEALERTS_readingsBulkUpdate($hash,  4, "state" . $z, $data[$z]);
       MOBILEALERTS_readingsBulkUpdate($hash,  4, "lastEvent" . $z, $eventTime);
       MOBILEALERTS_readingsBulkUpdate($hash,  4, "lastEvent" . $z . "String", $eventTimeString);
-    }    
+    }
   }
 }
 
