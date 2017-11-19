@@ -38,7 +38,7 @@ git checkout $TARGET_BRANCH
 
 doCompile
 
-if git diff controls_mobilealerts.txt; then
+if git diff --exit-code controls_mobilealerts.txt; then
     rm -rf $REPO $MY_PATH/../out
     echo "No changes to the output on this push; exiting."
     exit 0
