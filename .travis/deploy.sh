@@ -40,7 +40,7 @@ fi
 
 git clone $REPO $MY_PATH/../out
 cd $MY_PATH/../out
-git checkout $TARGET_BRANCH
+git checkout $TRAVIS_BRANCH
 
 doCompile
 
@@ -56,9 +56,6 @@ git add -v -A controls_mobilealerts.txt
 git commit -v -m "Travis build $TRAVIS_BUILD_NUMBER update Controlfile"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
-echo $PWD
-ls -alh
-ls -alh .travis
 ENCRYPTED_KEY_VAR="encrypted_${ENCRYPTION_LABEL}_key"
 ENCRYPTED_IV_VAR="encrypted_${ENCRYPTION_LABEL}_iv"
 ENCRYPTED_KEY=${!ENCRYPTED_KEY_VAR}
