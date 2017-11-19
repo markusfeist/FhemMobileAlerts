@@ -1,0 +1,20 @@
+Internals:
+   CFGFN      
+   DEF        0b6c06be1d3b
+   DeviceID   0b6c06be1d3b
+   NAME       MA_0b6c06be1d3b
+   NR         29
+   STATE      D: ENE W: 0.3 G: 2
+   TYPE       MOBILEALERTS
+   READINGS:
+     2017-10-23 21:25:06   deviceType      MA10660
+     2017-10-23 21:25:06   direction       ENE
+     2017-10-23 21:25:06   gustSpeed       2
+     2017-10-23 21:25:06   lastRcv         2017-10-23 21:25:06
+     2017-10-23 21:25:06   state           D: ENE W: 0.3 G: 2
+     2017-10-23 21:25:06   txCounter       1281
+     2017-10-23 21:25:06   windSpeed       0.3
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*

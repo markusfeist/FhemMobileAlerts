@@ -1,0 +1,39 @@
+Internals:
+   CFGFN      
+   DEF        080745895962
+   DeviceID   080745895962
+   NAME       MA_080745895962
+   NR         26
+   STATE      T: 6.2 C: 7
+   TYPE       MOBILEALERTS
+   READINGS:
+     2017-11-16 15:54:38   deviceType      MA10650
+     2017-11-16 15:54:38   eventCounter    7
+     2017-11-16 15:54:38   lastEvent       172800
+     2017-11-16 15:54:38   lastEvent1      19
+     2017-11-16 15:54:38   lastEvent1String 19 s
+     2017-11-16 15:54:38   lastEvent2      6
+     2017-11-16 15:54:38   lastEvent2String 6 s
+     2017-11-16 15:54:38   lastEvent3      1524
+     2017-11-16 15:54:38   lastEvent3String 1524 s
+     2017-11-16 15:54:38   lastEvent4      1558
+     2017-11-16 15:54:38   lastEvent4String 1558 s
+     2017-11-16 15:54:38   lastEvent5      3
+     2017-11-16 15:54:38   lastEvent5String 3 s
+     2017-11-16 15:54:38   lastEvent6      3
+     2017-11-16 15:54:38   lastEvent6String 3 s
+     2017-11-16 15:54:38   lastEvent7      41
+     2017-11-16 15:54:38   lastEvent7String 41 s
+     2017-11-16 15:54:38   lastEvent8      0
+     2017-11-16 15:54:38   lastEvent8String 0 d
+     2017-11-16 15:54:38   lastEventString 2880 m
+     2017-11-16 15:54:38   lastRcv         2017-11-16 15:54:38
+     2017-11-16 15:54:38   state           T: 6.2 C: 7
+     2017-11-16 15:54:38   temperature     6.2
+     2017-11-16 15:54:38   temperatureString 6.2°C
+     2017-11-16 15:54:38   triggered       0
+     2017-11-16 15:54:38   txCounter       31
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*

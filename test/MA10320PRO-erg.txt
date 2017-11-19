@@ -1,0 +1,27 @@
+Internals:
+   CFGFN      
+   DEF        093a732dda8f
+   DeviceID   093a732dda8f
+   NAME       MA_093a732dda8f
+   NR         23
+   STATE      In T: 21 H: 41 Out T: 20
+   TYPE       MOBILEALERTS
+   READINGS:
+     2017-11-17 10:05:51   deviceType      MA10320PRO
+     2017-11-17 10:05:51   humidity        41
+     2017-11-17 10:05:51   humidityString  41%
+     2017-11-17 10:05:51   lastRcv         2017-11-17 10:05:51
+     2017-11-17 10:05:51   prevHumidityIn  43
+     2017-11-17 10:05:51   prevTemperatureIn 20.8
+     2017-11-17 10:05:51   prevTemperatureOut 20
+     2017-11-17 10:05:51   state           In T: 21 H: 41 Out T: 20
+     2017-11-17 10:05:51   temperatureIn   21
+     2017-11-17 10:05:51   temperatureOut  20
+     2017-11-17 10:05:51   temperatureStringIn 21°C
+     2017-11-17 10:05:51   temperatureStringOut 20°C
+     2017-11-17 10:05:51   triggered       0
+     2017-11-17 10:05:51   txCounter       10130
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
