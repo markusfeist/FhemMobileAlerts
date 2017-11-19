@@ -156,8 +156,7 @@ MOBILEALERTS_Parse ($$)
         MOBILEALERTS_readingsBulkUpdate($hash,  0, "actStatus", "alive");
       }
     }
-    readingsEndUpdate($hash, 1);
-    
+    readingsEndUpdate($hash, 1);    
 		# Rückgabe des Gerätenamens, für welches die Nachricht bestimmt ist.
 		return $hash->{NAME}; 
 	}

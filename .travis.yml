@@ -10,3 +10,5 @@ before_install:
 - sudo apt-get update -qq
 - sudo apt-get install fhem -y
 install: true
+after_success:
+- .travis/deploy.sh
