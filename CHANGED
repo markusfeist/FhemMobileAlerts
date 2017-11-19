@@ -1,5 +1,6 @@
 MOBILEALERTSGW last change:
 19.11.2017 - Timestamp of message instead of current time
+           - Attribut expert added
 
 17.11.2017 - Added Reading eventCounter for MA10650
            - Added Sensor MA10320PRO
