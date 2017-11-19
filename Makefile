@@ -3,16 +3,22 @@
 	sudo cp $< $@ 
 
 deploylocal: /opt/fhem/FHEM/50_MOBILEALERTSGW.pm /opt/fhem/FHEM/51_MOBILEALERTS.pm
-	sudo service fhem stop
-	sudo rm /opt/fhem/log/fhem-*.log
+	sudo /etc/init.d/fhem stop
+	sudo rm /opt/fhem/log/fhem-*.log || true
 	sudo cp test/fhem.cfg /opt/fhem/fhem.cfg
-	sudo rm /opt/fhem/log/fhem.save
-	sudo service fhem start
+	sudo rm /opt/fhem/log/fhem.save || true
+	sudo TZ=Europe/Berlin /etc/init.d/fhem start
 
 undeploylocal:
-	sudo service fhem stop
+	sudo /etc/init.d/fhem stop
 	sudo rm /opt/fhem/FHEM/50_MOBILEALERTSGW.pm /opt/fhem/FHEM/51_MOBILEALERTS.pm
-	sudo service fhem start
+	sudo TZ=Europe/Berlin /etc/init.d/fhem start
 
 test: deploylocal
+	@echo === Starte Tests ===
 	test/test.sh 01
+	test/test.sh 02
+	test/test.sh MA10320PRO
+	test/test.sh MA10650
+	test/test.sh MA10660
+	@echo === Alles Tests ok beendet ===

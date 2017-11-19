@@ -1,0 +1,118 @@
+Internals:
+   CONNECTS   1
+   DEF        9001
+   FD         11
+   NAME       test
+   NR         20
+   PORT       9001
+   STATE      Initialized
+   TYPE       MOBILEALERTSGW
+   READINGS:
+     2017-11-19 14:56:52   GW_001D8C0E2EEF_ip 127.0.0.1
+     2017-11-19 14:56:52   GW_001D8C0E2EEF_lastSeen 2017-11-19 14:56:52
+     2017-11-19 14:56:52   GW_001D8C0E2EEF_serial 800E2EEF
+     2017-11-19 14:56:52   Gateways        001D8C0E2EEF
+Attributes:
+   forward    0
+
+Internals:
+   CFGFN      
+   DEF        0213fd84b8c0
+   DeviceID   0213fd84b8c0
+   NAME       MA_0213fd84b8c0
+   NR         25
+   STATE      T: 18.5
+   TYPE       MOBILEALERTS
+   READINGS:
+     2017-09-24 15:27:45   deviceType      MA10100
+     2017-09-24 15:27:45   lastRcv         2017-09-24 15:27:45
+     2017-09-24 15:27:45   state           T: 18.5
+     2017-09-24 15:27:45   temperature     18.5
+     2017-09-24 15:27:45   temperatureString 18.5°C
+     2017-09-24 15:27:45   triggered       0
+     2017-09-24 15:27:45   txCounter       14568
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        03059f36d078
+   DeviceID   03059f36d078
+   NAME       MA_03059f36d078
+   NR         33
+   STATE      T: 21.9 H: 72
+   TYPE       MOBILEALERTS
+   READINGS:
+     2017-09-24 15:30:19   deviceType      MA10200
+     2017-09-24 15:30:19   humidity        72
+     2017-09-24 15:30:19   humidityString  72%
+     2017-09-24 15:30:19   lastRcv         2017-09-24 15:30:19
+     2017-09-24 15:30:19   state           T: 21.9 H: 72
+     2017-09-24 15:30:19   temperature     21.9
+     2017-09-24 15:30:19   temperatureString 21.9°C
+     2017-09-24 15:30:19   triggered       0
+     2017-09-24 15:30:19   txCounter       11551
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        120339e2064a
+   DeviceID   120339e2064a
+   NAME       MA_120339e2064a
+   NR         27
+   STATE      T: 20 H: 65 65/64/62/60
+   TYPE       MOBILEALERTS
+   READINGS:
+     2017-09-24 15:27:52   deviceType      MA10230
+     2017-09-24 15:27:52   humidity        65
+     2017-09-24 15:27:52   humidity24h     65
+     2017-09-24 15:27:52   humidity24hString 64%
+     2017-09-24 15:27:52   humidity30d     60
+     2017-09-24 15:27:52   humidity30dString 60%
+     2017-09-24 15:27:52   humidity3h      65
+     2017-09-24 15:27:52   humidity3hString 65%
+     2017-09-24 15:27:52   humidity7d      62
+     2017-09-24 15:27:52   humidity7dString 62%
+     2017-09-24 15:27:52   humidityString  65%
+     2017-09-24 15:27:52   lastRcv         2017-09-24 15:27:52
+     2017-09-24 15:27:52   state           T: 20 H: 65 65/64/62/60
+     2017-09-24 15:27:52   temperature     20
+     2017-09-24 15:27:52   temperatureString 20°C
+     2017-09-24 15:27:52   triggered       0
+     2017-09-24 15:27:52   txCounter       8114
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        070dcb09d9f4
+   DeviceID   070dcb09d9f4
+   NAME       MA_070dcb09d9f4
+   NR         31
+   STATE      In T: 20.5 H: 63 Out T: 22.3 H: 63
+   TYPE       MOBILEALERTS
+   READINGS:
+     2017-09-24 15:28:06   deviceType      MA10410
+     2017-09-24 15:28:06   humidityIn      63
+     2017-09-24 15:28:06   humidityInString 63%
+     2017-09-24 15:28:06   humidityOut     63
+     2017-09-24 15:28:06   humidityOutString 63%
+     2017-09-24 15:28:06   lastRcv         2017-09-24 15:28:06
+     2017-09-24 15:28:06   state           In T: 20.5 H: 63 Out T: 22.3 H: 63
+     2017-09-24 15:28:06   temperatureIn   20.5
+     2017-09-24 15:28:06   temperatureInString 20.5°C
+     2017-09-24 15:28:06   temperatureOut  22.3
+     2017-09-24 15:28:06   temperatureOutString 22.3°C
+     2017-09-24 15:28:06   triggered       0
+     2017-09-24 15:28:06   txCounter       14589
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
