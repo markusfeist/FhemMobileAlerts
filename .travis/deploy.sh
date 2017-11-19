@@ -34,7 +34,7 @@ fi
 
 git clone $REPO $MY_PATH/../out
 cd $MY_PATH/../out
-git checkout -v $TARGET_BRANCH
+git checkout $TARGET_BRANCH
 
 doCompile
 
