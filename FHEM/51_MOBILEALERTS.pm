@@ -140,6 +140,12 @@ MOBILEALERTS_Parse ($$)
       Log3 $hash->{NAME}, 2, "For id " . substr($deviceID, 0, 2) . 
                              " and packageHeader $packageHeader is no decoding defined.";
       MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "Unknown - " . substr($deviceID, 0, 2) . " " . $packageHeader);
+      $sub="MOBILEALERTS_Parse_" . $packageHeader;
+      if (defined &$sub) {
+        #no strict "refs";
+        &{\&$sub}($hash, substr $message, 12, $packageLength - 12);
+        #use strict "refs";
+      }
     }
     MOBILEALERTS_readingsBulkUpdate($hash,  0, "lastRcv", $timeStamp);
     MOBILEALERTS_readingsBulkUpdate($hash,  0, "lastMsg", unpack("H*", $message)) if ( AttrVal($hash->{NAME}, "lastMsg", 0) == 1);
@@ -165,6 +171,14 @@ sub
 MOBILEALERTS_Parse_02_ce ($$)
 {
 	my ( $hash, $message) = @_;
+  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10100");
+  MOBILEALERTS_Parse_ce($hash, $message);  
+}
+
+sub
+MOBILEALERTS_Parse_ce ($$)
+{
+	my ( $hash, $message) = @_;
   my ( $txCounter, $temperature, $prevTemperature) = unpack("nnn", $message);
 
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "txCounter", MOBILEALERTS_decodeTxCounter($txCounter));
@@ -174,12 +188,19 @@ MOBILEALERTS_Parse_02_ce ($$)
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "temperatureString", MOBILEALERTS_temperatureToString($temperature));
   $prevTemperature = MOBILEALERTS_decodeTemperature($prevTemperature);
   MOBILEALERTS_readingsBulkUpdate($hash,  1, "prevTemperature", $prevTemperature);
-  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10100");
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "state", "T: " . $temperature);
 }
 
 sub
 MOBILEALERTS_Parse_03_d2 ($$)
+{
+	my ( $hash, $message) = @_;
+  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10200");
+  MOBILEALERTS_Parse_d2($hash, $message);  
+}
+
+sub
+MOBILEALERTS_Parse_d2 ($$)
 {
 	my ( $hash, $message) = @_;
   my ( $txCounter, $temperature, $humidity, $prevTemperature, $prevHumidity) = unpack("nnnnn", $message);
@@ -196,12 +217,19 @@ MOBILEALERTS_Parse_03_d2 ($$)
   MOBILEALERTS_readingsBulkUpdate($hash,  1, "prevTemperature", $prevTemperature);
   $prevHumidity = MOBILEALERTS_decodeHumidity($prevHumidity);
   MOBILEALERTS_readingsBulkUpdate($hash,  1, "prevHumidity", $prevHumidity);
-  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10200");
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "state", "T: " . $temperature . " H: " . $humidity);
 }
 
 sub
 MOBILEALERTS_Parse_04_d4 ($$)
+{
+	my ( $hash, $message) = @_;
+  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10350");
+  MOBILEALERTS_Parse_d4($hash, $message);
+}
+
+sub
+MOBILEALERTS_Parse_d4 ($$)
 {
 	my ( $hash, $message) = @_;
   my ( $txCounter, $temperature, $humidity, $wetness, 
@@ -223,12 +251,19 @@ MOBILEALERTS_Parse_04_d4 ($$)
   $prevWetness = MOBILEALERTS_decodeWetness($prevWetness);
   MOBILEALERTS_readingsBulkUpdate($hash,  1, "prevWetness", $prevWetness);
   MOBILEALERTS_readingsBulkUpdate($hash,  1, "prevHumidity", $prevHumidity);
-  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10350");
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "state", "T: " . $temperature . " H: " . $humidity . " " . $wetness);
 }
 
 sub
 MOBILEALERTS_Parse_07_da ($$)
+{
+	my ( $hash, $message) = @_;
+  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10410");
+  MOBILEALERTS_Parse_da($hash, $message);
+}
+
+sub
+MOBILEALERTS_Parse_da ($$)
 {
 	my ( $hash, $message) = @_;
   my ( $txCounter, $temperatureIn, $humidityIn, $temperatureOut, $humidityOut,
@@ -249,14 +284,20 @@ MOBILEALERTS_Parse_07_da ($$)
   $humidityOut = MOBILEALERTS_decodeHumidity($humidityOut);
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "humidityOut", $humidityOut);
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "humidityOutString", MOBILEALERTS_humidityToString($humidityOut));
-
-  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10410");
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "state", "In T: " . $temperatureIn . " H: " . $humidityIn .
                                               " Out T: " . $temperatureOut . " H: " . $humidityOut);
 }
 
 sub
 MOBILEALERTS_Parse_08_e1 ($$)
+{
+	my ( $hash, $message) = @_;
+  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10650");
+  MOBILEALERTS_Parse_e1($hash, $message);
+}
+
+sub
+MOBILEALERTS_Parse_e1 ($$)
 {
 	my ( $hash, $message) = @_;
   my @eventTime;
@@ -280,12 +321,19 @@ MOBILEALERTS_Parse_08_e1 ($$)
     }
   }
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "eventCounter", $eventCounter);
-  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10650");
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "state", "T: " . $temperature . " C: " . $eventCounter);
 }
 
 sub
 MOBILEALERTS_Parse_0b_e2 ($$)
+{
+	my ( $hash, $message) = @_;  
+  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10660");
+  MOBILEALERTS_Parse_e2($hash, $message);
+}
+
+sub
+MOBILEALERTS_Parse_e2 ($$)
 {
 	my ( $hash, $message) = @_;  
   my @dirTable = (  "N","NNE","NE","ENE"
@@ -304,12 +352,19 @@ MOBILEALERTS_Parse_0b_e2 ($$)
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "direction", $dirTable[$dir]);
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "windSpeed", $windSpeed);
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "gustSpeed", $gustSpeed);
-  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10660");
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "state", "D: " . $dirTable[$dir] . " W: " . $windSpeed . " G: " . $gustSpeed);
 }
 
 sub
 MOBILEALERTS_Parse_10_d3 ($$)
+{
+	my ( $hash, $message) = @_;
+  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10800");
+  MOBILEALERTS_Parse_d3($hash, $message);
+}
+
+sub
+MOBILEALERTS_Parse_d3 ($$)
 {
 	my ( $hash, $message) = @_;
   my @data;
@@ -331,11 +386,18 @@ MOBILEALERTS_Parse_10_d3 ($$)
       MOBILEALERTS_readingsBulkUpdate($hash,  4, "lastEvent" . $z . "String", $eventTimeString);
     }    
   }
-  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10800");
 }
 
 sub
 MOBILEALERTS_Parse_12_d9 ($$)
+{
+	my ( $hash, $message) = @_;
+  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10230");
+  MOBILEALERTS_Parse_d9($hash, $message);
+}
+
+sub
+MOBILEALERTS_Parse_d9 ($$)
 {
 	my ( $hash, $message) = @_;
   my ( $txCounter, $humidity3h, $humidity24h, $humidity7d, $humidity30d, $temperature, $humidity) =
@@ -361,7 +423,6 @@ MOBILEALERTS_Parse_12_d9 ($$)
   $humidity30d = MOBILEALERTS_decodeHumidity($humidity30d);
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "humidity30d", $humidity30d);
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "humidity30dString", MOBILEALERTS_humidityToString($humidity30d));
-  MOBILEALERTS_readingsBulkUpdateIfChanged($hash,  0, "deviceType", "MA10230");
   MOBILEALERTS_readingsBulkUpdate($hash,  0, "state", "T: " . $temperature . " H: " . $humidity . " " 
     . $humidity3h . "/" . $humidity24h . "/" . $humidity7d . "/" . $humidity30d);
 }
