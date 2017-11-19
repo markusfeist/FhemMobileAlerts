@@ -32,8 +32,8 @@ fi
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
-git add -A $MY_PATH/../controls_mobilealerts.txt
-git commit -m "Travis build $TRAVIS_BUILD_NUMBER update Controlfile"
+git add -v -A $MY_PATH/../controls_mobilealerts.txt
+git commit -v -m "Travis build $TRAVIS_BUILD_NUMBER update Controlfile"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
 #ENCRYPTED_KEY_VAR="encrypted_${ENCRYPTION_LABEL}_key"
@@ -46,4 +46,4 @@ eval `ssh-agent -s`
 ssh-add $MY_PATH/travis_id_rsa
 
 # Now that we're all set up, we can push.
-git push $SSH_REPO $TRAVIS_BRANCH
+git push -v $SSH_REPO $TRAVIS_BRANCH
