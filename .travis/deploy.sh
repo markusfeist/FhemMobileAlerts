@@ -5,7 +5,13 @@ MY_CWD=$(pwd)
 ENCRYPTION_LABEL=e1304e2fcacf
 
 function doCompile {
-  perl ./MakeUpd.pl
+    for FILE in FHEM/*
+    do
+        TIME=$(git log --pretty=format:%cd -n 1 --date=iso -- "$FILE")
+        TIME=$(date -j -f '%Y-%m-%d %H:%M:%S %z' "$TIME" +%Y%m%d%H%M.%S)
+        touch -m -t "$TIME" "$FILE"
+    done
+    perl ./MakeUpd.pl
 }
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
@@ -49,6 +55,7 @@ git add -v -A controls_mobilealerts.txt
 git commit -v -m "Travis build $TRAVIS_BUILD_NUMBER update Controlfile"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
+ls -alh .travis
 ENCRYPTED_KEY_VAR="encrypted_${ENCRYPTION_LABEL}_key"
 ENCRYPTED_IV_VAR="encrypted_${ENCRYPTION_LABEL}_iv"
 ENCRYPTED_KEY=${!ENCRYPTED_KEY_VAR}
