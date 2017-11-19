@@ -33,7 +33,7 @@ if git diff --quiet $MY_PATH/../controls_mobilealerts.txt; then
 fi
 
 git clone $REPO $MY_PATH/../out
-cd $REPO $MY_PATH/../out
+cd $MY_PATH/../out
 git checkout -v $TARGET_BRANCH
 
 doCompile
