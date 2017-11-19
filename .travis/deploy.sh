@@ -45,7 +45,8 @@ git checkout $TARGET_BRANCH
 doCompile
 
 if git diff --exit-code controls_mobilealerts.txt; then
-    rm -rf $REPO $MY_PATH/../out
+    cd $MY_CWD
+    rm -rf $REPO $MY_PATH/../out    
     echo "No changes to the output on this push; exiting."
     exit 0
 fi
@@ -55,6 +56,8 @@ git add -v -A controls_mobilealerts.txt
 git commit -v -m "Travis build $TRAVIS_BUILD_NUMBER update Controlfile"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
+echo $PWD
+ls -alh
 ls -alh .travis
 ENCRYPTED_KEY_VAR="encrypted_${ENCRYPTION_LABEL}_key"
 ENCRYPTED_IV_VAR="encrypted_${ENCRYPTION_LABEL}_iv"
