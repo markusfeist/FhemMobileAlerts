@@ -15,7 +15,10 @@ undeploylocal:
 	sudo service fhem start
 
 test: deploylocal
+	@echo === Starte Tests ===
 	test/test.sh 01
+	test/test.sh 02
 	test/test.sh MA10320PRO
 	test/test.sh MA10650
 	test/test.sh MA10660
+	@echo === Alles Tests ok beendet ===
