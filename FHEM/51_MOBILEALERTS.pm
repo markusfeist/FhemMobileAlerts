@@ -143,6 +143,9 @@ sub MOBILEALERTS_Parse ($$) {
             &{ \&$sub }( $hash, substr $message, 12, $packageLength - 12 );
 
             #use strict "refs";
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "lastMsg",
+                unpack( "H*", $message ) )
+              if ( AttrVal( $hash->{NAME}, "lastMsg", 0 ) == 1 );
         }
         else {
             Log3 $hash->{NAME}, 2,
@@ -161,11 +164,11 @@ sub MOBILEALERTS_Parse ($$) {
 
                 #use strict "refs";
             }
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "lastMsg",
+                unpack( "H*", $message ) );
         }
         MOBILEALERTS_readingsBulkUpdate( $hash, 0, "lastRcv", $timeStamp );
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "lastMsg",
-            unpack( "H*", $message ) )
-          if ( AttrVal( $hash->{NAME}, "lastMsg", 0 ) == 1 );
+
         my $actCycle = AttrVal( $hash->{NAME}, "actCycle", undef );
         if ($actCycle) {
             ( undef, my $sec ) = MOBILEALERTS_time2sec($actCycle);
@@ -801,7 +804,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li><a href="#ignore">ignore</a></li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>  
     <li><a href="#MOBILEALERTSlastMsg">lastMsg</a><br>
-      If value 1 is set, the last received message will be logged as reading.
+      If value 1 is set, the last received message will be logged as reading even if device is known.
     </li>
     <li><a href="#MOBILEALERTSactCycle">actCycle &lt;[hhh:mm]|off&gt;</a><br>
       This value triggers a 'alive' and 'not alive' detection. [hhh:mm] is the maximum silent time for the device.
@@ -858,7 +861,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li><a href="#ignore">ignore</a></li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>  
     <li><a href="#MOBILEALERTSlastMsg">lastMsg</a><br>
-      Wenn dieser Wert auf 1 gesetzt ist, wird die letzte erhaltene Nachricht als Reading gelogt.
+      Wenn dieser Wert auf 1 gesetzt ist, wird die letzte erhaltene Nachricht als Reading gelogt auch wenn das Ger&auml bekannt ist.
     </li>
     <li><a href="#MOBILEALERTSactCycle">actCycle &lt;[hhh:mm]|off&gt;</a><br>
       Dieses Attribut erm&ouml;licht eine 'nicht erreichbarkeit' Erkennung.
