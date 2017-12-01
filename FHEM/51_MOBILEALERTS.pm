@@ -215,6 +215,38 @@ sub MOBILEALERTS_Parse_ce ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "state", "T: " . $temperature );
 }
 
+sub MOBILEALERTS_Parse_0f_d2 ($$) {
+    my ( $hash, $message ) = @_;
+    my ( $txCounter, $temperatureIn, $temperatureOut, $prevTemperatureIn,
+        $prevTemperatureOut )
+      = unpack( "nnnnn", $message );
+
+    MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
+        "MA10450" );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
+        MOBILEALERTS_decodeTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
+        MOBILEALERTS_triggeredTxCounter($txCounter) );
+    $temperatureIn = MOBILEALERTS_decodeTemperature($temperatureIn);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureIn",
+        $temperatureIn );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureInString",
+        MOBILEALERTS_temperatureToString($temperatureIn) );
+    $temperatureOut = MOBILEALERTS_decodeTemperature($temperatureOut);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureOut",
+        $temperatureOut );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureOutString",
+        MOBILEALERTS_temperatureToString($temperatureOut) );
+    $prevTemperatureIn = MOBILEALERTS_decodeTemperature($prevTemperatureIn);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperatureIn",
+        $prevTemperatureIn );
+    $prevTemperatureOut = MOBILEALERTS_decodeTemperature($prevTemperatureOut);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperatureOut",
+        $prevTemperatureOut );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "state",
+        "In T: " . $temperatureIn . " Out T: " . $temperatureOut );
+}
+
 sub MOBILEALERTS_Parse_03_d2 ($$) {
     my ( $hash, $message ) = @_;
     MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
@@ -826,7 +858,7 @@ sub MOBILEALERTS_ActionDetector($) {
   <br><br>
   Dieses FHEM Modul stellt jeweils ein MobileAlerts Ger&auml;t dar. Die Verbindung wird durch das 
   <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> Modul bereitgestellt.<br>
-  Aktuell werden unterst&uuml;zt: MA10100, MA10200, MA10230, MA10300, MA10410, MA10320PRO.<br>
+  Aktuell werden unterst&uuml;zt: MA10100, MA10200, MA10230, MA10300, MA10410, MA10450, MA10320PRO.<br>
   Unterst&uuml;zt aber ungetestet: MA10350, MA10650, MA10660, MA10700, MA10800<br>
   <br>
 

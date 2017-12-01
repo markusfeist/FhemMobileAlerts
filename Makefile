@@ -21,4 +21,5 @@ test: deploylocal
 	test/test.sh MA10320PRO
 	test/test.sh MA10650
 	test/test.sh MA10660
+	test/test.sh MA10450
 	@echo === Alles Tests ok beendet ===
