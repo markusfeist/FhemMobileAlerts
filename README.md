@@ -1,5 +1,5 @@
 # FhemMobileAlerts
-Ein Modul für FHEM für die ELV Mobile Alerts Senosren.
+Ein Modul für FHEM für die ELV Mobile Alerts und TFA WEATHERHUB Sensoren.
 
 ## Mobile Alerts
 Die Komponeten werden von [ELV](https://www.elv.de/ip-wettersensoren-system.html) in Deutschland verkauft. ACHTUNG: Es gibt anscheinend Mobile Alerts Sensoren aus den USA. Diese sind mit diesem Modul nicht kompatibel.
@@ -14,7 +14,7 @@ Aktuell sind unterstützt und von mir getestet:
 MA10100, MA10200, MA10230, MA10300
 
 Von jemanden anderen getestet:
-MA10350, MA10410, MA10450
+MA10350, MA10410, MA10450, TFA 30.3312.02
 
 Unterstützt (aber nicht getestet):
 MA10650, MA10660, MA10700, MA10800

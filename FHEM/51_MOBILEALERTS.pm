@@ -440,6 +440,44 @@ sub MOBILEALERTS_Parse_e2 ($$) {
         "D: " . $dirTable[$dir] . " W: " . $windSpeed . " G: " . $gustSpeed );
 }
 
+sub MOBILEALERTS_Parse_0e_d8 ($$) {
+    my ( $hash, $message ) = @_;
+    MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
+        "TFA30.3312.02" );
+    MOBILEALERTS_Parse_d8( $hash, $message );
+}
+
+sub MOBILEALERTS_Parse_d8 ($$) {
+    my ( $hash, $message ) = @_;
+    my ( $txCounter, $temperature, $humidity, $prevTemperature, $prevHumidity, $prevTemperature2, $prevHumidity2 )
+      = unpack( "nnnxnnxnn", $message );
+
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
+        MOBILEALERTS_decodeTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
+        MOBILEALERTS_triggeredTxCounter($txCounter) );
+    $temperature = MOBILEALERTS_decodeTemperature($temperature);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature", $temperature );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString",
+        MOBILEALERTS_temperatureToString($temperature) );
+    $humidity = MOBILEALERTS_decodeHumidityDecimal($humidity);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidity", $humidity );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidityString",
+        MOBILEALERTS_humidityToString($humidity) );
+    $prevTemperature = MOBILEALERTS_decodeTemperature($prevTemperature);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperature",
+        $prevTemperature );
+    $prevHumidity = MOBILEALERTS_decodeHumidityDecimal($prevHumidity);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevHumidity", $prevHumidity );
+    $prevTemperature2 = MOBILEALERTS_decodeTemperature($prevTemperature2);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperature2",
+        $prevTemperature2 );
+    $prevHumidity2 = MOBILEALERTS_decodeHumidityDecimal($prevHumidity2);
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevHumidity2", $prevHumidity2 );    
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "state",
+        "T: " . $temperature . " H: " . $humidity );
+}
+
 sub MOBILEALERTS_Parse_10_d3 ($$) {
     my ( $hash, $message ) = @_;
     MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
@@ -629,6 +667,11 @@ sub MOBILEALERTS_decodeHumidity($) {
     return $humidity & 0x7F;
 }
 
+sub MOBILEALERTS_decodeHumidityDecimal($) {
+    my ($humidity) = @_;
+    return ($humidity & 0x3FF) * 0.1;
+}
+
 sub MOBILEALERTS_humidityToString($) {
     my ($humidity) = @_;
     return "---" if ( $humidity > 1000 );
@@ -798,7 +841,7 @@ sub MOBILEALERTS_ActionDetector($) {
 <a name="MOBILEALERTS"></a>
 <h3>MOBILEALERTS</h3>
 <ul>
-  The MOBILEALERTS is a fhem module for the german MobileAlerts devices.
+  The MOBILEALERTS is a fhem module for the german MobileAlerts devices and TFA WEATHERHUB devices.
   <br><br>
   The fhem module represents a MobileAlerts device. The connection is provided by the <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> module.
   Currently supported: MA10100, MA10200, MA10230, MA10300, MA10410.<br>
@@ -854,11 +897,11 @@ sub MOBILEALERTS_ActionDetector($) {
 <a name="MOBILEALERTS"></a>
 <h3>MOBILEALERTS</h3>
 <ul>
-  MOBILEALERTS ist ein FHEM-Modul f&uuml; die deutschen MobileAlerts Ger&auml;.
+  MOBILEALERTS ist ein FHEM-Modul f&uuml; die deutschen MobileAlerts Ger&auml; und TFA WEATHERHUB.
   <br><br>
   Dieses FHEM Modul stellt jeweils ein MobileAlerts Ger&auml;t dar. Die Verbindung wird durch das 
   <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> Modul bereitgestellt.<br>
-  Aktuell werden unterst&uuml;zt: MA10100, MA10200, MA10230, MA10300, MA10410, MA10450, MA10320PRO.<br>
+  Aktuell werden unterst&uuml;zt: MA10100, MA10200, MA10230, MA10300, MA10410, MA10450, MA10320PRO, TFA 30.3312.02.<br>
   Unterst&uuml;zt aber ungetestet: MA10350, MA10650, MA10660, MA10700, MA10800<br>
   <br>
 

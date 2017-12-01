@@ -654,7 +654,7 @@ sub MOBILEALERTSGW_DecodeUDP($$$) {
 <a name="MOBILEALERTSGW"></a>
 <h3>MOBILEALERTSGW</h3>
 <ul>
-  The MOBILEALERTSGW is a fhem module for the german MobileAlerts Gateway.
+  The MOBILEALERTSGW is a fhem module for the german MobileAlerts Gateway and TFA WEATHERHUB.
   <br><br>
   The fhem module makes simulates as http-proxy to intercept messages from the gateway.
   In order to use this module you need to configure the gateway to use the fhem-server with the defined port as proxy.
@@ -710,7 +710,7 @@ sub MOBILEALERTSGW_DecodeUDP($$$) {
 <a name="MOBILEALERTSGW"></a>
 <h3>MOBILEALERTSGW</h3>
 <ul>
-  MOBILEALERTSGW ist ein FHEM-Modul f&uuml;r das deutsche MobileAlerts Gateway.
+  MOBILEALERTSGW ist ein FHEM-Modul f&uuml;r das deutsche MobileAlerts Gateway und TFA WEATHERHUB.
   <br><br>
   Dieses FHEM-Modul simuliert einen http-proxy, um Nachrichten vom Gateway abzufangen.
   Um dies zu erreichen, muss das Gateway so konfiguriert werden, dass es den FHEM-Server mit dem definierten Port als
