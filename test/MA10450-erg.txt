@@ -1,0 +1,52 @@
+Internals:
+   CFGFN      
+   DEF        0f0282f8ddad
+   DeviceID   0f0282f8ddad
+   NAME       MA_0f0282f8ddad
+   NR         50
+   STATE      In T: 20 Out T: 20.1
+   TYPE       MOBILEALERTS
+   READINGS:
+     2017-12-01 21:58:08   deviceType      MA10450
+     2017-12-01 21:58:08   lastRcv         2017-12-01 21:58:08
+     2017-12-01 21:58:08   state           In T: 20 Out T: 20.1
+     2017-12-01 21:58:08   temperatureIn   20
+     2017-12-01 21:58:08   temperatureInString 20°C
+     2017-12-01 21:58:08   temperatureOut  20.1
+     2017-12-01 21:58:08   temperatureOutString 20.1°C
+     2017-12-01 21:58:08   triggered       0
+     2017-12-01 21:58:08   txCounter       145
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        0f0282f8ddad
+   DeviceID   0f0282f8ddad
+   LASTInputDev test
+   MSGCNT     1
+   NAME       MA_0f0282f8ddad
+   NR         50
+   STATE      In T: 20 Out T: 20.1
+   TYPE       MOBILEALERTS
+   test_MSGCNT 1
+   test_TIME  2017-12-02 00:06:36
+   READINGS:
+     2017-12-01 21:58:08   deviceType      MA10450
+     2017-12-01 21:58:08   lastRcv         2017-12-01 21:58:08
+     2017-12-01 21:58:08   prevTemperatureIn 20.1
+     2017-12-01 21:58:08   prevTemperatureOut 20.7
+     2017-12-01 21:58:08   state           In T: 20 Out T: 20.1
+     2017-12-01 21:58:08   temperatureIn   20
+     2017-12-01 21:58:08   temperatureInString 20°C
+     2017-12-01 21:58:08   temperatureOut  20.1
+     2017-12-01 21:58:08   temperatureOutString 20.1°C
+     2017-12-01 21:58:08   triggered       0
+     2017-12-01 21:58:08   txCounter       145
+Attributes:
+   event-on-change-reading .*
+   expert     4
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*

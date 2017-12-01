@@ -3,7 +3,7 @@
 	sudo cp $< $@ 
 
 deploylocal: /opt/fhem/FHEM/50_MOBILEALERTSGW.pm /opt/fhem/FHEM/51_MOBILEALERTS.pm
-	sudo /etc/init.d/fhem stop
+	sudo /etc/init.d/fhem stop || true
 	sudo rm /opt/fhem/log/fhem-*.log || true
 	sudo cp test/fhem.cfg /opt/fhem/fhem.cfg
 	sudo rm /opt/fhem/log/fhem.save || true
@@ -21,4 +21,6 @@ test: deploylocal
 	test/test.sh MA10320PRO
 	test/test.sh MA10650
 	test/test.sh MA10660
+	test/test.sh MA10450
+	test/test.sh TFA30_3312_02
 	@echo === Alles Tests ok beendet ===
