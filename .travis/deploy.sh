@@ -5,13 +5,7 @@ MY_CWD=$(pwd)
 ENCRYPTION_LABEL=e1304e2fcacf
 
 function doCompile {
-    for FILE in FHEM/*
-    do
-        TIME=$(git log --pretty=format:%cd -n 1 --date=iso -- "$FILE")
-        TIME=$(date -d "$TIME" +%Y%m%d%H%M.%S)
-        touch -m -t "$TIME" "$FILE"
-    done
-    perl ./MakeUpd.pl
+    ./MakeUpd.sh
 }
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
