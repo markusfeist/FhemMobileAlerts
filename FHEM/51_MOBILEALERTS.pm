@@ -376,7 +376,37 @@ sub MOBILEALERTS_Parse_e1 ($$) {
     my @eventTime;
     ( my ( $txCounter, $temperature, $eventCounter ), @eventTime[ 0 .. 8 ] ) =
       unpack( "nnnnnnnnnnnn", $message );
+    my $seesaw = $temperature >> 14; #& 0xC000;
 
+    if ( ($seesaw & 0x10) == 0x10 ) {
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "seesaw",
+                "left" ); 
+    } elsif ( ($seesaw & 0x01) == 0x01 ) {
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "seesaw",
+                "right" ); 
+    } else {
+       MOBILEALERTS_readingsBulkUpdate( $hash, 0, "seesaw",
+                "none" ); 
+    }
+    if ( $seesaw != 0x00 ) {
+        my $mlRain = $eventCounter * 0.258;        
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRain",
+        $mlRain + ReadingsVal($hash->{NAME}, "mlRain","0") );
+        my $actTime = $hash->{".updateTimestamp"};
+        my $actH = ReadingsTimestamp($hash->{NAME}, "mlRainActH", $actTime);
+        if (substr($actTime,0,13) eq substr($actH,0,13)) {
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActH",
+                $mlRain + ReadingsVal($hash->{NAME}, "mlRainActH","0") );
+        } else {
+            $hash->{".updateTimestamp"} = ReadingsTimestamp($hash->{NAME}, "mlRainLastH", $actH);
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainLastH",
+                ReadingsVal($hash->{NAME}, "mlRainActH","0") );
+            $hash->{".updateTimestamp"} = $actTime;
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActH", 0);            
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActH",
+                $mlRain );
+        }
+    }
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
