@@ -35,7 +35,7 @@ sub MOBILEALERTS_Initialize($) {
 sub MOBILEALERTS_Define($$) {
     my ( $hash, $def ) = @_;
     my ( $name, $type, $deviceID ) = split( "[ \t]+", $def );
-    Log 3, "DeviceID $deviceID";
+    Log3 $name, 3, "$name MOBILELAERTS: DeviceID $deviceID";
     return "Usage: define <name> MOBILEALERTS <id-12 stellig hex >"
       if ( $deviceID !~ m/^[0-9a-f]{12}$/ );
     $modules{MOBILEALERTS}{defptr}{$deviceID} = $hash;
@@ -65,14 +65,14 @@ sub MOBILEALERTS_Attr($$$$) {
         if ( $attrName eq "lastMsg" ) {
             if ( $attrValue !~ /^[01]$/ ) {
                 Log3 $name, 3,
-"MOBILEALERTS ($name) - Invalid parameter attr $name $attrName $attrValue";
+"$name MOBILELAERTS: Invalid parameter attr $name $attrName $attrValue";
                 return "Invalid value $attrValue allowed 0,1";
             }
         }
         elsif ( $attrName eq "expert" ) {
             if ( $attrValue !~ /^[014]$/ ) {
                 Log3 $name, 3,
-"MOBILEALERTS ($name) - Invalid parameter attr $name $attrName $attrValue";
+"$name MOBILELAERTS: Invalid parameter attr $name $attrName $attrValue";
                 return "Invalid value $attrValue allowed 0,1,4";
             }
         }
@@ -129,10 +129,11 @@ sub MOBILEALERTS_Parse ($$) {
     my ( $io_hash, $message ) = @_;
     my ( $packageHeader, $timeStamp, $packageLength, $deviceID ) =
       unpack( "H2NCH12", $message );
+    my $name = $io_hash->{NAME};
 
-    Log3 $io_hash->{NAME}, 5, "Search for Device ID: " . $deviceID;
+    Log3 $name, 5, "$name MOBILELAERTS: Search for Device ID: " . $deviceID;
     if ( my $hash = $modules{MOBILEALERTS}{defptr}{$deviceID} ) {
-        Log3 $io_hash->{NAME}, 5, "Found Device: " . $hash->{NAME};
+        Log3 $name, 5, "$name MOBILELAERTS: Found Device: " . $hash->{NAME};
 
         # Nachricht für $hash verarbeiten
         $timeStamp = FmtDateTime($timeStamp);
@@ -154,8 +155,8 @@ sub MOBILEALERTS_Parse ($$) {
               if ( AttrVal( $hash->{NAME}, "lastMsg", 0 ) == 1 );
         }
         else {
-            Log3 $hash->{NAME}, 2,
-                "For id "
+            Log3 $name, 2,
+                "$name MOBILELAERTS: For id "
               . substr( $deviceID, 0, 2 )
               . " and packageHeader $packageHeader is no decoding defined.";
             MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
@@ -191,7 +192,7 @@ sub MOBILEALERTS_Parse ($$) {
     $modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID} =
       [ $io_hash, $message ];
     my $res = "UNDEFINED MA_" . $deviceID . " MOBILEALERTS $deviceID";
-    Log3 $io_hash->{NAME}, 5, "Parse return: " . $res;
+    Log3 $name, 5, "$name MOBILELAERTS: Parse return: " . $res;
     return $res;
 }
 
@@ -812,18 +813,19 @@ sub MOBILEALERTS_time2sec($) {
 
 sub MOBILEALERTS_ActionDetector($) {
     my ($hash) = @_;
-    my $name = $hash->{NAME};
+    my $name = "ActionDetector";
     unless ($init_done) {
-        Log3 $name, 5, "ActionDetector run - fhem not intialized";
+        Log3 $name, 5,
+          "$name MOBILELAERTS: ActionDetector run - fhem not intialized";
         InternalTimer( gettimeofday() + 60,
             "MOBILEALERTS_ActionDetector", $hash );
         return;
     }
-    Log3 $name, 5, "ActionDetector run";
+    Log3 $name, 5, "$name MOBILELAERTS: ActionDetector run";
     my $now       = gettimeofday();
     my $nextTimer = $now + 60 * 60;    # Check at least Hourly
     for my $chash ( values %{ $modules{MOBILEALERTS}{defptr} } ) {
-        Log3 $name, 5, "ActionDetector " . $chash->{NAME};
+        Log3 $name, 5, "$name MOBILELAERTS: ActionDetector " . $chash->{NAME};
         my $actCycle = AttrVal( $chash->{NAME}, "actCycle", undef );
         ( undef, my $sec ) = MOBILEALERTS_time2sec($actCycle);
         if ( $sec == 0 ) {
@@ -837,7 +839,10 @@ sub MOBILEALERTS_ActionDetector($) {
         readingsBeginUpdate($chash);
         if ( defined($lastRcv) ) {
             Log3 $name, 5,
-              "ActionDetector " . $chash->{NAME} . " lastRcv " . $lastRcv;
+                "$name MOBILELAERTS: ActionDetector "
+              . $chash->{NAME}
+              . " lastRcv "
+              . $lastRcv;
             $lastRcv  = time_str2num($lastRcv);
             $deadTime = $lastRcv + $sec;
             if ( $deadTime < $now ) {
@@ -856,14 +861,15 @@ sub MOBILEALERTS_ActionDetector($) {
         if ( ( defined($deadTime) ) && ( $deadTime < $nextTimer ) ) {
             $nextTimer = $deadTime;
             Log3 $name, 5,
-                "ActionDetector "
+                "$name MOBILELAERTS: ActionDetector "
               . $chash->{NAME}
               . " nextTime Set to "
               . FmtDateTime($nextTimer);
         }
     }
     Log3 $name, 5,
-      "MOBILEALERTS_ActionDetector nextRun " . FmtDateTime($nextTimer);
+      "$name MOBILELAERTS: MOBILEALERTS_ActionDetector nextRun "
+      . FmtDateTime($nextTimer);
     InternalTimer( $nextTimer, "MOBILEALERTS_ActionDetector", $hash );
 }
 
