@@ -828,6 +828,9 @@ sub MOBILEALERTS_CheckRainSensorTimed($) {
 sub MOBILEALERTS_CheckRainSensor($$) {
     my ( $hash, $mlRain ) = @_;
 
+    #Event
+    push @{ $hash->{CHANGED} }, "rain" if ( $mlRain > 0 );
+
     #lastHour
     my $actTime = $hash->{".updateTimestamp"};
     my $actH = ReadingsTimestamp( $hash->{NAME}, "mlRainActHour", $actTime );
@@ -982,6 +985,28 @@ sub MOBILEALERTS_ActionDetector($) {
   </ul>
   <br>
 
+  <a name="MOBILEALERTSreadings"></a>
+  <b>Readings</b>
+  <ul>
+    <li>lastMsg<br>The last message received (always for unknown devices, for known devices only if attr lastMsg is set).</li>
+    <li>deviceType<br>The devicetype.</li>
+    <li>lastRcv<br>Timestamp of last message.</li>
+    <li>actStatus<br>Shows 'unknown', 'alive', 'dead', 'switchedOff' depending on attribut actCycle</li>
+    <li>txCounter<br>Counter of last message.</li>
+    <li>triggered<br>1=last message was triggered by a event.</li>
+    <li>tempertature, prevTemperature, temperatureIn, temperatureOut, prevTemperatureIn, prevTemperatureOut<br>Temperature (depending on device and attribut expert).</li>
+    <li>tempertatureString, prevTemperatureString, temperatureInString, temperatureOutString, prevTemperatureInString, prevTemperatureOutString<br>Temperature as string (depending on device and attribut expert).</li>
+    <li>state<br>State of device (short actual reading)</li>
+    <li>humidity, prevHumidity, humidityIn, humidityOut, prevHumidityIn, prevHumidityOut<br>Humidity (depending on device and attribut expert).</li>
+    <li>humidityString, prevHumidityString, humidityInString, humidityOutString, prevHumidityInString, prevHumidityOutString<br>Humidity as string (depending on device and attribut expert).</li>
+    <li>wetness<br>Shows if sensor detects water.</li>
+    <li>lastEvent, lastEvent&lt;X&gt; ,lastEventString, lastEvent&lt;X&gt;String<br>Time when last event (rain) happend (MA10650 only).</li>
+    <li>mlRain, mlRainActHour, mlRainLastHour, mlRainActDay, mlRainYesterday<br>Rain since reset of counter, current hour, last hour, current day, yesterday.</li>
+    <li>direction<br>Direction of wind.</li>
+    <li>windSpeed, gustSpeed<br>Windspeed.</li>
+  </ul>
+  <br>  
+
   <a name="MOBILEALERTSset"></a>
   <b>Set</b>
   <ul>
@@ -1003,14 +1028,14 @@ sub MOBILEALERTS_ActionDetector($) {
   <ul>
     <li><a href="#ignore">ignore</a></li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>  
-    <li><a href="#MOBILEALERTSlastMsg">lastMsg</a><br>
+    <li>lastMsg<br>
       If value 1 is set, the last received message will be logged as reading even if device is known.
     </li>
-    <li><a href="#MOBILEALERTSactCycle">actCycle &lt;[hhh:mm]|off&gt;</a><br>
+    <li>actCycle &lt;[hhh:mm]|off&gt;<br>
       This value triggers a 'alive' and 'not alive' detection. [hhh:mm] is the maximum silent time for the device.
       The reading actStatus will show the states: 'unknown', 'alive', 'dead'.
     </li>
-    <li><a href="#MOBILEALERTSexpert">expert</a><br>
+    <li>expert<br>
       Defines how many readings are show (0=only current, 1=previous, 4=all).
     </li>        
   </ul>
@@ -1038,6 +1063,28 @@ sub MOBILEALERTS_ActionDetector($) {
     deviceID ist der Sensorcode auf dem Sensor.
   </ul>
   <br>
+
+  <a name="MOBILEALERTSreadings"></a>
+  <b>Readings</b>
+  <ul>
+    <li>lastMsg<br>Die letzte empfangene Nachricht (immer f&uuml;r unbekannte Ger&auml;te, f&uuml;r bekannte nur wenn das Attribut lastMsg gesetzt ist).</li>
+    <li>deviceType<br>Der Ger&auml;tetyü.</li>
+    <li>lastRcv<br>Timestamp der letzten Nachricht.</li>
+    <li>actStatus<br>Zeigt 'unknown', 'alive', 'dead', 'switchedOff' abh&auml;ngig vom Attribut actCycle</li>
+    <li>txCounter<br>Counter des letzten Nachricht (wird 0 nach Batteriewechsel).</li>
+    <li>triggered<br>1=letzte Nachricht wurde von einem Ereignis ausgel&ouml;st.</li>
+    <li>tempertature, prevTemperature, temperatureIn, temperatureOut, prevTemperatureIn, prevTemperatureOut<br>Temperatur (abh&auml;nging vom Ger&auml;t und dem Attribut expert).</li>
+    <li>tempertatureString, prevTemperatureString, temperatureInString, temperatureOutString, prevTemperatureInString, prevTemperatureOutString<br>Temperatur als Zeichkette.</li>
+    <li>state<br>State of device (short actual reading)</li>
+    <li>humidity, prevHumidity, humidityIn, humidityOut, prevHumidityIn, prevHumidityOut<br>Luftfeuchte (abh&auml;nging vom Ger&auml;t und dem Attribut expert).</li>
+    <li>humidityString, prevHumidityString, humidityInString, humidityOutString, prevHumidityInString, prevHumidityOutString<br>Luftfeuchte als Zeichenkette</li>
+    <li>wetness<br>Zeigt ob der Sensors Wasser entdeckt.</li>
+    <li>lastEvent, lastEvent&lt;X&gt; ,lastEventString, lastEvent&lt;X&gt;String<br>Zeitpunkt wann das letzte Event (Regen) stattgefunden hat (nur MA10650).</li>
+    <li>mlRain, mlRainActHour, mlRainLastHour, mlRainActDay, mlRainYesterday<br>Regen seit dem letzten Reset des Counters, in der aktuellen Stunde, seit der letzten Stunden, am aktuellen Tagn, gestern.</li>
+    <li>direction<br>Richtung des Winds.</li>
+    <li>windSpeed, gustSpeed<br>Windgeschwindigkeit.</li>
+  </ul>
+  <br>    
 
   <a name="MOBILEALERTSset"></a>
   <b>Set</b>
