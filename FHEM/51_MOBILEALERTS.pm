@@ -828,6 +828,9 @@ sub MOBILEALERTS_CheckRainSensorTimed($) {
 sub MOBILEALERTS_CheckRainSensor($$) {
     my ( $hash, $mlRain ) = @_;
 
+    #Event
+    push @{ $hash->{CHANGED} }, "rain" if ( $mlRain > 0 );
+
     #lastHour
     my $actTime = $hash->{".updateTimestamp"};
     my $actH = ReadingsTimestamp( $hash->{NAME}, "mlRainActHour", $actTime );
