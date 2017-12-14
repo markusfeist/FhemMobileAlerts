@@ -1,25 +1,25 @@
 Internals:
    CFGFN      
-   DEF        080745895962
-   DeviceID   080745895962
-   NAME       MA_080745895962
-   NR         45
-   STATE      T: 6.2 C: 7
+   DEF        08192bad9704
+   DeviceID   08192bad9704
+   NAME       MA_08192bad9704
+   NR         44
+   STATE      T: 17.9 C: 7
    TYPE       MOBILEALERTS
    READINGS:
-     2017-11-16 15:54:38   deviceType      MA10650
-     2017-11-16 15:54:38   eventCounter    7
-     2017-11-16 15:54:38   lastEvent       172800
-     2017-11-16 15:54:38   lastEventString 2880 m
-     2017-11-16 15:54:38   lastRcv         2017-11-16 15:54:38
-     2017-11-16 15:54:38   mlRain          1.806
-     2017-11-16 15:54:38   mlRainActH      1.806
-     2017-11-16 15:54:38   seesaw          right
-     2017-11-16 15:54:38   state           T: 6.2 C: 7
-     2017-11-16 15:54:38   temperature     6.2
-     2017-11-16 15:54:38   temperatureString 6.2°C
-     2017-11-16 15:54:38   triggered       0
-     2017-11-16 15:54:38   txCounter       31
+     2017-12-06 22:32:41   deviceType      MA10650
+     2017-12-06 22:32:41   eventCounter    7
+     2017-12-06 22:32:41   lastEvent       0
+     2017-12-06 22:32:41   lastEventString 0 s
+     2017-12-06 22:32:41   lastRcv         2017-12-06 22:32:41
+     2017-12-06 22:32:41   mlRain          1.806
+     2017-12-06 22:32:41   mlRainActDay    1.806
+     2017-12-06 22:32:41   mlRainActHour   1.806
+     2017-12-06 22:32:41   state           T: 17.9 C: 7
+     2017-12-06 22:32:41   temperature     17.9
+     2017-12-06 22:32:41   temperatureString 17.9°C
+     2017-12-06 22:32:41   triggered       1
+     2017-12-06 22:32:41   txCounter       8
 Attributes:
    event-on-change-reading .*
    room       MOBILEALERTS
@@ -27,46 +27,46 @@ Attributes:
 
 Internals:
    CFGFN      
-   DEF        080745895962
-   DeviceID   080745895962
+   DEF        08192bad9704
+   DeviceID   08192bad9704
    LASTInputDev test
    MSGCNT     1
-   NAME       MA_080745895962
-   NR         45
-   STATE      T: 6.2 C: 7
+   NAME       MA_08192bad9704
+   NR         44
+   STATE      T: 17.9 C: 8
    TYPE       MOBILEALERTS
    test_MSGCNT 1
-   test_TIME  2017-12-03 17:09:37
+   test_TIME  2017-12-13 15:57:42
    READINGS:
-     2017-11-16 15:54:38   deviceType      MA10650
-     2017-11-16 15:54:38   eventCounter    7
-     2017-11-16 15:54:38   lastEvent       172800
-     2017-11-16 15:54:38   lastEvent1      19
-     2017-11-16 15:54:38   lastEvent1String 19 s
-     2017-11-16 15:54:38   lastEvent2      6
-     2017-11-16 15:54:38   lastEvent2String 6 s
-     2017-11-16 15:54:38   lastEvent3      1524
-     2017-11-16 15:54:38   lastEvent3String 1524 s
-     2017-11-16 15:54:38   lastEvent4      1558
-     2017-11-16 15:54:38   lastEvent4String 1558 s
-     2017-11-16 15:54:38   lastEvent5      3
-     2017-11-16 15:54:38   lastEvent5String 3 s
-     2017-11-16 15:54:38   lastEvent6      3
-     2017-11-16 15:54:38   lastEvent6String 3 s
-     2017-11-16 15:54:38   lastEvent7      41
-     2017-11-16 15:54:38   lastEvent7String 41 s
-     2017-11-16 15:54:38   lastEvent8      0
-     2017-11-16 15:54:38   lastEvent8String 0 d
-     2017-11-16 15:54:38   lastEventString 2880 m
-     2017-11-16 15:54:38   lastRcv         2017-11-16 15:54:38
-     2017-11-16 15:54:38   mlRain          3.612
-     2017-11-16 15:54:38   mlRainActH      3.612
-     2017-11-16 15:54:38   seesaw          right
-     2017-11-16 15:54:38   state           T: 6.2 C: 7
-     2017-11-16 15:54:38   temperature     6.2
-     2017-11-16 15:54:38   temperatureString 6.2°C
-     2017-11-16 15:54:38   triggered       0
-     2017-11-16 15:54:38   txCounter       31
+     2017-12-06 22:32:41   deviceType      MA10650
+     2017-12-06 22:34:10   eventCounter    8
+     2017-12-06 22:32:41   lastEvent       0
+     2017-12-06 22:34:10   lastEvent1      89
+     2017-12-06 22:34:10   lastEvent1String 89 s
+     2017-12-06 22:34:10   lastEvent2      965
+     2017-12-06 22:34:10   lastEvent2String 965 s
+     2017-12-06 22:34:10   lastEvent3      141
+     2017-12-06 22:34:10   lastEvent3String 141 s
+     2017-12-06 22:34:10   lastEvent4      2
+     2017-12-06 22:34:10   lastEvent4String 2 s
+     2017-12-06 22:34:10   lastEvent5      7520
+     2017-12-06 22:34:10   lastEvent5String 7520 s
+     2017-12-06 22:34:10   lastEvent6      27
+     2017-12-06 22:34:10   lastEvent6String 27 s
+     2017-12-06 22:34:10   lastEvent7      1
+     2017-12-06 22:34:10   lastEvent7String 1 s
+     2017-12-06 22:34:10   lastEvent8      1
+     2017-12-06 22:34:10   lastEvent8String 1 s
+     2017-12-06 22:32:41   lastEventString 0 s
+     2017-12-06 22:34:10   lastRcv         2017-12-06 22:34:10
+     2017-12-06 22:34:10   mlRain          2.064
+     2017-12-06 22:34:10   mlRainActDay    2.064
+     2017-12-06 22:34:10   mlRainActHour   2.064
+     2017-12-06 22:34:10   state           T: 17.9 C: 8
+     2017-12-06 22:32:41   temperature     17.9
+     2017-12-06 22:32:41   temperatureString 17.9°C
+     2017-12-06 22:32:41   triggered       1
+     2017-12-06 22:34:10   txCounter       9
 Attributes:
    event-on-change-reading .*
    expert     4
@@ -75,47 +75,147 @@ Attributes:
 
 Internals:
    CFGFN      
-   DEF        080745895962
-   DeviceID   080745895962
+   DEF        08192bad9704
+   DeviceID   08192bad9704
    LASTInputDev test
    MSGCNT     2
-   NAME       MA_080745895962
-   NR         45
-   STATE      T: 6.2 C: 7
+   NAME       MA_08192bad9704
+   NR         44
+   STATE      T: 17.9 C: 9
    TYPE       MOBILEALERTS
    test_MSGCNT 2
-   test_TIME  2017-12-03 17:09:37
+   test_TIME  2017-12-13 15:57:42
    READINGS:
-     2017-11-16 15:54:38   deviceType      MA10650
-     2017-11-16 15:54:38   eventCounter    7
-     2017-11-16 15:54:38   lastEvent       172800
-     2017-11-16 15:54:38   lastEvent1      19
-     2017-11-16 15:54:38   lastEvent1String 19 s
-     2017-11-16 15:54:38   lastEvent2      6
-     2017-11-16 15:54:38   lastEvent2String 6 s
-     2017-11-16 15:54:38   lastEvent3      1524
-     2017-11-16 15:54:38   lastEvent3String 1524 s
-     2017-11-16 15:54:38   lastEvent4      1558
-     2017-11-16 15:54:38   lastEvent4String 1558 s
-     2017-11-16 15:54:38   lastEvent5      3
-     2017-11-16 15:54:38   lastEvent5String 3 s
-     2017-11-16 15:54:38   lastEvent6      3
-     2017-11-16 15:54:38   lastEvent6String 3 s
-     2017-11-16 15:54:38   lastEvent7      41
-     2017-11-16 15:54:38   lastEvent7String 41 s
-     2017-11-16 15:54:38   lastEvent8      0
-     2017-11-16 15:54:38   lastEvent8String 0 d
-     2017-11-16 15:54:38   lastEventString 2880 m
-     2017-11-16 16:54:38   lastRcv         2017-11-16 16:54:38
-     2017-11-16 16:54:38   mlRain          5.418
-     2017-11-16 16:54:38   mlRainActH      1.806
-     2017-11-16 15:54:38   mlRainLastH     3.612
-     2017-11-16 15:54:38   seesaw          right
-     2017-11-16 15:54:38   state           T: 6.2 C: 7
-     2017-11-16 15:54:38   temperature     6.2
-     2017-11-16 15:54:38   temperatureString 6.2°C
-     2017-11-16 15:54:38   triggered       0
-     2017-11-16 15:54:38   txCounter       31
+     2017-12-06 22:32:41   deviceType      MA10650
+     2017-12-06 23:32:41   eventCounter    9
+     2017-12-06 22:32:41   lastEvent       0
+     2017-12-06 22:34:10   lastEvent1      89
+     2017-12-06 22:34:10   lastEvent1String 89 s
+     2017-12-06 22:34:10   lastEvent2      965
+     2017-12-06 22:34:10   lastEvent2String 965 s
+     2017-12-06 22:34:10   lastEvent3      141
+     2017-12-06 22:34:10   lastEvent3String 141 s
+     2017-12-06 22:34:10   lastEvent4      2
+     2017-12-06 22:34:10   lastEvent4String 2 s
+     2017-12-06 22:34:10   lastEvent5      7520
+     2017-12-06 22:34:10   lastEvent5String 7520 s
+     2017-12-06 22:34:10   lastEvent6      27
+     2017-12-06 22:34:10   lastEvent6String 27 s
+     2017-12-06 22:34:10   lastEvent7      1
+     2017-12-06 22:34:10   lastEvent7String 1 s
+     2017-12-06 22:34:10   lastEvent8      1
+     2017-12-06 22:34:10   lastEvent8String 1 s
+     2017-12-06 22:32:41   lastEventString 0 s
+     2017-12-06 23:32:41   lastRcv         2017-12-06 23:32:41
+     2017-12-06 23:32:41   mlRain          2.322
+     2017-12-06 23:32:41   mlRainActDay    2.322
+     2017-12-06 23:32:41   mlRainActHour   0.258
+     2017-12-06 22:34:10   mlRainLastHour  2.064
+     2017-12-06 23:32:41   state           T: 17.9 C: 9
+     2017-12-06 22:32:41   temperature     17.9
+     2017-12-06 22:32:41   temperatureString 17.9°C
+     2017-12-06 22:32:41   triggered       1
+     2017-12-06 23:32:41   txCounter       10
+Attributes:
+   event-on-change-reading .*
+   expert     4
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        08192bad9704
+   DeviceID   08192bad9704
+   LASTInputDev test
+   MSGCNT     3
+   NAME       MA_08192bad9704
+   NR         44
+   STATE      T: 17.9 C: 10
+   TYPE       MOBILEALERTS
+   test_MSGCNT 3
+   test_TIME  2017-12-13 15:57:42
+   READINGS:
+     2017-12-06 22:32:41   deviceType      MA10650
+     2017-12-07 22:32:41   eventCounter    10
+     2017-12-06 22:32:41   lastEvent       0
+     2017-12-06 22:34:10   lastEvent1      89
+     2017-12-06 22:34:10   lastEvent1String 89 s
+     2017-12-06 22:34:10   lastEvent2      965
+     2017-12-06 22:34:10   lastEvent2String 965 s
+     2017-12-06 22:34:10   lastEvent3      141
+     2017-12-06 22:34:10   lastEvent3String 141 s
+     2017-12-06 22:34:10   lastEvent4      2
+     2017-12-06 22:34:10   lastEvent4String 2 s
+     2017-12-06 22:34:10   lastEvent5      7520
+     2017-12-06 22:34:10   lastEvent5String 7520 s
+     2017-12-06 22:34:10   lastEvent6      27
+     2017-12-06 22:34:10   lastEvent6String 27 s
+     2017-12-06 22:34:10   lastEvent7      1
+     2017-12-06 22:34:10   lastEvent7String 1 s
+     2017-12-06 22:34:10   lastEvent8      1
+     2017-12-06 22:34:10   lastEvent8String 1 s
+     2017-12-06 22:32:41   lastEventString 0 s
+     2017-12-07 22:32:41   lastRcv         2017-12-07 22:32:41
+     2017-12-07 22:32:41   mlRain          2.58
+     2017-12-07 22:32:41   mlRainActDay    0.258
+     2017-12-07 22:32:41   mlRainActHour   0.258
+     2017-12-07 22:32:41   mlRainLastHour  0
+     2017-12-06 23:32:41   mlRainYesterday 2.322
+     2017-12-07 22:32:41   state           T: 17.9 C: 10
+     2017-12-06 22:32:41   temperature     17.9
+     2017-12-06 22:32:41   temperatureString 17.9°C
+     2017-12-06 22:32:41   triggered       1
+     2017-12-07 22:32:41   txCounter       11
+Attributes:
+   event-on-change-reading .*
+   expert     4
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        08192bad9704
+   DeviceID   08192bad9704
+   LASTInputDev test
+   MSGCNT     4
+   NAME       MA_08192bad9704
+   NR         44
+   STATE      T: 17.9 C: 10
+   TYPE       MOBILEALERTS
+   test_MSGCNT 4
+   test_TIME  2017-12-14 13:27:20
+   READINGS:
+     2017-12-06 22:32:41   deviceType      MA10650
+     2017-12-07 22:32:41   eventCounter    10
+     2017-12-06 22:32:41   lastEvent       0
+     2017-12-06 22:34:10   lastEvent1      89
+     2017-12-06 22:34:10   lastEvent1String 89 s
+     2017-12-06 22:34:10   lastEvent2      965
+     2017-12-06 22:34:10   lastEvent2String 965 s
+     2017-12-06 22:34:10   lastEvent3      141
+     2017-12-06 22:34:10   lastEvent3String 141 s
+     2017-12-06 22:34:10   lastEvent4      2
+     2017-12-06 22:34:10   lastEvent4String 2 s
+     2017-12-06 22:34:10   lastEvent5      7520
+     2017-12-06 22:34:10   lastEvent5String 7520 s
+     2017-12-06 22:34:10   lastEvent6      27
+     2017-12-06 22:34:10   lastEvent6String 27 s
+     2017-12-06 22:34:10   lastEvent7      1
+     2017-12-06 22:34:10   lastEvent7String 1 s
+     2017-12-06 22:34:10   lastEvent8      1
+     2017-12-06 22:34:10   lastEvent8String 1 s
+     2017-12-06 22:32:41   lastEventString 0 s
+     2017-12-09 10:32:00   lastRcv         2017-12-09 10:32:00
+     2017-12-07 22:32:41   mlRain          2.58
+     2017-12-09 10:32:00   mlRainActDay    0
+     2017-12-09 10:32:00   mlRainActHour   0
+     2017-12-07 22:32:41   mlRainLastHour  0
+     2017-12-09 10:32:00   mlRainYesterday 0
+     2017-12-07 22:32:41   state           T: 17.9 C: 10
+     2017-12-06 22:32:41   temperature     17.9
+     2017-12-06 22:32:41   temperatureString 17.9°C
+     2017-12-09 10:32:00   triggered       0
+     2017-12-09 10:32:00   txCounter       12
 Attributes:
    event-on-change-reading .*
    expert     4

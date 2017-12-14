@@ -5,6 +5,7 @@ package main;
 
 use strict;
 use warnings;
+use constant MA_RAIN_FACTOR => 0.258;
 
 sub MOBILEALERTS_Initialize($) {
     my ($hash) = @_;
@@ -35,7 +36,7 @@ sub MOBILEALERTS_Initialize($) {
 sub MOBILEALERTS_Define($$) {
     my ( $hash, $def ) = @_;
     my ( $name, $type, $deviceID ) = split( "[ \t]+", $def );
-    Log3 $name, 3, "$name MOBILELAERTS: DeviceID $deviceID";
+    Log3 $name, 3, "$name MOBILEALERTS: DeviceID $deviceID";
     return "Usage: define <name> MOBILEALERTS <id-12 stellig hex >"
       if ( $deviceID !~ m/^[0-9a-f]{12}$/ );
     $modules{MOBILEALERTS}{defptr}{$deviceID} = $hash;
@@ -49,12 +50,18 @@ sub MOBILEALERTS_Define($$) {
         );
         delete $modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID};
     }
+    if ( substr( $deviceID, 0, 2 ) eq "08" ) {
+        Log3 $name, 5, "$name MOBILEALERTS: is rainSensor, start Timer";
+        InternalTimer( gettimeofday() + 60,
+            "MOBILEALERTS_CheckRainSensorTimed", $hash );
+    }
     return undef;
 }
 
 sub MOBILEALERTS_Undef($$) {
     my ( $hash, $name ) = @_;
     delete $modules{MOBILEALERTS}{defptr}{ $hash->{DeviceID} };
+    RemoveInternalTimer( $hash, "MOBILEALERTS_CheckRainSensorTimed" );
     return undef;
 }
 
@@ -131,9 +138,13 @@ sub MOBILEALERTS_Parse ($$) {
       unpack( "H2NCH12", $message );
     my $name = $io_hash->{NAME};
 
-    Log3 $name, 5, "$name MOBILELAERTS: Search for Device ID: " . $deviceID;
+    Log3 $name, 5, "$name MOBILELAERTS: Search for Device ID: $deviceID";
     if ( my $hash = $modules{MOBILEALERTS}{defptr}{$deviceID} ) {
+        my $verbose = GetVerbose( $hash->{NAME} );
         Log3 $name, 5, "$name MOBILELAERTS: Found Device: " . $hash->{NAME};
+        Log3 $name, 5,
+          "$hash->{NAME} MOBILELAERTS: Message: " . unpack( "H*", $message )
+          if ( $verbose >= 5 );
 
         # Nachricht für $hash verarbeiten
         $timeStamp = FmtDateTime($timeStamp);
@@ -383,37 +394,26 @@ sub MOBILEALERTS_Parse_e1 ($$) {
     my @eventTime;
     ( my ( $txCounter, $temperature, $eventCounter ), @eventTime[ 0 .. 8 ] ) =
       unpack( "nnnnnnnnnnnn", $message );
-    my $seesaw = $temperature >> 14;    #& 0xC000;
+    my $lastEventCounter = ReadingsVal( $hash->{NAME}, "eventCounter", undef );
+    my $mlRain = 0;
 
-    if ( ( $seesaw & 0x10 ) == 0x10 ) {
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "seesaw", "left" );
+    if ( !defined($lastEventCounter) ) {
+
+        # First Data
+        $mlRain = $eventCounter * MA_RAIN_FACTOR;
     }
-    elsif ( ( $seesaw & 0x01 ) == 0x01 ) {
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "seesaw", "right" );
+    elsif ( $lastEventCounter > $eventCounter ) {
+
+        # Overflow EventCounter or fresh Batterie
+        $mlRain = $eventCounter * MA_RAIN_FACTOR;
+    }
+    elsif ( $lastEventCounter < $eventCounter ) {
+        $mlRain = ( $eventCounter - $lastEventCounter ) * MA_RAIN_FACTOR;
     }
     else {
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "seesaw", "none" );
+        $mlRain = 0;
     }
-    if ( $seesaw != 0x00 ) {
-        my $mlRain = $eventCounter * 0.258;
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRain",
-            $mlRain + ReadingsVal( $hash->{NAME}, "mlRain", "0" ) );
-        my $actTime = $hash->{".updateTimestamp"};
-        my $actH = ReadingsTimestamp( $hash->{NAME}, "mlRainActH", $actTime );
-        if ( substr( $actTime, 0, 13 ) eq substr( $actH, 0, 13 ) ) {
-            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActH",
-                $mlRain + ReadingsVal( $hash->{NAME}, "mlRainActH", "0" ) );
-        }
-        else {
-            $hash->{".updateTimestamp"} =
-              ReadingsTimestamp( $hash->{NAME}, "mlRainLastH", $actH );
-            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainLastH",
-                ReadingsVal( $hash->{NAME}, "mlRainActH", "0" ) );
-            $hash->{".updateTimestamp"} = $actTime;
-            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActH", 0 );
-            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActH", $mlRain );
-        }
-    }
+    MOBILEALERTS_CheckRainSensor( $hash, $mlRain );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
@@ -809,6 +809,86 @@ sub MOBILEALERTS_time2sec($) {
         ( sprintf( "%03s:%02d", $h, $m ) ),
         ( ( int($h) * 60 + int($m) ) * 60 )
     );
+}
+
+sub MOBILEALERTS_CheckRainSensorTimed($) {
+    my ($hash) = @_;
+    readingsBeginUpdate($hash);
+    MOBILEALERTS_CheckRainSensor( $hash, 0 );
+    readingsEndUpdate( $hash, 1 );
+    InternalTimer(
+        time_str2num(
+            substr( FmtDateTime( gettimeofday() + 3600 ), 0, 13 ) . ":00:00"
+        ),
+        "MOBILEALERTS_CheckRainSensorTimed",
+        $hash
+    );
+}
+
+sub MOBILEALERTS_CheckRainSensor($$) {
+    my ( $hash, $mlRain ) = @_;
+
+    #lastHour
+    my $actTime = $hash->{".updateTimestamp"};
+    my $actH = ReadingsTimestamp( $hash->{NAME}, "mlRainActHour", $actTime );
+    if ( substr( $actTime, 0, 13 ) eq substr( $actH, 0, 13 ) ) {
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActHour",
+            $mlRain + ReadingsVal( $hash->{NAME}, "mlRainActHour", "0" ) )
+          if ( $mlRain > 0 );
+    }
+    else {
+        if (
+            (
+                time_str2num( substr( $actTime, 0, 13 ) . ":00:00" ) -
+                time_str2num( substr( $actH,    0, 13 ) . ":00:00" )
+            ) > 3600
+          )
+        {
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainLastHour", 0 );
+        }
+        else {
+            $hash->{".updateTimestamp"} = $actH;
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainLastHour",
+                ReadingsVal( $hash->{NAME}, "mlRainActHour", "0" ) );
+            $hash->{".updateTimestamp"} = $actTime;
+        }
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActHour", 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActHour", $mlRain )
+          if ( $mlRain > 0 );
+    }
+
+    #Yesterday
+    my $actD = ReadingsTimestamp( $hash->{NAME}, "mlRainActDay", $actTime );
+    Log3 "SOFORT", 1, "A" . substr( $actTime, 0, 10 ) . "A";
+    if ( substr( $actTime, 0, 10 ) eq substr( $actD, 0, 10 ) ) {
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActDay",
+            $mlRain + ReadingsVal( $hash->{NAME}, "mlRainActDay", "0" ) )
+          if ( $mlRain > 0 );
+    }
+    else {
+        if (
+            (
+                time_str2num( substr( $actTime, 0, 13 ) . " 00:00:00" ) -
+                time_str2num( substr( $actD,    0, 13 ) . " 00:00:00" )
+            ) > 86400
+          )
+        {
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainYesterday", 0 );
+        }
+        else {
+            $hash->{".updateTimestamp"} =
+              ReadingsTimestamp( $hash->{NAME}, "mlRainActDay", $actD );
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainYesterday",
+                ReadingsVal( $hash->{NAME}, "mlRainActDay", "0" ) );
+            $hash->{".updateTimestamp"} = $actTime;
+        }
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActDay", 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActDay", $mlRain )
+          if ( $mlRain > 0 );
+    }
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRain",
+        $mlRain + ReadingsVal( $hash->{NAME}, "mlRain", "0" ) )
+      if ( $mlRain > 0 );
 }
 
 sub MOBILEALERTS_ActionDetector($) {
