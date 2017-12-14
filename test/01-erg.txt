@@ -8,3 +8,4 @@ Internals:
    TYPE       MOBILEALERTSGW
 Attributes:
    forward    0
+   verbose    5

@@ -5,6 +5,7 @@ package main;
 
 use strict;
 use warnings;
+use constant MA_RAIN_FACTOR => 0.258;
 
 sub MOBILEALERTS_Initialize($) {
     my ($hash) = @_;
@@ -35,7 +36,7 @@ sub MOBILEALERTS_Initialize($) {
 sub MOBILEALERTS_Define($$) {
     my ( $hash, $def ) = @_;
     my ( $name, $type, $deviceID ) = split( "[ \t]+", $def );
-    Log 3, "DeviceID $deviceID";
+    Log3 $name, 3, "$name MOBILEALERTS: DeviceID $deviceID";
     return "Usage: define <name> MOBILEALERTS <id-12 stellig hex >"
       if ( $deviceID !~ m/^[0-9a-f]{12}$/ );
     $modules{MOBILEALERTS}{defptr}{$deviceID} = $hash;
@@ -49,12 +50,18 @@ sub MOBILEALERTS_Define($$) {
         );
         delete $modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID};
     }
+    if ( substr( $deviceID, 0, 2 ) eq "08" ) {
+        Log3 $name, 5, "$name MOBILEALERTS: is rainSensor, start Timer";
+        InternalTimer( gettimeofday() + 60,
+            "MOBILEALERTS_CheckRainSensorTimed", $hash );
+    }
     return undef;
 }
 
 sub MOBILEALERTS_Undef($$) {
     my ( $hash, $name ) = @_;
     delete $modules{MOBILEALERTS}{defptr}{ $hash->{DeviceID} };
+    RemoveInternalTimer( $hash, "MOBILEALERTS_CheckRainSensorTimed" );
     return undef;
 }
 
@@ -65,14 +72,14 @@ sub MOBILEALERTS_Attr($$$$) {
         if ( $attrName eq "lastMsg" ) {
             if ( $attrValue !~ /^[01]$/ ) {
                 Log3 $name, 3,
-"MOBILEALERTS ($name) - Invalid parameter attr $name $attrName $attrValue";
+"$name MOBILELAERTS: Invalid parameter attr $name $attrName $attrValue";
                 return "Invalid value $attrValue allowed 0,1";
             }
         }
         elsif ( $attrName eq "expert" ) {
             if ( $attrValue !~ /^[014]$/ ) {
                 Log3 $name, 3,
-"MOBILEALERTS ($name) - Invalid parameter attr $name $attrName $attrValue";
+"$name MOBILELAERTS: Invalid parameter attr $name $attrName $attrValue";
                 return "Invalid value $attrValue allowed 0,1,4";
             }
         }
@@ -110,12 +117,18 @@ sub MOBILEALERTS_Set ($$@) {
             }
             return undef;
         }
+        elsif ( $args[0] eq "counters" ) {
+            my $test = ReadingsVal( $hash->{NAME}, "mlRain", undef );
+            readingsSingleUpdate( $hash, "mlRain", 0, 1 ) if ( defined $test );
+            return undef;
+        }
         else {
-            return "Unknown value $args[0] for $cmd, choose one of readings";
+            return
+"Unknown value $args[0] for $cmd, choose one of readings,counters";
         }
     }
     else {
-        return "Unknown argument $cmd, choose one of clear:readings";
+        return "Unknown argument $cmd, choose one of clear:readings,counters";
     }
 }
 
@@ -123,10 +136,15 @@ sub MOBILEALERTS_Parse ($$) {
     my ( $io_hash, $message ) = @_;
     my ( $packageHeader, $timeStamp, $packageLength, $deviceID ) =
       unpack( "H2NCH12", $message );
+    my $name = $io_hash->{NAME};
 
-    Log3 $io_hash->{NAME}, 5, "Search for Device ID: " . $deviceID;
+    Log3 $name, 5, "$name MOBILELAERTS: Search for Device ID: $deviceID";
     if ( my $hash = $modules{MOBILEALERTS}{defptr}{$deviceID} ) {
-        Log3 $io_hash->{NAME}, 5, "Found Device: " . $hash->{NAME};
+        my $verbose = GetVerbose( $hash->{NAME} );
+        Log3 $name, 5, "$name MOBILELAERTS: Found Device: " . $hash->{NAME};
+        Log3 $name, 5,
+          "$hash->{NAME} MOBILELAERTS: Message: " . unpack( "H*", $message )
+          if ( $verbose >= 5 );
 
         # Nachricht für $hash verarbeiten
         $timeStamp = FmtDateTime($timeStamp);
@@ -148,8 +166,8 @@ sub MOBILEALERTS_Parse ($$) {
               if ( AttrVal( $hash->{NAME}, "lastMsg", 0 ) == 1 );
         }
         else {
-            Log3 $hash->{NAME}, 2,
-                "For id "
+            Log3 $name, 2,
+                "$name MOBILELAERTS: For id "
               . substr( $deviceID, 0, 2 )
               . " and packageHeader $packageHeader is no decoding defined.";
             MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
@@ -185,7 +203,7 @@ sub MOBILEALERTS_Parse ($$) {
     $modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID} =
       [ $io_hash, $message ];
     my $res = "UNDEFINED MA_" . $deviceID . " MOBILEALERTS $deviceID";
-    Log3 $io_hash->{NAME}, 5, "Parse return: " . $res;
+    Log3 $name, 5, "$name MOBILELAERTS: Parse return: " . $res;
     return $res;
 }
 
@@ -376,7 +394,26 @@ sub MOBILEALERTS_Parse_e1 ($$) {
     my @eventTime;
     ( my ( $txCounter, $temperature, $eventCounter ), @eventTime[ 0 .. 8 ] ) =
       unpack( "nnnnnnnnnnnn", $message );
+    my $lastEventCounter = ReadingsVal( $hash->{NAME}, "eventCounter", undef );
+    my $mlRain = 0;
 
+    if ( !defined($lastEventCounter) ) {
+
+        # First Data
+        $mlRain = $eventCounter * MA_RAIN_FACTOR;
+    }
+    elsif ( $lastEventCounter > $eventCounter ) {
+
+        # Overflow EventCounter or fresh Batterie
+        $mlRain = $eventCounter * MA_RAIN_FACTOR;
+    }
+    elsif ( $lastEventCounter < $eventCounter ) {
+        $mlRain = ( $eventCounter - $lastEventCounter ) * MA_RAIN_FACTOR;
+    }
+    else {
+        $mlRain = 0;
+    }
+    MOBILEALERTS_CheckRainSensor( $hash, $mlRain );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
@@ -449,8 +486,10 @@ sub MOBILEALERTS_Parse_0e_d8 ($$) {
 
 sub MOBILEALERTS_Parse_d8 ($$) {
     my ( $hash, $message ) = @_;
-    my ( $txCounter, $temperature, $humidity, $prevTemperature, $prevHumidity, $prevTemperature2, $prevHumidity2 )
-      = unpack( "nnnxnnxnn", $message );
+    my (
+        $txCounter,    $temperature,      $humidity, $prevTemperature,
+        $prevHumidity, $prevTemperature2, $prevHumidity2
+    ) = unpack( "nnnxnnxnn", $message );
 
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
         MOBILEALERTS_decodeTxCounter($txCounter) );
@@ -473,7 +512,8 @@ sub MOBILEALERTS_Parse_d8 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperature2",
         $prevTemperature2 );
     $prevHumidity2 = MOBILEALERTS_decodeHumidityDecimal($prevHumidity2);
-    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevHumidity2", $prevHumidity2 );    
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevHumidity2",
+        $prevHumidity2 );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "state",
         "T: " . $temperature . " H: " . $humidity );
 }
@@ -669,7 +709,7 @@ sub MOBILEALERTS_decodeHumidity($) {
 
 sub MOBILEALERTS_decodeHumidityDecimal($) {
     my ($humidity) = @_;
-    return ($humidity & 0x3FF) * 0.1;
+    return ( $humidity & 0x3FF ) * 0.1;
 }
 
 sub MOBILEALERTS_humidityToString($) {
@@ -771,20 +811,101 @@ sub MOBILEALERTS_time2sec($) {
     );
 }
 
+sub MOBILEALERTS_CheckRainSensorTimed($) {
+    my ($hash) = @_;
+    readingsBeginUpdate($hash);
+    MOBILEALERTS_CheckRainSensor( $hash, 0 );
+    readingsEndUpdate( $hash, 1 );
+    InternalTimer(
+        time_str2num(
+            substr( FmtDateTime( gettimeofday() + 3600 ), 0, 13 ) . ":00:00"
+        ),
+        "MOBILEALERTS_CheckRainSensorTimed",
+        $hash
+    );
+}
+
+sub MOBILEALERTS_CheckRainSensor($$) {
+    my ( $hash, $mlRain ) = @_;
+
+    #lastHour
+    my $actTime = $hash->{".updateTimestamp"};
+    my $actH = ReadingsTimestamp( $hash->{NAME}, "mlRainActHour", $actTime );
+    if ( substr( $actTime, 0, 13 ) eq substr( $actH, 0, 13 ) ) {
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActHour",
+            $mlRain + ReadingsVal( $hash->{NAME}, "mlRainActHour", "0" ) )
+          if ( $mlRain > 0 );
+    }
+    else {
+        if (
+            (
+                time_str2num( substr( $actTime, 0, 13 ) . ":00:00" ) -
+                time_str2num( substr( $actH,    0, 13 ) . ":00:00" )
+            ) > 3600
+          )
+        {
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainLastHour", 0 );
+        }
+        else {
+            $hash->{".updateTimestamp"} = $actH;
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainLastHour",
+                ReadingsVal( $hash->{NAME}, "mlRainActHour", "0" ) );
+            $hash->{".updateTimestamp"} = $actTime;
+        }
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActHour", 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActHour", $mlRain )
+          if ( $mlRain > 0 );
+    }
+
+    #Yesterday
+    my $actD = ReadingsTimestamp( $hash->{NAME}, "mlRainActDay", $actTime );
+    Log3 "SOFORT", 1, "A" . substr( $actTime, 0, 10 ) . "A";
+    if ( substr( $actTime, 0, 10 ) eq substr( $actD, 0, 10 ) ) {
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActDay",
+            $mlRain + ReadingsVal( $hash->{NAME}, "mlRainActDay", "0" ) )
+          if ( $mlRain > 0 );
+    }
+    else {
+        if (
+            (
+                time_str2num( substr( $actTime, 0, 13 ) . " 00:00:00" ) -
+                time_str2num( substr( $actD,    0, 13 ) . " 00:00:00" )
+            ) > 86400
+          )
+        {
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainYesterday", 0 );
+        }
+        else {
+            $hash->{".updateTimestamp"} =
+              ReadingsTimestamp( $hash->{NAME}, "mlRainActDay", $actD );
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainYesterday",
+                ReadingsVal( $hash->{NAME}, "mlRainActDay", "0" ) );
+            $hash->{".updateTimestamp"} = $actTime;
+        }
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActDay", 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActDay", $mlRain )
+          if ( $mlRain > 0 );
+    }
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRain",
+        $mlRain + ReadingsVal( $hash->{NAME}, "mlRain", "0" ) )
+      if ( $mlRain > 0 );
+}
+
 sub MOBILEALERTS_ActionDetector($) {
     my ($hash) = @_;
-    my $name = $hash->{NAME};
+    my $name = "ActionDetector";
     unless ($init_done) {
-        Log3 $name, 5, "ActionDetector run - fhem not intialized";
+        Log3 $name, 5,
+          "$name MOBILELAERTS: ActionDetector run - fhem not intialized";
         InternalTimer( gettimeofday() + 60,
             "MOBILEALERTS_ActionDetector", $hash );
         return;
     }
-    Log3 $name, 5, "ActionDetector run";
+    Log3 $name, 5, "$name MOBILELAERTS: ActionDetector run";
     my $now       = gettimeofday();
     my $nextTimer = $now + 60 * 60;    # Check at least Hourly
     for my $chash ( values %{ $modules{MOBILEALERTS}{defptr} } ) {
-        Log3 $name, 5, "ActionDetector " . $chash->{NAME};
+        Log3 $name, 5, "$name MOBILELAERTS: ActionDetector " . $chash->{NAME};
         my $actCycle = AttrVal( $chash->{NAME}, "actCycle", undef );
         ( undef, my $sec ) = MOBILEALERTS_time2sec($actCycle);
         if ( $sec == 0 ) {
@@ -798,7 +919,10 @@ sub MOBILEALERTS_ActionDetector($) {
         readingsBeginUpdate($chash);
         if ( defined($lastRcv) ) {
             Log3 $name, 5,
-              "ActionDetector " . $chash->{NAME} . " lastRcv " . $lastRcv;
+                "$name MOBILELAERTS: ActionDetector "
+              . $chash->{NAME}
+              . " lastRcv "
+              . $lastRcv;
             $lastRcv  = time_str2num($lastRcv);
             $deadTime = $lastRcv + $sec;
             if ( $deadTime < $now ) {
@@ -817,14 +941,15 @@ sub MOBILEALERTS_ActionDetector($) {
         if ( ( defined($deadTime) ) && ( $deadTime < $nextTimer ) ) {
             $nextTimer = $deadTime;
             Log3 $name, 5,
-                "ActionDetector "
+                "$name MOBILELAERTS: ActionDetector "
               . $chash->{NAME}
               . " nextTime Set to "
               . FmtDateTime($nextTimer);
         }
     }
     Log3 $name, 5,
-      "MOBILEALERTS_ActionDetector nextRun " . FmtDateTime($nextTimer);
+      "$name MOBILELAERTS: MOBILEALERTS_ActionDetector nextRun "
+      . FmtDateTime($nextTimer);
     InternalTimer( $nextTimer, "MOBILEALERTS_ActionDetector", $hash );
 }
 
@@ -860,8 +985,8 @@ sub MOBILEALERTS_ActionDetector($) {
   <a name="MOBILEALERTSset"></a>
   <b>Set</b>
   <ul>
-    <li><code>set &lt;name&gt; clear &lt;readings&gt;</code><br>
-    Clears the readings. </li>
+    <li><code>set &lt;name&gt; clear &lt;readings|counters&gt;</code><br>
+    Clears the readings (all) or counters (like mlRain). </li>
   </ul>
   <br>
 
@@ -917,8 +1042,8 @@ sub MOBILEALERTS_ActionDetector($) {
   <a name="MOBILEALERTSset"></a>
   <b>Set</b>
   <ul>
-    <li><code>set &lt;name&gt; clear &lt;readings&gt;</code><br>
-    L&ouml;scht die Readings. </li>
+    <li><code>set &lt;name&gt; clear &lt;readings|counters&gt;</code><br>
+    L&ouml;scht die Readings (alle) oder Counter (wie mlRain). </li>
   </ul>
   <br>
 

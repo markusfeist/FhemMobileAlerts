@@ -35,6 +35,7 @@ sub MOBILEALERTSGW_Initialize($) {
     #$hash->{AsyncOutputFn} = "MOBILEALERTSGW_AsyncOutput";
     #$hash->{ActivateInformFn} = "MOBILEALERTSGW_ActivateInform";
     $hash->{AttrList} = "forward:0,1 " . $readingFnAttributes;
+    Log3 "MOBILEALERTSGW", 5, "MOBILEALERTSGW_Initialize finished.";
 }
 
 sub MOBILEALERTSGW_Define($$) {
@@ -56,14 +57,14 @@ sub MOBILEALERTSGW_GetUDPSocket($$) {
     }
     else {
         #IO::Socket::INET geht leider nicht
-        Log3 $name, 3, "Create UDP Socket.";
+        Log3 $name, 3, "$name MOBILEALERTSGW: Create UDP Socket.";
         unless ( socket( $socket, AF_INET, SOCK_DGRAM, getprotobyname('udp') ) )
         {
-            Log3 $name, 1, "Could not create socket: $!";
+            Log3 $name, 1, "$name MOBILEALERTSGW: Could not create socket: $!";
             return undef;
         }
         unless ( setsockopt( $socket, SOL_SOCKET, SO_BROADCAST, 1 ) ) {
-            Log3 $name, 1, "Could not setsockopt: $!";
+            Log3 $name, 1, "$name MOBILEALERTSGW: Could not setsockopt: $!";
             return undef;
         }
         my $cname = "${name}_UDPPORT";
@@ -131,7 +132,8 @@ sub MOBILEALERTSGW_Get ($$@) {
             return "Could not create socket.";
         }
         my $data = pack( "nH[12]n", $command, $gateway, 10 );
-        Log3 $name, 5, "Send GetConfig " . unpack( "H*", $data );
+        Log3 $name, 5,
+          "$name MOBILEALERTSGW: Send GetConfig " . unpack( "H*", $data );
         send( $socket, $data, 0, $destpaddr );
         return undef;
     }
@@ -186,7 +188,8 @@ sub MOBILEALERTSGW_Set ($$@) {
         my $myip   = $sock->sockhost;
         my $myport = $hash->{PORT};
 
-        Log3 $name, 4, "Config gateway $gateway $ip Proxy auf $myip:$myport";
+        Log3 $name, 4,
+"$name MOBILEALERTSGW: Config gateway $gateway $ip Proxy auf $myip:$myport";
         $config = pack( "H*", $config );
         $config =
             "\0\x04"
@@ -195,7 +198,7 @@ sub MOBILEALERTSGW_Set ($$@) {
           . substr( $config, 15, 1 + 4 + 4 + 4 + 21 + 65 ) . "\x01"
           . pack( "a65n", $myip, $myport )
           . substr( $config, 182, 4 );
-        Log3 $name, 5, "Send " . unpack( "H*", $config );
+        Log3 $name, 5, "$name MOBILEALERTSGW: Send " . unpack( "H*", $config );
         $sock->send($config) or return "Could not send $!";
         $sock->close();
         return undef;
@@ -222,15 +225,30 @@ sub MOBILEALERTSGW_Set ($$@) {
             PeerPort => 8003,
             PeerAddr => $ip
         ) or return "Could not create socket: $!\n";
-        Log3 $name, 4, "Reboot gateway $gateway auf $ip:8003";
+        Log3 $name, 4,
+          "$name MOBILEALERTSGW: Reboot gateway $gateway auf $ip:8003";
         my $data = pack( "nH[12]n", 5, $gateway, 10 );
-        Log3 $name, 5, "Send " . unpack( "H*", $data );
+        Log3 $name, 5, "$name MOBILEALERTSGW: Send " . unpack( "H*", $data );
         $sock->send($data) or return "Could not send $!";
         $sock->close();
         return undef;
     }
     elsif ( $cmd eq "debuginsert" ) {
-        Dispatch( $hash, pack( "H*", $args[0] ), undef );
+        my $data = pack( "H*", $args[0] );
+        my ( $packageHeader, $timeStamp, $packageLength, $deviceID ) =
+          unpack( "CNCH12", $data );
+        Log3 $name, 4,
+            "$name MOBILEALERTSGW: Debuginsert PackageHeader: "
+          . $packageHeader
+          . " Timestamp: "
+          . scalar( FmtDateTimeRFC1123($timeStamp) )
+          . " PackageLength: "
+          . $packageLength
+          . " DeviceID: "
+          . $deviceID;
+        Log3 $name, 5, "$name MOBILEALERTSGW: Debuginsert for $deviceID: "
+          . unpack( "H*", $data );
+        Dispatch( $hash, $data, undef );
         return undef;
     }
     else {
@@ -266,7 +284,7 @@ sub MOBILEALERTSGW_Attr($$$$) {
         if ( $attrName eq "forward" ) {
             if ( $attrValue !~ /^[01]$/ ) {
                 Log3 $name, 3,
-"MOBILEALERTSGW ($name) - Invalid parameter attr $name $attrName $attrValue";
+"$name MOBILEALERTSGW: Invalid parameter attr $name $attrName $attrValue";
                 return "Invalid value $attrValue allowed 0,1";
             }
         }
@@ -297,8 +315,9 @@ sub MOBILEALERTSGW_Read($$) {
     my $verbose = GetVerbose($name);
 
     if ( exists $hash->{UDPSOCKET} ) {
-        Log3 $name, 5, "Data from UDP received";
         my $phash = $hash->{HASH};
+        $name = $phash->{NAME};
+        Log3 $name, 5, "$name MOBILEALERTSGW: Data from UDP received";
         my $srcpaddr = recv( $hash->{UDPSOCKET}, my $udpdata, 186, 0 );
         MOBILEALERTSGW_DecodeUDP( $phash, $udpdata, $srcpaddr );
         return;
@@ -316,6 +335,7 @@ sub MOBILEALERTSGW_Read($$) {
     $MA_chash = $hash;
     $MA_wname = $hash->{SNAME};
     $MA_cname = $name;
+    $verbose  = GetVerbose($MA_wname);
 
     #$FW_subdir = "";
 
@@ -335,7 +355,8 @@ sub MOBILEALERTSGW_Read($$) {
         elsif ( !$ret ) {    # 0==EOF, undef=error
             CommandDelete( undef, $name );
             Log3 $MA_wname, 4,
-              "Connection closed for $name: " . ( defined($ret) ? 'EOF' : $! );
+              "$MA_wname MOBILEALERTSGW: Connection closed for $name: "
+              . ( defined($ret) ? 'EOF' : $! );
             return;
         }
         $hash->{BUF} .= $buf;
@@ -365,9 +386,10 @@ sub MOBILEALERTSGW_Read($$) {
     }
     delete( $hash->{HDR} );
     if ( $verbose >= 5 ) {
-        Log3 $MA_wname, 5, "Headers: " . join( ", ", @MA_httpheader );
-        Log3 $MA_wname, 5, "Receivebuffer: " . unpack( "H*", $POSTdata )
-          if ( $verbose >= 5 );
+        Log3 $MA_wname, 5,
+          "$MA_wname MOBILEALERTSGW: Headers: " . join( ", ", @MA_httpheader );
+        Log3 $MA_wname, 5, "$MA_wname MOBILEALERTSGW: Receivebuffer: "
+          . unpack( "H*", $POSTdata );
     }
 
     my ( $method, $url, $httpvers ) = split( " ", $MA_httpheader[0], 3 )
@@ -382,7 +404,7 @@ sub MOBILEALERTSGW_Read($$) {
         delete $hash->{CONTENT_LENGTH};
         MOBILEALERTSGW_Read( $hash, 1 ) if ( $hash->{BUF} );
         Log3 $MA_wname, 3,
-          "$MA_cname: unsupported HTTP method $method, rejecting it.";
+"$MA_wname MOBILEALERTSGW: $MA_cname: unsupported HTTP method $method, rejecting it.";
         MOBILEALERTSGW_closeConn($hash);
         return;
     }
@@ -392,7 +414,8 @@ sub MOBILEALERTSGW_Read($$) {
             "HTTP/1.1 400 Bad Request\r\n" . "Content-Length: 0\r\n\r\n" );
         delete $hash->{CONTENT_LENGTH};
         MOBILEALERTSGW_Read( $hash, 1 ) if ( $hash->{BUF} );
-        Log3 $MA_wname, 3, "$MA_cname: unsupported URL $url, rejecting it.";
+        Log3 $MA_wname, 3,
+"$MA_wname MOBILEALERTSGW: $MA_cname: unsupported URL $url, rejecting it.";
         MOBILEALERTSGW_closeConn($hash);
         return;
     }
@@ -401,7 +424,8 @@ sub MOBILEALERTSGW_Read($$) {
             "HTTP/1.1 400 Bad Request\r\n" . "Content-Length: 0\r\n\r\n" );
         delete $hash->{CONTENT_LENGTH};
         MOBILEALERTSGW_Read( $hash, 1 ) if ( $hash->{BUF} );
-        Log3 $MA_wname, 3, "$MA_cname: not Header http_identify, rejecting it.";
+        Log3 $MA_wname, 3,
+"$MA_wname MOBILEALERTSGW: $MA_cname: not Header http_identify, rejecting it.";
         MOBILEALERTSGW_closeConn($hash);
         return;
     }
@@ -423,12 +447,14 @@ sub MOBILEALERTSGW_Read($$) {
         $gwserial );
     readingsEndUpdate( $defs{$MA_wname}, 1 );
     if ( $actioncode eq "00" ) {
-        Log3 $MA_wname, 4, "$MA_cname: Initrequest from $gwserial $gwmac";
+        Log3 $MA_wname, 4,
+"$MA_wname MOBILEALERTSGW: $MA_cname: Initrequest from $gwserial $gwmac";
         MOBILEALERTSGW_DecodeInit( $hash, $POSTdata );
         MOBILEALERTSGW_DefaultAnswer($hash);
     }
     elsif ( $actioncode eq "C0" ) {
-        Log3 $MA_wname, 4, "$MA_cname: Data from $gwserial $gwmac";
+        Log3 $MA_wname, 4,
+          "$MA_wname MOBILEALERTSGW: $MA_cname: Data from $gwserial $gwmac";
         MOBILEALERTSGW_DecodeData( $hash, $POSTdata );
         MOBILEALERTSGW_DefaultAnswer($hash);
     }
@@ -437,9 +463,10 @@ sub MOBILEALERTSGW_Read($$) {
             "HTTP/1.1 400 Bad Request\r\n" . "Content-Length: 0\r\n\r\n" );
         delete $hash->{CONTENT_LENGTH};
         MOBILEALERTSGW_Read( $hash, 1 ) if ( $hash->{BUF} );
-        Log3 $MA_wname, 3, "$MA_cname: unknown Actioncode $actioncode";
+        Log3 $MA_wname, 3,
+          "$MA_wname MOBILEALERTSGW: $MA_cname: unknown Actioncode $actioncode";
         Log3 $MA_wname, 4,
-          "$MA_cname: unknown Actioncode $actioncode Postdata: "
+"$MA_wname MOBILEALERTSGW: $MA_cname: unknown Actioncode $actioncode Postdata: "
           . unpack( "H*", $POSTdata );
         MOBILEALERTSGW_closeConn($hash);
         return;
@@ -468,24 +495,30 @@ sub MOBILEALERTSGW_Read($$) {
 sub MOBILEALERTSGW_NonblockingGet_Callback($$$) {
     my ( $param, $err, $data ) = @_;
     my $hash = $param->{hash};
+    my $name = $hash->{NAME};
     my $code = $param->{code};
-    Log3 $hash->{NAME}, 3, "Callback";
+    Log3 $name, 4, "$name MOBILEALERTSGW: Callback";
     if ( $err ne "" ) {
-        Log3 $hash->{NAME}, 3,
-          "error while forward request to " . $param->{url} . " - $err";
+        Log3 $name, 3,
+            "$name MOBILEALERTSGW: error while forward request to "
+          . $param->{url}
+          . " - $err";
     }
     elsif ( $code != 200 ) {
-        Log3 $hash->{NAME}, 3,
-            "http-error while forward request to "
+        Log3 $name, 3,
+            "$name MOBILEALERTSGW: http-error while forward request to "
           . $param->{url} . " - "
           . $param->{code};
-        Log3 $hash->{NAME}, 5, "http-header: " . $param->{httpheader};
-        Log3 $hash->{NAME}, 5, "http-data: " . $data;
+        Log3 $name, 5,
+          "$name MOBILEALERTSGW: http-header: " . $param->{httpheader};
+        Log3 $name, 5, "$name MOBILEALERTSGW: http-data: " . $data;
     }
     else {
-        Log3 $hash->{NAME}, 5, "forward successfull";
-        Log3 $hash->{NAME}, 5, "http-header: " . $param->{httpheader};
-        Log3 $hash->{NAME}, 5, "http-data: " . unpack( "H*", $data );
+        Log3 $name, 5, "$name MOBILEALERTSGW: forward successfull";
+        Log3 $name, 5,
+          "$name MOBILEALERTSGW: http-header: " . $param->{httpheader};
+        Log3 $name, 5,
+          "$name MOBILEALERTSGW: http-data: " . unpack( "H*", $data );
     }
     HttpUtils_Close($param);
 }
@@ -515,7 +548,8 @@ sub MOBILEALERTSGW_DecodeInit($$) {
     my ( $packageLength, $upTime, $ID, $unknown1, $unknown50 ) =
       unpack( "CNH12nn", $POSTdata );
 
-    Log3 $MA_wname, 4, "Uptime (s): " . $upTime . " ID: " . $ID;
+    Log3 $MA_wname, 4,
+      "$MA_wname MOBILEALERTSGW: Uptime (s): " . $upTime . " ID: " . $ID;
 }
 
 sub MOBILEALERTSGW_DecodeData($$) {
@@ -527,15 +561,18 @@ sub MOBILEALERTSGW_DecodeData($$) {
         my ( $packageHeader, $timeStamp, $packageLength, $deviceID ) =
           unpack( "CNCH12", $data );
         Log3 $MA_wname, 4,
-            "PackageHeader: "
+            "$MA_wname MOBILEALERTSGW: PackageHeader: "
           . $packageHeader
           . " Timestamp: "
-          . scalar( localtime($timeStamp) )
+          . scalar( FmtDateTimeRFC1123($timeStamp) )
           . " PackageLength: "
           . $packageLength
           . " DeviceID: "
-          . $deviceID;
-        Log3 $MA_wname, 5, "Data $deviceID: " . unpack( "H*", $data )
+          . $deviceID
+          if ( $verbose >= 4 );
+        Log3 $MA_wname, 5,
+          "$MA_wname MOBILEALERTSGW: Data for $deviceID: "
+          . unpack( "H*", $data )
           if ( $verbose >= 5 );
         my $found = Dispatch( $defs{$MA_wname}, $data, undef );
     }
@@ -545,8 +582,9 @@ sub MOBILEALERTSGW_DecodeUDP($$$) {
     my ( $hash, $udpdata, $srcpaddr ) = @_;
     my ( $port, $ipaddr ) = sockaddr_in($srcpaddr);
     my $name = $hash->{NAME};
-    Log3 $name, 4, "Data from " . inet_ntoa($ipaddr) . ":" . $port;
-    Log3 $name, 5, "Data: " . unpack( "H*", $udpdata );
+    Log3 $name, 4,
+      "$name MOBILEALERTSGW: Data from " . inet_ntoa($ipaddr) . ":" . $port;
+    Log3 $name, 5, "$name MOBILEALERTSGW: Data: " . unpack( "H*", $udpdata );
 
     if ( length $udpdata == 186 ) {
         my @ip;
@@ -573,11 +611,12 @@ sub MOBILEALERTSGW_DecodeUDP($$$) {
 
         if ( $command != 3 ) {
             Log3 $name, 3,
-              "Unknown Command $command: " . unpack( "H*", $udpdata );
+              "$name MOBILEALERTSGW: Unknown Command $command: "
+              . unpack( "H*", $udpdata );
             return;
         }
         Log3 $name, 4,
-            "Command: "
+            "$name MOBILEALERTSGW: Command: "
           . $command
           . " Gatewayid: "
           . $gatewayid
@@ -633,10 +672,12 @@ sub MOBILEALERTSGW_DecodeUDP($$$) {
         readingsEndUpdate( $hash, 1 );
     }
     elsif ( length $udpdata == 118 ) {
-        Log3 $name, 5, "Package was defect, this seems to be normal.";
+        Log3 $name, 5,
+          "$name MOBILEALERTSGW: Package was defect, this seems to be normal.";
     }
     else {
-        Log3 $name, 3, "Unknown Data: " . unpack( "H*", $udpdata );
+        Log3 $name, 3,
+          "$name MOBILEALERTSGW: Unknown Data: " . unpack( "H*", $udpdata );
     }
     return;
 }
