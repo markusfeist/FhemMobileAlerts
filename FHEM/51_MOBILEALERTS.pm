@@ -118,8 +118,8 @@ sub MOBILEALERTS_Set ($$@) {
             return undef;
         }
         elsif ( $args[0] eq "counters" ) {
-            my $test = ReadingsVal( $hash->{NAME}, "mlRain", undef );
-            readingsSingleUpdate( $hash, "mlRain", 0, 1 ) if ( defined $test );
+            my $test = ReadingsVal( $hash->{NAME}, "mmRain", undef );
+            readingsSingleUpdate( $hash, "mmRain", 0, 1 ) if ( defined $test );
             return undef;
         }
         else {
@@ -395,25 +395,25 @@ sub MOBILEALERTS_Parse_e1 ($$) {
     ( my ( $txCounter, $temperature, $eventCounter ), @eventTime[ 0 .. 8 ] ) =
       unpack( "nnnnnnnnnnnn", $message );
     my $lastEventCounter = ReadingsVal( $hash->{NAME}, "eventCounter", undef );
-    my $mlRain = 0;
+    my $mmRain = 0;
 
     if ( !defined($lastEventCounter) ) {
 
         # First Data
-        $mlRain = $eventCounter * MA_RAIN_FACTOR;
+        $mmRain = $eventCounter * MA_RAIN_FACTOR;
     }
     elsif ( $lastEventCounter > $eventCounter ) {
 
         # Overflow EventCounter or fresh Batterie
-        $mlRain = $eventCounter * MA_RAIN_FACTOR;
+        $mmRain = $eventCounter * MA_RAIN_FACTOR;
     }
     elsif ( $lastEventCounter < $eventCounter ) {
-        $mlRain = ( $eventCounter - $lastEventCounter ) * MA_RAIN_FACTOR;
+        $mmRain = ( $eventCounter - $lastEventCounter ) * MA_RAIN_FACTOR;
     }
     else {
-        $mlRain = 0;
+        $mmRain = 0;
     }
-    MOBILEALERTS_CheckRainSensor( $hash, $mlRain );
+    MOBILEALERTS_CheckRainSensor( $hash, $mmRain );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
@@ -826,18 +826,18 @@ sub MOBILEALERTS_CheckRainSensorTimed($) {
 }
 
 sub MOBILEALERTS_CheckRainSensor($$) {
-    my ( $hash, $mlRain ) = @_;
+    my ( $hash, $mmRain ) = @_;
 
     #Event
-    push @{ $hash->{CHANGED} }, "rain" if ( $mlRain > 0 );
+    push @{ $hash->{CHANGED} }, "rain" if ( $mmRain > 0 );
 
     #lastHour
     my $actTime = $hash->{".updateTimestamp"};
-    my $actH = ReadingsTimestamp( $hash->{NAME}, "mlRainActHour", $actTime );
+    my $actH = ReadingsTimestamp( $hash->{NAME}, "mmRainActHour", $actTime );
     if ( substr( $actTime, 0, 13 ) eq substr( $actH, 0, 13 ) ) {
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActHour",
-            $mlRain + ReadingsVal( $hash->{NAME}, "mlRainActHour", "0" ) )
-          if ( $mlRain > 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainActHour",
+            $mmRain + ReadingsVal( $hash->{NAME}, "mmRainActHour", "0" ) )
+          if ( $mmRain > 0 );
     }
     else {
         if (
@@ -847,26 +847,26 @@ sub MOBILEALERTS_CheckRainSensor($$) {
             ) > 3600
           )
         {
-            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainLastHour", 0 );
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainLastHour", 0 );
         }
         else {
             $hash->{".updateTimestamp"} = $actH;
-            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainLastHour",
-                ReadingsVal( $hash->{NAME}, "mlRainActHour", "0" ) );
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainLastHour",
+                ReadingsVal( $hash->{NAME}, "mmRainActHour", "0" ) );
             $hash->{".updateTimestamp"} = $actTime;
         }
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActHour", 0 );
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActHour", $mlRain )
-          if ( $mlRain > 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainActHour", 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainActHour", $mmRain )
+          if ( $mmRain > 0 );
     }
 
     #Yesterday
-    my $actD = ReadingsTimestamp( $hash->{NAME}, "mlRainActDay", $actTime );
+    my $actD = ReadingsTimestamp( $hash->{NAME}, "mmRainActDay", $actTime );
     Log3 "SOFORT", 1, "A" . substr( $actTime, 0, 10 ) . "A";
     if ( substr( $actTime, 0, 10 ) eq substr( $actD, 0, 10 ) ) {
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActDay",
-            $mlRain + ReadingsVal( $hash->{NAME}, "mlRainActDay", "0" ) )
-          if ( $mlRain > 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainActDay",
+            $mmRain + ReadingsVal( $hash->{NAME}, "mmRainActDay", "0" ) )
+          if ( $mmRain > 0 );
     }
     else {
         if (
@@ -876,22 +876,22 @@ sub MOBILEALERTS_CheckRainSensor($$) {
             ) > 86400
           )
         {
-            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainYesterday", 0 );
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainYesterday", 0 );
         }
         else {
             $hash->{".updateTimestamp"} =
-              ReadingsTimestamp( $hash->{NAME}, "mlRainActDay", $actD );
-            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainYesterday",
-                ReadingsVal( $hash->{NAME}, "mlRainActDay", "0" ) );
+              ReadingsTimestamp( $hash->{NAME}, "mmRainActDay", $actD );
+            MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainYesterday",
+                ReadingsVal( $hash->{NAME}, "mmRainActDay", "0" ) );
             $hash->{".updateTimestamp"} = $actTime;
         }
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActDay", 0 );
-        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRainActDay", $mlRain )
-          if ( $mlRain > 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainActDay", 0 );
+        MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainActDay", $mmRain )
+          if ( $mmRain > 0 );
     }
-    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mlRain",
-        $mlRain + ReadingsVal( $hash->{NAME}, "mlRain", "0" ) )
-      if ( $mlRain > 0 );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRain",
+        $mmRain + ReadingsVal( $hash->{NAME}, "mmRain", "0" ) )
+      if ( $mmRain > 0 );
 }
 
 sub MOBILEALERTS_ActionDetector($) {
@@ -1001,7 +1001,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li>humidityString, prevHumidityString, humidityInString, humidityOutString, prevHumidityInString, prevHumidityOutString<br>Humidity as string (depending on device and attribut expert).</li>
     <li>wetness<br>Shows if sensor detects water.</li>
     <li>lastEvent, lastEvent&lt;X&gt; ,lastEventString, lastEvent&lt;X&gt;String<br>Time when last event (rain) happend (MA10650 only).</li>
-    <li>mlRain, mlRainActHour, mlRainLastHour, mlRainActDay, mlRainYesterday<br>Rain since reset of counter, current hour, last hour, current day, yesterday.</li>
+    <li>mmRain, mmRainActHour, mmRainLastHour, mmRainActDay, mmRainYesterday<br>Rain since reset of counter, current hour, last hour, current day, yesterday.</li>
     <li>direction<br>Direction of wind.</li>
     <li>windSpeed, gustSpeed<br>Windspeed.</li>
   </ul>
@@ -1011,7 +1011,7 @@ sub MOBILEALERTS_ActionDetector($) {
   <b>Set</b>
   <ul>
     <li><code>set &lt;name&gt; clear &lt;readings|counters&gt;</code><br>
-    Clears the readings (all) or counters (like mlRain). </li>
+    Clears the readings (all) or counters (like mmRain). </li>
   </ul>
   <br>
 
@@ -1080,7 +1080,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li>humidityString, prevHumidityString, humidityInString, humidityOutString, prevHumidityInString, prevHumidityOutString<br>Luftfeuchte als Zeichenkette</li>
     <li>wetness<br>Zeigt ob der Sensors Wasser entdeckt.</li>
     <li>lastEvent, lastEvent&lt;X&gt; ,lastEventString, lastEvent&lt;X&gt;String<br>Zeitpunkt wann das letzte Event (Regen) stattgefunden hat (nur MA10650).</li>
-    <li>mlRain, mlRainActHour, mlRainLastHour, mlRainActDay, mlRainYesterday<br>Regen seit dem letzten Reset des Counters, in der aktuellen Stunde, seit der letzten Stunden, am aktuellen Tagn, gestern.</li>
+    <li>mmRain, mmRainActHour, mmRainLastHour, mmRainActDay, mmRainYesterday<br>Regen seit dem letzten Reset des Counters, in der aktuellen Stunde, seit der letzten Stunden, am aktuellen Tagn, gestern.</li>
     <li>direction<br>Richtung des Winds.</li>
     <li>windSpeed, gustSpeed<br>Windgeschwindigkeit.</li>
   </ul>
@@ -1090,7 +1090,7 @@ sub MOBILEALERTS_ActionDetector($) {
   <b>Set</b>
   <ul>
     <li><code>set &lt;name&gt; clear &lt;readings|counters&gt;</code><br>
-    L&ouml;scht die Readings (alle) oder Counter (wie mlRain). </li>
+    L&ouml;scht die Readings (alle) oder Counter (wie mmRain). </li>
   </ul>
   <br>
 
