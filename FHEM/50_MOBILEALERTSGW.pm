@@ -713,6 +713,20 @@ sub MOBILEALERTSGW_DecodeUDP($$$) {
   </ul>
   <br>
 
+  <a name="MOBILEALERTSGWreadings"></a>
+  <b>Readings</b>
+  <ul>
+    <li>Gateways<br>List of known gateways</li>
+    <li>GW_&lt;Gateway-MAC&gt;_lastSeen<br>Time when last message was received from gateway</li>
+    <li>GW_&lt;Gateway-MAC&gt;_ip<br>IP-Adresse of gateway</li>
+    <li>GW_&lt;Gateway-MAC&gt;_serial<br>Serialnumber of gateway</li>
+    <li>GW_&lt;Gateway-MAC&gt;_proxy<br>on, off: setting of proxy (only after get config)</li>
+    <li>GW_&lt;Gateway-MAC&gt;_proxyname<br>Name/IP of proxy (only after get config)</li>
+    <li>GW_&lt;Gateway-MAC&gt;_proxyport<br>Port of proxy (only after get config)</li>
+    <li>GW_&lt;Gateway-MAC&gt;_config<br>Complete configuration as hex-values (only after get config)</li>
+  </ul>
+  <br>     
+
   <a name="MOBILEALERTSGWset"></a>
   <b>Set</b>
   <ul>
@@ -768,6 +782,20 @@ sub MOBILEALERTSGW_DecodeUDP($$$) {
     port ist der Port auf dem der Proxy-Server h&ouml;rt. Der Port muss frei sein.
   </ul>
   <br>
+
+  <a name="MOBILEALERTSGWreadings"></a>
+  <b>Readings</b>
+  <ul>
+    <li>Gateways<br>Liste der bekannten Gateways</li>
+    <li>GW_&lt;Gateway-MAC&gt;_lastSeen<br>Zeitpunkt when zuletzt eine Nachricht empfangen wurde</li>
+    <li>GW_&lt;Gateway-MAC&gt;_ip<br>IP-Adresse des Gateways</li>
+    <li>GW_&lt;Gateway-MAC&gt;_serial<br>Seriennummer des Gateways</li>
+    <li>GW_&lt;Gateway-MAC&gt;_proxy<br>on, off: Einstellung des Proxies (nur verf&uuml;nach einem get config)</li>
+    <li>GW_&lt;Gateway-MAC&gt;_proxyname<br>Name/IP der Proxy (nur verf&uuml;nach einem get config)</li>
+    <li>GW_&lt;Gateway-MAC&gt;_proxyport<br>Port der Proxy (nur verf&uuml;nach einem get config)</li>
+    <li>GW_&lt;Gateway-MAC&gt;_config<br>Komplette Konfiguration als HEX-Wert (nur verf&uuml;nach einem get config)</li>
+  </ul>
+  <br>   
 
   <a name="MOBILEALERTSGWset"></a>
   <b>Set</b>
