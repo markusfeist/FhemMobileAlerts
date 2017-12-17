@@ -24,7 +24,7 @@ Gerade für die letzten Module würde ich mich über Rückmeldungen freuen.
 ## Installation
 ### Modul
 Das Modul wird auch über das FHEM svn verteilt. Daher kann es über das normale FHEM Update (`update`) bezogen werden.
-Wenn man auf die Entwicklungsversion (z.B. für Tests) hollen will, kann man mit
+Wenn man die Entwicklungsversion (z.B. für Tests) hollen will, kann man mit
 `update all https://markusfeist.github.io/FhemMobileAlerts/repository/master/controls_mobilealerts.txt`
 diese beziehen.
 
@@ -82,8 +82,6 @@ Ein Fall der so (noch) nicht konfiguriert werden kann, ist wenn das Gateway in e
 
 ### Module für die Geräte
 Die Geräte werden automatisch erkannt, sobald das Gateway des Gerätes an den Proxyserver sendet. Es wird dann im Raum MOBILEALERTS ein entsprechender Eintrag angelegt.
-
-Leider werden die Daten nicht direkt nach dem Anlegen angezeigt, sondern erst bei der zweiten Meldung. Also wird das Gerät zunächst mit einem Status `???` angezeigt, dann unter Umständen erst 10 Minuten später mit dem richtigen Wert.
 
 Es gibt lediglich ein besonderes Attribut hier `lastMsg`. Wird dieses auf `1` gesetzt, wird im Reading `lastMsg` die letzte empfangene Nachricht protokolliert. Diese wird benötigt, um ggf. Fehler in der Anzeige oder neue Geräte zu decodieren.
 

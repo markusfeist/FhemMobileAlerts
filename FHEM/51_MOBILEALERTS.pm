@@ -1107,15 +1107,15 @@ sub MOBILEALERTS_ActionDetector($) {
   <ul>
     <li><a href="#ignore">ignore</a></li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>  
-    <li><a href="#MOBILEALERTSlastMsg">lastMsg</a><br>
+    <li>lastMsg<br>
       Wenn dieser Wert auf 1 gesetzt ist, wird die letzte erhaltene Nachricht als Reading gelogt auch wenn das Ger&auml bekannt ist.
     </li>
-    <li><a href="#MOBILEALERTSactCycle">actCycle &lt;[hhh:mm]|off&gt;</a><br>
+    <li>actCycle &lt;[hhh:mm]|off&gt;<br>
       Dieses Attribut erm&ouml;licht eine 'nicht erreichbarkeit' Erkennung.
       [hhh:mm] ist die maximale Zeit, innerhalb der keine Nachrichten empfrangen wird.
       Das Reading actStatus zeigt den Status 'unknown', 'alive', 'dead' an.
     </li>
-    <li><a href="#MOBILEALERTSexpert">expert</a><br>
+    <li>expert<br>
       Gibt an wie detailiert die Readings angezeigt werden (0=nur aktuelle, 1=mit vorhergehenden, 4=alle).
     </li>    
   </ul>
