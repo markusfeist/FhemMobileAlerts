@@ -11,32 +11,19 @@ Der Hauptgrund, warum ich dieses Modul geschrieben habe, war, dass ich auf meine
 
 ## Unterstütze Module
 Aktuell sind unterstützt und von mir getestet:
-MA10100, MA10200, MA10230, MA10300
+MA10100, MA10200, MA10230, MA10300, MA10650
 
 Von jemanden anderen getestet:
-MA10350, MA10410, MA10450, TFA 30.3312.02
+MA10350, MA10410, MA10450, MA10660, TFA 30.3312.02
 
 Unterstützt (aber nicht getestet):
-MA10650, MA10660, MA10700, MA10800
+MA10700, MA10800
 
 Gerade für die letzten Module würde ich mich über Rückmeldungen freuen.
 
 ## Installation
 ### Modul
-Die Installation des Moduls erfolgt, indem man die beiden Dateien 50_MOBILEALERTSGW.pm und 51_MOBILEALERTS.pm in den Ordner FHEM der FHEM Installtion einfügt.
-Dies kann manuell erfolgen.
-
-Alternativ kann der Befehl:
-```
-update all https://raw.githubusercontent.com/markusfeist/FhemMobileAlerts/master/controls_mobilealerts.txt
-```
-genutzt werden.
-
-Wenn man die Komponenten dauerhaft automatisch updaten will kann man das Repository mit:
-```
-update add https://raw.githubusercontent.com/markusfeist/FhemMobileAlerts/master/controls_mobilealerts.txt
-```
-hinzufügen.
+Das Modul wird auch über das FHEM svn verteilt. Daher kann es über das normale FHEM Update (`update`) bezogen werden.
 
 ### Einrichtung
 Das Modul legt man dann im FHEM mit dem Befehl
@@ -122,10 +109,11 @@ Sollte lediglich ein Geräte nicht richtig angezeigt werden oder ein neues Gerä
 * Wenn es ein bisher nicht bekanntes Gerät ist, die Geräteart (z.B. MA10200) und Gerätebezeichnung (z.B. Thermo/hygrometer Sensor)
 * Die Werte, die die Mobile-Alerts App anzeigt, (dazu das Attribut `forward` am Gateway auf `1` stellen) oder den Wert vom Gerät ablesen.
 
+Informationen sind auch im [FHEM Forum](https://forum.fhem.de/index.php/topic,78878.0.html). Hier können auch Fehler gemeldet werden. Alternativ per PM im Forum oder hier auf GitHub.
+
 ## Offene Punkte
 Folgende Punkte sind noch offen, bzw. bekannte Fehler:
 * Es wird kein Batteriestatus ausgegeben. (Leider ist noch unbekannt, wie dieser in die Nachrichten kodiert sind). Wenn dies jemand von ELV liest. Ich wäre für einen Tip dankbar.
-* Das Modul hat nach dem automatsichen Anlegen zunächst den Status `???`. Dies korrigiert sich aber der zweiten Nachricht.
 
 ## Lizenz
 Ich veröffentliche hier die FHEM Module unter der GPL V2 siehe auch [LICENSE](LICENSE).
