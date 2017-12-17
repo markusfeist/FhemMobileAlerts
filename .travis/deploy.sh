@@ -8,8 +8,9 @@ function doCompile {
     ./MakeUpd.sh
 }
 
-# Pull requests and commits to other branches shouldn't try to deploy, just build to verify
-if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "develop" ]; then
+# Pull requests shouldn't try to deploy, just build to verify
+# Only for one branch: -o "$TRAVIS_BRANCH" != "develop"
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
     echo "Skipping deploy $TRAVIS_PULL_REQUEST $TRAVIS_BRANCH."
     exit 0
 fi
@@ -26,19 +27,19 @@ doCompile
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
-git clone $REPO $MY_PATH/../out
-cd $MY_PATH/../out
+git clone $REPO $MY_CWD/out
+cd $MY_CWD/out
 git checkout gh-pages
 
-if diff $MY_PATH/../controls_mobilealerts.txt repository/$TRAVIS_BRANCH/controls_mobilealerts.txt; then
-    echo "No changes to the output on this push; exiting."
+if diff $MY_CWD/controls_mobilealerts.txt repository/$TRAVIS_BRANCH/controls_mobilealerts.txt; then
+    echo "No changes to the output $MY_CWD/controls_mobilealerts.txt repository/$TRAVIS_BRANCH/controls_mobilealerts.txt on this push; exiting."
     exit 0
 fi
 
 mkdir -p repository/$TRAVIS_BRANCH/FHEM
-mv $MY_PATH/../controls_mobilealerts.txt repository/$TRAVIS_BRANCH/controls_mobilealerts.txt
-cp $MY_PATH/../CHANGED repository/$TRAVIS_BRANCH/CHANGED
-cp $MY_PATH/../FHEM/* repository/$TRAVIS_BRANCH/FHEM/.
+mv $MY_CWD/controls_mobilealerts.txt repository/$TRAVIS_BRANCH/controls_mobilealerts.txt
+cp $MY_CWD/CHANGED repository/$TRAVIS_BRANCH/CHANGED
+cp $MY_CWD/FHEM/* repository/$TRAVIS_BRANCH/FHEM/.
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
