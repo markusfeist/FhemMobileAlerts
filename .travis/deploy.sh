@@ -26,12 +26,6 @@ doCompile
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
-# If there are no changes to the compiled out (e.g. this is a README update) then just bail.
-if git diff --quiet $MY_PATH/../controls_mobilealerts.txt; then
-    echo "No changes to the output on this push; exiting."
-    exit 0
-fi
-
 git clone $REPO $MY_PATH/../out
 cd $MY_PATH/../out
 git checkout gh-pages
@@ -43,6 +37,7 @@ fi
 
 mkdir -p repository/$TRAVIS_BRANCH/FHEM
 mv $MY_PATH/../controls_mobilealerts.txt repository/$TRAVIS_BRANCH/controls_mobilealerts.txt
+cp $MY_PATH/../CHANGED repository/$TRAVIS_BRANCH/CHANGED
 cp $MY_PATH/../FHEM/* repository/$TRAVIS_BRANCH/FHEM/.
 
 # Commit the "changes", i.e. the new version.
