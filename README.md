@@ -24,6 +24,9 @@ Gerade für die letzten Module würde ich mich über Rückmeldungen freuen.
 ## Installation
 ### Modul
 Das Modul wird auch über das FHEM svn verteilt. Daher kann es über das normale FHEM Update (`update`) bezogen werden.
+Wenn man auf die Entwicklungsversion (z.B. für Tests) hollen will, kann man mit
+`update all https://markusfeist.github.io/FhemMobileAlerts/repository/master/controls_mobilealerts.txt`
+diese beziehen.
 
 ### Einrichtung
 Das Modul legt man dann im FHEM mit dem Befehl
