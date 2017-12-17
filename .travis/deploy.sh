@@ -34,19 +34,20 @@ fi
 
 git clone $REPO $MY_PATH/../out
 cd $MY_PATH/../out
-git checkout $TRAVIS_BRANCH
+git checkout gh-pages
 
-doCompile
-
-if git diff --exit-code controls_mobilealerts.txt; then
-    cd $MY_CWD
-    rm -rf $REPO $MY_PATH/../out    
+if diff $MY_PATH/../controls_mobilealerts.txt repository/$TRAVIS_BRANCH/controls_mobilealerts.txt; then
     echo "No changes to the output on this push; exiting."
     exit 0
 fi
+
+mkdir -p repository/$TRAVIS_BRANCH/FHEM
+mv $MY_PATH/../controls_mobilealerts.txt repository/$TRAVIS_BRANCH/controls_mobilealerts.txt
+cp $MY_PATH/../FHEM/* repository/$TRAVIS_BRANCH/FHEM/.
+
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
-git add -v -A controls_mobilealerts.txt
+git add -v -A
 git commit -v -m "Travis build $TRAVIS_BUILD_NUMBER update Controlfile"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
