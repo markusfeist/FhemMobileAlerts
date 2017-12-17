@@ -1,0 +1,28 @@
+MOBILEALERTSGW last change:
+14.12.2017 - Added mmRain for MA10650
+           - Event "rain"
+           - Documentation for Readings
+
+01.12.2017 - Added MA10450
+           - Added TFA30.3312.02
+
+19.11.2017 - Timestamp of message instead of current time
+           - Attribut expert added
+
+17.11.2017 - Added Reading eventCounter for MA10650
+           - Added Sensor MA10320PRO
+
+16.11.2017 - Bugfix negative Temperatures
+
+12.11.2017 - readingsBulkUpdateIfChanged readingsBulkUpdateIf reworked
+           - Show values direct after autocreate
+           - Bugfix delete of device
+
+11.11.2017 - ActionDetector Timer runs depending on actCycle
+           - ActionDetector moved from MOBILEALERTSGW to MOBILEALERTS
+
+07.11.2017 - Update ActionDetector fixed
+
+05.11.2017 - actCycle added
+
+01.11.2017 – first Version
