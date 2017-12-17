@@ -57,6 +57,6 @@ eval `ssh-agent -s`
 ssh-add $MY_CWD/.travis/travis_id_rsa
 
 # Now that we're all set up, we can push.
-git push -v $SSH_REPO $TRAVIS_BRANCH
+git push -v $SSH_REPO gh-pages
 
 cd $MY_CWD
