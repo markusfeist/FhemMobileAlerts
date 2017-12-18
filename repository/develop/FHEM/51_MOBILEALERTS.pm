@@ -142,7 +142,7 @@ sub MOBILEALERTS_Parse ($$) {
     if ( my $hash = $modules{MOBILEALERTS}{defptr}{$deviceID} ) {
         my $verbose = GetVerbose( $hash->{NAME} );
         Log3 $name, 5, "$name MOBILELAERTS: Found Device: " . $hash->{NAME};
-        Log3 $name, 5,
+        Log3 $hash->{NAME}, 5,
           "$hash->{NAME} MOBILELAERTS: Message: " . unpack( "H*", $message )
           if ( $verbose >= 5 );
 
