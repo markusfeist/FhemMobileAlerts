@@ -14,12 +14,12 @@ Aktuell sind unterstützt und von mir getestet:
 MA10100, MA10200, MA10230, MA10300, MA10650
 
 Von jemanden anderen getestet:
-MA10350, MA10410, MA10450, MA10660, TFA 30.3312.02
+MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02
 
 Unterstützt (aber nicht getestet):
-MA10700, MA10800
+MA10800
 
-Gerade für die letzten Module würde ich mich über Rückmeldungen freuen.
+Gerade für das letzte Modul würde ich mich über Rückmeldungen freuen.
 
 ## Installation
 ### Modul
