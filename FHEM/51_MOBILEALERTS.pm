@@ -862,7 +862,6 @@ sub MOBILEALERTS_CheckRainSensor($$) {
 
     #Yesterday
     my $actD = ReadingsTimestamp( $hash->{NAME}, "mmRainActDay", $actTime );
-    Log3 "SOFORT", 1, "A" . substr( $actTime, 0, 10 ) . "A";
     if ( substr( $actTime, 0, 10 ) eq substr( $actD, 0, 10 ) ) {
         MOBILEALERTS_readingsBulkUpdate( $hash, 0, "mmRainActDay",
             $mmRain + ReadingsVal( $hash->{NAME}, "mmRainActDay", "0" ) )
