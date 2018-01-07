@@ -813,6 +813,7 @@ sub MOBILEALERTS_time2sec($) {
 
 sub MOBILEALERTS_CheckRainSensorTimed($) {
     my ($hash) = @_;
+    $hash->{".expertMode"} = AttrVal( $hash->{NAME}, "expert", 0 );
     readingsBeginUpdate($hash);
     MOBILEALERTS_CheckRainSensor( $hash, 0 );
     readingsEndUpdate( $hash, 1 );
