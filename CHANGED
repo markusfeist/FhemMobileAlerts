@@ -1,4 +1,7 @@
 MOBILEALERTSGW last change:
+07.01.2018 - Added WL2000
+           - Bugfix uninitialized value at ./FHEM/51_MOBILEALERTS.pm line 772.
+
 14.12.2017 - Added mmRain for MA10650
            - Event "rain"
            - Documentation for Readings

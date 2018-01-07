@@ -1,0 +1,61 @@
+Internals:
+   CFGFN      
+   DEF        05ffffffffff
+   DeviceID   05ffffffffff
+   NAME       MA_05ffffffffff
+   NR         56
+   STATE      In T: 21.5 H: 51 Out T: 6.5 CO2: 450
+   TYPE       MOBILEALERTS
+   READINGS:
+     2018-01-06 16:23:23   co2             450
+     2018-01-06 16:23:23   co2String       450 ppm
+     2018-01-06 16:23:23   deviceType      WL2000
+     2018-01-06 16:23:23   humidity        51
+     2018-01-06 16:23:23   humidityString  51%
+     2018-01-06 16:23:23   lastRcv         2018-01-06 16:23:23
+     2018-01-06 16:23:23   state           In T: 21.5 H: 51 Out T: 6.5 CO2: 450
+     2018-01-06 16:23:23   temperatureIn   21.5
+     2018-01-06 16:23:23   temperatureOut  6.5
+     2018-01-06 16:23:23   temperatureStringIn 21.5°C
+     2018-01-06 16:23:23   temperatureStringOut 6.5°C
+     2018-01-06 16:23:23   triggered       0
+     2018-01-06 16:23:23   txCounter       7991
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        05ffffffffff
+   DeviceID   05ffffffffff
+   LASTInputDev test
+   MSGCNT     1
+   NAME       MA_05ffffffffff
+   NR         56
+   STATE      In T: 21.5 H: 51 Out T: 6.5 CO2: 450
+   TYPE       MOBILEALERTS
+   test_MSGCNT 1
+   test_TIME  2018-01-07 17:00:34
+   READINGS:
+     2018-01-06 16:23:23   co2             450
+     2018-01-06 16:23:23   co2String       450 ppm
+     2018-01-06 16:23:23   deviceType      WL2000
+     2018-01-06 16:23:23   humidity        51
+     2018-01-06 16:23:23   humidityString  51%
+     2018-01-06 16:23:23   lastRcv         2018-01-06 16:23:23
+     2018-01-06 16:23:23   prevHumidityIn  52
+     2018-01-06 16:23:23   prevTemperatureIn 21
+     2018-01-06 16:23:23   prevTemperatureOut 6.9
+     2018-01-06 16:23:23   state           In T: 21.5 H: 51 Out T: 6.5 CO2: 450
+     2018-01-06 16:23:23   temperatureIn   21.5
+     2018-01-06 16:23:23   temperatureOut  6.5
+     2018-01-06 16:23:23   temperatureStringIn 21.5°C
+     2018-01-06 16:23:23   temperatureStringOut 6.5°C
+     2018-01-06 16:23:23   triggered       0
+     2018-01-06 16:23:23   txCounter       7991
+Attributes:
+   event-on-change-reading .*
+   expert     4
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
