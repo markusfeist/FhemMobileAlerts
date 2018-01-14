@@ -210,7 +210,7 @@ sub MOBILEALERTS_Parse ($$) {
 sub MOBILEALERTS_Parse_02_ce ($$) {
     my ( $hash, $message ) = @_;
     MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
-        "MA10100" );
+        "MA10100/MA10101" );
     MOBILEALERTS_Parse_ce( $hash, $message );
 }
 
@@ -1033,7 +1033,7 @@ sub MOBILEALERTS_ActionDetector($) {
   The MOBILEALERTS is a fhem module for the german MobileAlerts devices and TFA WEATHERHUB devices.
   <br><br>
   The fhem module represents a MobileAlerts device. The connection is provided by the <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> module.
-  Currently supported: MA10100, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000<br>
+  Currently supported: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000<br>
   Supported but untested: ./.<br>
   <br>
 
@@ -1112,7 +1112,7 @@ sub MOBILEALERTS_ActionDetector($) {
   <br><br>
   Dieses FHEM Modul stellt jeweils ein MobileAlerts Ger&auml;t dar. Die Verbindung wird durch das 
   <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> Modul bereitgestellt.<br>
-  Aktuell werden unterst&uuml;zt: MA10100, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000<br>
+  Aktuell werden unterst&uuml;zt: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000<br>
   Unterst&uuml;zt aber ungetestet: ./.<br>
   <br>
 
