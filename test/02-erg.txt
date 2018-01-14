@@ -25,7 +25,7 @@ Internals:
    STATE      T: 18.5
    TYPE       MOBILEALERTS
    READINGS:
-     2017-09-24 15:27:45   deviceType      MA10100
+     2017-09-24 15:27:45   deviceType      MA10100/MA10101
      2017-09-24 15:27:45   lastRcv         2017-09-24 15:27:45
      2017-09-24 15:27:45   state           T: 18.5
      2017-09-24 15:27:45   temperature     18.5
