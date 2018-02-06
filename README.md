@@ -19,8 +19,6 @@ MA10101, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02
 Unterstützt (aber nicht getestet):
 ./. (aktuell keine)
 
-Gerade für das letzte Modul würde ich mich über Rückmeldungen freuen.
-
 ## Installation
 ### Modul
 Das Modul wird auch über das FHEM svn verteilt. Daher kann es über das normale FHEM Update (`update`) bezogen werden.
