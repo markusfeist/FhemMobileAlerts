@@ -113,7 +113,7 @@ sub MOBILEALERTS_Set ($$@) {
     if ( $cmd eq "clear" ) {
         if ( $args[0] eq "readings" ) {
             for ( keys %{ $hash->{READINGS} } ) {
-                delete $hash->{READINGS}->{$_} if ( $_ ne 'state' );
+                readingsDelete($hash, $_) if ( $_ ne 'state' );
             }
             return undef;
         }
@@ -832,7 +832,7 @@ sub MOBILEALERTS_convertEventTimeString($$) {
 sub MOBILEALERTS_readingsBulkUpdate($$$$@) {
     my ( $hash, $expert, $reading, $value, $changed ) = @_;
     if ( $expert > $hash->{".expertMode"} ) {
-        delete $hash->{READINGS}{$reading};
+        readingsDelete($hash, $reading);
         return undef;
     }
     my $i = $#{ $hash->{CHANGED} };
@@ -846,7 +846,7 @@ sub MOBILEALERTS_readingsBulkUpdate($$$$@) {
 sub MOBILEALERTS_readingsBulkUpdateIfChanged($$$$@) {
     my ( $hash, $expert, $reading, $value, $changed ) = @_;
     if ( $expert > $hash->{".expertMode"} ) {
-        delete $hash->{READINGS}{$reading};
+        readingsDelete($hash, $reading);
         return undef;
     }
     my $i = $#{ $hash->{CHANGED} };

@@ -1,5 +1,6 @@
 MOBILEALERTSGW last change:
 06.02.2018 - Added Attribut directionInt for MA10660
+           - Changed direct delete READINGS to function readingsDelete
 
 07.01.2018 - Added WL2000
            - Bugfix uninitialized value at ./FHEM/51_MOBILEALERTS.pm line 772.
