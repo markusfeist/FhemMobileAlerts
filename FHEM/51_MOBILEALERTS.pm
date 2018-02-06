@@ -520,6 +520,7 @@ sub MOBILEALERTS_Parse_e2 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "direction", $dirTable[$dir] );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "directionInt", $dir );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "windSpeed", $windSpeed );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "gustSpeed", $gustSpeed );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "state",
@@ -1063,7 +1064,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li>wetness<br>Shows if sensor detects water.</li>
     <li>lastEvent, lastEvent&lt;X&gt; ,lastEventString, lastEvent&lt;X&gt;String<br>Time when last event (rain) happend (MA10650 only).</li>
     <li>mmRain, mmRainActHour, mmRainLastHour, mmRainActDay, mmRainYesterday<br>Rain since reset of counter, current hour, last hour, current day, yesterday.</li>
-    <li>direction<br>Direction of wind.</li>
+    <li>direction, directionInt<br>Direction of wind.</li>
     <li>windSpeed, gustSpeed<br>Windspeed.</li>
   </ul>
   <br>  
@@ -1142,7 +1143,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li>wetness<br>Zeigt ob der Sensors Wasser entdeckt.</li>
     <li>lastEvent, lastEvent&lt;X&gt; ,lastEventString, lastEvent&lt;X&gt;String<br>Zeitpunkt wann das letzte Event (Regen) stattgefunden hat (nur MA10650).</li>
     <li>mmRain, mmRainActHour, mmRainLastHour, mmRainActDay, mmRainYesterday<br>Regen seit dem letzten Reset des Counters, in der aktuellen Stunde, seit der letzten Stunden, am aktuellen Tagn, gestern.</li>
-    <li>direction<br>Richtung des Winds.</li>
+    <li>direction, directionInt<br>Richtung des Winds.</li>
     <li>windSpeed, gustSpeed<br>Windgeschwindigkeit.</li>
   </ul>
   <br>    
