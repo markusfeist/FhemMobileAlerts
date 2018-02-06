@@ -9,6 +9,7 @@ Internals:
    READINGS:
      2017-10-23 21:25:06   deviceType      MA10660
      2017-10-23 21:25:06   direction       ENE
+     2017-10-23 21:25:06   directionInt    3
      2017-10-23 21:25:06   gustSpeed       2
      2017-10-23 21:25:06   lastRcv         2017-10-23 21:25:06
      2017-10-23 21:25:06   state           D: ENE W: 0.3 G: 2
