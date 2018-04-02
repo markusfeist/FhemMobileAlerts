@@ -6,6 +6,7 @@ Internals:
    NR         56
    STATE      In T: 21.5 H: 51 Out T: 6.5 CO2: 450
    TYPE       MOBILEALERTS
+   OLDREADINGS:
    READINGS:
      2018-01-06 16:23:23   co2             450
      2018-01-06 16:23:23   co2String       450 ppm
@@ -37,6 +38,7 @@ Internals:
    TYPE       MOBILEALERTS
    test_MSGCNT 1
    test_TIME  2018-01-07 17:00:34
+   OLDREADINGS:
    READINGS:
      2018-01-06 16:23:23   co2             450
      2018-01-06 16:23:23   co2String       450 ppm

@@ -6,6 +6,7 @@ Internals:
    NR         50
    STATE      In T: 20 Out T: 20.1
    TYPE       MOBILEALERTS
+   OLDREADINGS:
    READINGS:
      2017-12-01 21:58:08   deviceType      MA10450
      2017-12-01 21:58:08   lastRcv         2017-12-01 21:58:08
@@ -33,6 +34,7 @@ Internals:
    TYPE       MOBILEALERTS
    test_MSGCNT 1
    test_TIME  2017-12-02 00:06:36
+   OLDREADINGS:
    READINGS:
      2017-12-01 21:58:08   deviceType      MA10450
      2017-12-01 21:58:08   lastRcv         2017-12-01 21:58:08

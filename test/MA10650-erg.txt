@@ -6,6 +6,7 @@ Internals:
    NR         44
    STATE      T: 17.9 C: 7
    TYPE       MOBILEALERTS
+   OLDREADINGS:
    READINGS:
      2017-12-06 22:32:41   deviceType      MA10650
      2017-12-06 22:32:41   eventCounter    7
@@ -37,6 +38,7 @@ Internals:
    TYPE       MOBILEALERTS
    test_MSGCNT 1
    test_TIME  2017-12-13 15:57:42
+   OLDREADINGS:
    READINGS:
      2017-12-06 22:32:41   deviceType      MA10650
      2017-12-06 22:34:10   eventCounter    8
@@ -85,6 +87,7 @@ Internals:
    TYPE       MOBILEALERTS
    test_MSGCNT 2
    test_TIME  2017-12-13 15:57:42
+   OLDREADINGS:
    READINGS:
      2017-12-06 22:32:41   deviceType      MA10650
      2017-12-06 23:32:41   eventCounter    9
@@ -134,6 +137,7 @@ Internals:
    TYPE       MOBILEALERTS
    test_MSGCNT 3
    test_TIME  2017-12-13 15:57:42
+   OLDREADINGS:
    READINGS:
      2017-12-06 22:32:41   deviceType      MA10650
      2017-12-07 22:32:41   eventCounter    10
@@ -184,6 +188,7 @@ Internals:
    TYPE       MOBILEALERTS
    test_MSGCNT 4
    test_TIME  2017-12-14 13:27:20
+   OLDREADINGS:
    READINGS:
      2017-12-06 22:32:41   deviceType      MA10650
      2017-12-07 22:32:41   eventCounter    10
