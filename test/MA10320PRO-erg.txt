@@ -5,6 +5,7 @@ Internals:
    NAME       MA_093a732dda8f
    STATE      In T: 21 H: 41 Out T: 20
    TYPE       MOBILEALERTS
+   OLDREADINGS:
    READINGS:
      2017-11-17 10:05:51   deviceType      MA10320PRO
      2017-11-17 10:05:51   humidity        41
@@ -31,6 +32,7 @@ Internals:
    NAME       MA_093a732dda8f
    STATE      In T: 21 H: 41 Out T: 20
    TYPE       MOBILEALERTS
+   OLDREADINGS:
    READINGS:
      2017-11-17 10:05:51   deviceType      MA10320PRO
      2017-11-17 10:05:51   humidity        41

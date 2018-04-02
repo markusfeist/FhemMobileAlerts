@@ -24,6 +24,7 @@ Internals:
    NR         25
    STATE      T: 18.5
    TYPE       MOBILEALERTS
+   OLDREADINGS:
    READINGS:
      2017-09-24 15:27:45   deviceType      MA10100/MA10101
      2017-09-24 15:27:45   lastRcv         2017-09-24 15:27:45
@@ -45,6 +46,7 @@ Internals:
    NR         33
    STATE      T: 21.9 H: 72
    TYPE       MOBILEALERTS
+   OLDREADINGS:
    READINGS:
      2017-09-24 15:30:19   deviceType      MA10200
      2017-09-24 15:30:19   humidity        72
