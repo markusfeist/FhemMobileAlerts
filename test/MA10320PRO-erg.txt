@@ -53,3 +53,34 @@ Attributes:
    expert     4
    room       MOBILEALERTS
    timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        093a732dda8f 1 1 1 1
+   DeviceID   093a732dda8f
+   LASTInputDev test
+   MSGCNT     1
+   NAME       MA_093a732dda8f
+   STATE      In T: 22 H: 42 Out T: 21
+   TYPE       MOBILEALERTS
+   corrHumidity 1
+   corrHumidityOut 1
+   corrTemperature 1
+   corrTemperatureOut 1
+   READINGS:
+     2017-11-17 10:05:51   deviceType      MA10320PRO
+     2017-11-17 10:05:51   humidity        42
+     2017-11-17 10:05:51   humidityString  42%
+     2017-11-17 10:05:51   lastRcv         2017-11-17 10:05:51
+     2017-11-17 10:05:51   prevHumidityIn  44
+     2017-11-17 10:05:51   prevTemperatureIn 21.8
+     2017-11-17 10:05:51   prevTemperatureOut 21
+     2017-11-17 10:05:51   state           In T: 22 H: 42 Out T: 21
+     2017-11-17 10:05:51   temperatureIn   22
+     2017-11-17 10:05:51   temperatureOut  21
+     2017-11-17 10:05:51   temperatureStringIn 22°C
+     2017-11-17 10:05:51   temperatureStringOut 21°C
+     2017-11-17 10:05:51   triggered       0
+     2017-11-17 10:05:51   txCounter       10130
+Attributes:
+   expert     4
