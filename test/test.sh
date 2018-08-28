@@ -24,5 +24,11 @@ diff <( grep -v -f $MY_PATH/$1-ign.txt -x <(echo "$AUSGABE")) <( grep -v -f $MY_
     exit 1
 }
 echo "- Keine Differenz erkannt"
+grep "PERL WARNING" /opt/fhem/log/fhem-*.log | grep MOBILE > /dev/null && {
+    echo "PERL WARNING in Log:"
+    grep "PERL WARNING" /opt/fhem/log/fhem-*.log
+    echo "=== Ende Test $1: Fehler ==="
+    exit 1    
+}
 echo "=== Ende Test $1: OK ==="
 exit 0

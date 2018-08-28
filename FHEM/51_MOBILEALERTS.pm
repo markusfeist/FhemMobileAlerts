@@ -279,7 +279,8 @@ sub MOBILEALERTS_Parse_ce ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperature =
-      MOBILEALERTS_decodeTemperature($temperature) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperature) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature", $temperature );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString",
         MOBILEALERTS_temperatureToString($temperature) );
@@ -303,7 +304,8 @@ sub MOBILEALERTS_Parse_0f_d2 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperatureIn =
-      MOBILEALERTS_decodeTemperature($temperatureIn) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperatureIn) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureIn",
         $temperatureIn );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureInString",
@@ -343,11 +345,13 @@ sub MOBILEALERTS_Parse_d2 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperature =
-      MOBILEALERTS_decodeTemperature($temperature) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperature) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature", $temperature );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString",
         MOBILEALERTS_temperatureToString($temperature) );
-    $humidity = MOBILEALERTS_decodeHumidity($humidity) + $hash->{".corrHumidity"};
+    $humidity =
+      MOBILEALERTS_decodeHumidity($humidity) + $hash->{".corrHumidity"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidity", $humidity );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidityString",
         MOBILEALERTS_humidityToString($humidity) );
@@ -380,11 +384,13 @@ sub MOBILEALERTS_Parse_d4 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperature =
-      MOBILEALERTS_decodeTemperature($temperature) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperature) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature", $temperature );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString",
         MOBILEALERTS_temperatureToString($temperature) );
-    $humidity = MOBILEALERTS_decodeHumidity($humidity) + $hash->{".corrHumidity"};
+    $humidity =
+      MOBILEALERTS_decodeHumidity($humidity) + $hash->{".corrHumidity"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidity", $humidity );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidityString",
         MOBILEALERTS_humidityToString($humidity) );
@@ -416,7 +422,8 @@ sub MOBILEALERTS_Parse_05_da ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperatureIn =
-      MOBILEALERTS_decodeTemperature($temperatureIn) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperatureIn) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureIn",
         $temperatureIn );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureStringIn",
@@ -478,7 +485,8 @@ sub MOBILEALERTS_Parse_da ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperatureIn =
-      MOBILEALERTS_decodeTemperature($temperatureIn) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperatureIn) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureIn",
         $temperatureIn );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureInString",
@@ -545,7 +553,8 @@ sub MOBILEALERTS_Parse_e1 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperature =
-      MOBILEALERTS_decodeTemperature($temperature) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperature) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature", $temperature );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString",
         MOBILEALERTS_temperatureToString($temperature) );
@@ -624,7 +633,8 @@ sub MOBILEALERTS_Parse_d8 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperature =
-      MOBILEALERTS_decodeTemperature($temperature) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperature) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature", $temperature );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString",
         MOBILEALERTS_temperatureToString($temperature) );
@@ -638,7 +648,8 @@ sub MOBILEALERTS_Parse_d8 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperature",
         $prevTemperature );
     $prevHumidity =
-      MOBILEALERTS_decodeHumidityDecimal($prevHumidity) + $hash->{".corrHumidity"};
+      MOBILEALERTS_decodeHumidityDecimal($prevHumidity) +
+      $hash->{".corrHumidity"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevHumidity", $prevHumidity );
     $prevTemperature2 = MOBILEALERTS_decodeTemperature($prevTemperature2) +
       $hash->{".corrTemperature"};
@@ -710,11 +721,13 @@ sub MOBILEALERTS_Parse_d9 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperature =
-      MOBILEALERTS_decodeTemperature($temperature) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperature) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature", $temperature );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString",
         MOBILEALERTS_temperatureToString($temperature) );
-    $humidity = MOBILEALERTS_decodeHumidity($humidity) + $hash->{".corrHumidity"};
+    $humidity =
+      MOBILEALERTS_decodeHumidity($humidity) + $hash->{".corrHumidity"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidity", $humidity );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidityString",
         MOBILEALERTS_humidityToString($humidity) );
@@ -773,7 +786,8 @@ sub MOBILEALERTS_Parse_d6 ($$) {
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
     $temperatureIn =
-      MOBILEALERTS_decodeTemperature($temperatureIn) + $hash->{".corrTemperature"};
+      MOBILEALERTS_decodeTemperature($temperatureIn) +
+      $hash->{".corrTemperature"};
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureIn",
         $temperatureIn );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureStringIn",
