@@ -6,6 +6,7 @@ Internals:
    PORT       9001
    STATE      Initialized
    TYPE       MOBILEALERTSGW
+   READINGS:
 Attributes:
    forward    0
    verbose    5

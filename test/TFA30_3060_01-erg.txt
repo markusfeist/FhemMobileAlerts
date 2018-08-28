@@ -1,0 +1,84 @@
+Internals:
+   CFGFN      
+   DEF        11ffffffffff
+   DeviceID   11ffffffffff
+   NAME       MA_11ffffffffff
+   NR         60
+   STATE      In T: 23.5 H: 60 1 T: 23.8 H: 60 2 T: 18.8 H: 81 3 T: 19.9 H: 75
+   TYPE       MOBILEALERTS
+   OLDREADINGS:
+   READINGS:
+     2018-08-18 08:58:47   deviceType      TFA30.3060.01.IT
+     2018-08-18 08:58:47   humidity1       60
+     2018-08-18 08:58:47   humidity2       81
+     2018-08-18 08:58:47   humidity3       75
+     2018-08-18 08:58:47   humidityIn      60
+     2018-08-18 08:58:47   humidityString1 60%
+     2018-08-18 08:58:47   humidityString2 81%
+     2018-08-18 08:58:47   humidityString3 75%
+     2018-08-18 08:58:47   humidityStringIn 60%
+     2018-08-18 08:58:47   lastRcv         2018-08-18 08:58:47
+     2018-08-18 08:58:47   state           In T: 23.5 H: 60 1 T: 23.8 H: 60 2 T: 18.8 H: 81 3 T: 19.9 H: 75
+     2018-08-18 08:58:47   temperature1    23.8
+     2018-08-18 08:58:47   temperature2    18.8
+     2018-08-18 08:58:47   temperature3    19.9
+     2018-08-18 08:58:47   temperatureIn   23.5
+     2018-08-18 08:58:47   temperatureString1 23.8°C
+     2018-08-18 08:58:47   temperatureString2 18.8°C
+     2018-08-18 08:58:47   temperatureString3 19.9°C
+     2018-08-18 08:58:47   temperatureStringIn 23.5°C
+     2018-08-18 08:58:47   triggered       0
+     2018-08-18 08:58:47   txCounter       4859
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        11ffffffffff
+   DeviceID   11ffffffffff
+   LASTInputDev test
+   MSGCNT     1
+   NAME       MA_11ffffffffff
+   NR         60
+   STATE      In T: 23.5 H: 60 1 T: 23.8 H: 60 2 T: 18.8 H: 81 3 T: 19.9 H: 75
+   TYPE       MOBILEALERTS
+   test_MSGCNT 1
+   test_TIME  2018-08-28 16:30:47
+   OLDREADINGS:
+   READINGS:
+     2018-08-18 08:58:47   deviceType      TFA30.3060.01.IT
+     2018-08-18 08:58:47   humidity1       60
+     2018-08-18 08:58:47   humidity2       81
+     2018-08-18 08:58:47   humidity3       75
+     2018-08-18 08:58:47   humidityIn      60
+     2018-08-18 08:58:47   humidityString1 60%
+     2018-08-18 08:58:47   humidityString2 81%
+     2018-08-18 08:58:47   humidityString3 75%
+     2018-08-18 08:58:47   humidityStringIn 60%
+     2018-08-18 08:58:47   lastRcv         2018-08-18 08:58:47
+     2018-08-18 08:58:47   prevHumidity1   60
+     2018-08-18 08:58:47   prevHumidity2   81
+     2018-08-18 08:58:47   prevHumidity3   75
+     2018-08-18 08:58:47   prevHumidityIn  60
+     2018-08-18 08:58:47   prevTemperature1 23.8
+     2018-08-18 08:58:47   prevTemperature2 18.8
+     2018-08-18 08:58:47   prevTemperature3 19.9
+     2018-08-18 08:58:47   prevTemperatureIn 23.5
+     2018-08-18 08:58:47   state           In T: 23.5 H: 60 1 T: 23.8 H: 60 2 T: 18.8 H: 81 3 T: 19.9 H: 75
+     2018-08-18 08:58:47   temperature1    23.8
+     2018-08-18 08:58:47   temperature2    18.8
+     2018-08-18 08:58:47   temperature3    19.9
+     2018-08-18 08:58:47   temperatureIn   23.5
+     2018-08-18 08:58:47   temperatureString1 23.8°C
+     2018-08-18 08:58:47   temperatureString2 18.8°C
+     2018-08-18 08:58:47   temperatureString3 19.9°C
+     2018-08-18 08:58:47   temperatureStringIn 23.5°C
+     2018-08-18 08:58:47   triggered       0
+     2018-08-18 08:58:47   txCounter       4859
+Attributes:
+   event-on-change-reading .*
+   expert     4
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
