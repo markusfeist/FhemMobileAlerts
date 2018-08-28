@@ -37,37 +37,37 @@ sub MOBILEALERTS_Define($$) {
     my ( $hash, $def ) = @_;
     my (
         $name,      $type,        $deviceID,   $corrTempIn,
-        $corrHumIn, $corrTempOut, $corrHumOut, $corrTemp3,
-        $corrHum3,  $corrTemp4,   $corrHum4
+        $corrHumIn, $corrTempOut, $corrHumOut, $corrTemp2,
+        $corrHum2,  $corrTemp3,   $corrHum3
     ) = split( "[ \t]+", $def );
     Log3 $name, 3, "$name MOBILEALERTS: DeviceID $deviceID";
     $corrTempIn  = 0 if ( !defined($corrTempIn) );
     $corrHumIn   = 0 if ( !defined($corrHumIn) );
     $corrTempOut = 0 if ( !defined($corrTempOut) );
     $corrHumOut  = 0 if ( !defined($corrHumOut) );
+    $corrTemp2   = 0 if ( !defined($corrTemp2) );
+    $corrHum2    = 0 if ( !defined($corrHum2) );
     $corrTemp3   = 0 if ( !defined($corrTemp3) );
     $corrHum3    = 0 if ( !defined($corrHum3) );
-    $corrTemp4   = 0 if ( !defined($corrTemp4) );
-    $corrHum4    = 0 if ( !defined($corrHum4) );
     $corrTempIn =~ s/,/./g;
     $corrHumIn =~ s/,/./g;
     $corrTempOut =~ s/,/./g;
     $corrHumOut =~ s/,/./g;
+    $corrTemp2 =~ s/,/./g;
+    $corrHum2 =~ s/,/./g;
     $corrTemp3 =~ s/,/./g;
     $corrHum3 =~ s/,/./g;
-    $corrTemp4 =~ s/,/./g;
-    $corrHum4 =~ s/,/./g;
     return
-"Usage: define <name> MOBILEALERTS <id-12 stellig hex > <opt. corrTempIn> <opt. corrHumIn> <opt. corrTempOut/2> <opt. corrHumOut/2> <opt. corrTemp3> <opt. corrHum3> <opt. corrTemp4> <opt. corrHum4>"
+"Usage: define <name> MOBILEALERTS <id-12 stellig hex > <opt. corrTempIn> <opt. corrHumIn> <opt. corrTempOut/1> <opt. corrHumOut/1> <opt. corrTemp2> <opt. corrHum2> <opt. corrTemp3> <opt. corrHum3>"
       if ( ( $deviceID !~ m/^[0-9a-f]{12}$/ )
         || ( $corrTempIn !~ m/^-?[0-9]*\.?[0-9]*$/ )
         || ( $corrHumIn !~ m/^-?[0-9]*\.?[0-9]*$/ )
         || ( $corrTempOut !~ m/^-?[0-9]*\.?[0-9]*$/ )
         || ( $corrHumOut !~ m/^-?[0-9]*\.?[0-9]*$/ )
+        || ( $corrTemp2 !~ m/^-?[0-9]*\.?[0-9]*$/ )
+        || ( $corrHum2 !~ m/^-?[0-9]*\.?[0-9]*$/ )
         || ( $corrTemp3 !~ m/^-?[0-9]*\.?[0-9]*$/ )
-        || ( $corrHum3 !~ m/^-?[0-9]*\.?[0-9]*$/ )
-        || ( $corrTemp4 !~ m/^-?[0-9]*\.?[0-9]*$/ )
-        || ( $corrHum4 !~ m/^-?[0-9]*\.?[0-9]*$/ ) );
+        || ( $corrHum3 !~ m/^-?[0-9]*\.?[0-9]*$/ ) );
 
     $modules{MOBILEALERTS}{defptr}{$deviceID} = $hash;
     $hash->{DeviceID} = $deviceID;
@@ -83,18 +83,18 @@ sub MOBILEALERTS_Define($$) {
     delete $hash->{corrHumidtyOut};
     $hash->{corrHumidityOut} = $corrHumOut + 0 if ( $corrHumOut != 0 );
     $hash->{".corrHumidityOut"} = $corrHumOut + 0;
+    delete $hash->{corrTemperature2};
+    $hash->{corrTemperature2} = $corrTemp2 + 0 if ( $corrTemp2 != 0 );
+    $hash->{".corrTemperature2"} = $corrTemp2 + 0;
+    delete $hash->{corrHumidty2};
+    $hash->{corrHumidity2} = $corrHum2 + 0 if ( $corrHum2 != 0 );
+    $hash->{".corrHumidity2"} = $corrHum2 + 0;
     delete $hash->{corrTemperature3};
     $hash->{corrTemperature3} = $corrTemp3 + 0 if ( $corrTemp3 != 0 );
     $hash->{".corrTemperature3"} = $corrTemp3 + 0;
     delete $hash->{corrHumidty3};
     $hash->{corrHumidity3} = $corrHum3 + 0 if ( $corrHum3 != 0 );
     $hash->{".corrHumidity3"} = $corrHum3 + 0;
-    delete $hash->{corrTemperature4};
-    $hash->{corrTemperature4} = $corrTemp4 + 0 if ( $corrTemp4 != 0 );
-    $hash->{".corrTemperature4"} = $corrTemp4 + 0;
-    delete $hash->{corrHumidty4};
-    $hash->{corrHumidity4} = $corrHum4 + 0 if ( $corrHum4 != 0 );
-    $hash->{".corrHumidity4"} = $corrHum4 + 0;
 
     if (   ( exists $modules{MOBILEALERTS}{AutoCreateMessages} )
         && ( exists $modules{MOBILEALERTS}{AutoCreateMessages}{$deviceID} ) )
@@ -823,6 +823,139 @@ sub MOBILEALERTS_Parse_d6 ($$) {
           . $temperatureOut );
 }
 
+sub MOBILEALERTS_Parse_11_ea ($$) {
+    my ( $hash, $message ) = @_;
+    MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
+        "TFA30.3060.01.IT" );
+    MOBILEALERTS_Parse_ea( $hash, $message );
+}
+
+sub MOBILEALERTS_Parse_ea ($$) {
+    my ( $hash, $message ) = @_;
+    my (
+        $txCounter,         $temperature1,     $humidity1,
+        $temperature2,      $humidity2,        $temperature3,
+        $humidity3,         $temperatureIn,    $humidityIn,
+        $prevTemperature1,  $prevHumidity1,    $prevTemperature2,
+        $prevHumidity2,     $prevTemperature3, $prevHumidity3,
+        $prevTemperatureIn, $prevHumidityIn
+    ) = unpack( "nnnnnnnnnnnnnnnnn", $message );
+
+    # txCounter
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
+        MOBILEALERTS_decodeTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
+        MOBILEALERTS_triggeredTxCounter($txCounter) );
+
+    # Sensor 1
+    $temperature1 = MOBILEALERTS_decodeTemperature($temperature1) +
+      $hash->{".corrTemperatureOut"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature1", $temperature1 );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString1",
+        MOBILEALERTS_temperatureToString($temperature1) );
+
+    $humidity1 =
+      MOBILEALERTS_decodeHumidity($humidity1) + $hash->{".corrHumidityOut"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidity1", $humidity1 );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidityString1",
+        MOBILEALERTS_humidityToString($humidity1) );
+
+    # Sensor 2
+    $temperature2 = MOBILEALERTS_decodeTemperature($temperature2) +
+      $hash->{".corrTemperature2"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature2", $temperature2 );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString2",
+        MOBILEALERTS_temperatureToString($temperature2) );
+
+    $humidity2 =
+      MOBILEALERTS_decodeHumidity($humidity2) + $hash->{".corrHumidity2"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidity2", $humidity2 );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidityString2",
+        MOBILEALERTS_humidityToString($humidity2) );
+
+    # Sensor 3
+    $temperature3 = MOBILEALERTS_decodeTemperature($temperature3) +
+      $hash->{".corrTemperature3"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperature3", $temperature3 );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureString3",
+        MOBILEALERTS_temperatureToString($temperature3) );
+
+    $humidity3 =
+      MOBILEALERTS_decodeHumidity($humidity3) + $hash->{".corrHumidity3"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidity3", $humidity3 );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidityString3",
+        MOBILEALERTS_humidityToString($humidity3) );
+
+    # Sensor In
+    $temperatureIn = MOBILEALERTS_decodeTemperature($temperatureIn) +
+      $hash->{".corrTemperature"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureIn",
+        $temperatureIn );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "temperatureStringIn",
+        MOBILEALERTS_temperatureToString($temperatureIn) );
+
+    $humidityIn =
+      MOBILEALERTS_decodeHumidity($humidityIn) + $hash->{".corrHumidity"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidityIn", $humidityIn );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "humidityStringIn",
+        MOBILEALERTS_humidityToString($humidityIn) );
+
+    # Sensor1 prev
+    $prevTemperature1 = MOBILEALERTS_decodeTemperature($prevTemperature1) +
+      $hash->{".corrTemperatureOut"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperature1",
+        $prevTemperature1 );
+    $prevHumidity1 =
+      MOBILEALERTS_decodeHumidity($prevHumidity1) + $hash->{".corrHumidityOut"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevHumidity1",
+        $prevHumidity1 );
+
+    # Sensor2 prev
+    $prevTemperature2 = MOBILEALERTS_decodeTemperature($prevTemperature2) +
+      $hash->{".corrTemperature2"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperature2",
+        $prevTemperature2 );
+    $prevHumidity2 =
+      MOBILEALERTS_decodeHumidity($prevHumidity2) + $hash->{".corrHumidity2"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevHumidity2",
+        $prevHumidity2 );
+
+    # Sensor3 prev
+    $prevTemperature3 = MOBILEALERTS_decodeTemperature($prevTemperature3) +
+      $hash->{".corrTemperature3"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperature3",
+        $prevTemperature3 );
+    $prevHumidity3 =
+      MOBILEALERTS_decodeHumidity($prevHumidity3) + $hash->{".corrHumidity3"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevHumidity3",
+        $prevHumidity3 );
+
+    # Sensor In prev
+    $prevTemperatureIn = MOBILEALERTS_decodeTemperature($prevTemperatureIn) +
+      $hash->{".corrTemperature"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevTemperatureIn",
+        $prevTemperatureIn );
+    $prevHumidityIn =
+      MOBILEALERTS_decodeHumidity($prevHumidityIn) + $hash->{".corrHumidity"};
+    MOBILEALERTS_readingsBulkUpdate( $hash, 1, "prevHumidityIn",
+        $prevHumidityIn );
+
+    # state
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "state",
+            "In T: "
+          . $temperatureIn . " H: "
+          . $humidityIn
+          . " 1 T: "
+          . $temperature1 . " H: "
+          . $humidity1
+          . " 2 T: "
+          . $temperature2 . " H: "
+          . $humidity2
+          . " 3 T: "
+          . $temperature3 . " H: "
+          . $humidity3 );
+}
+
 sub MOBILEALERTS_decodeTxCounter($) {
     my ($txCounter) = @_;
     return $txCounter & 0x3FFF;
@@ -1143,14 +1276,14 @@ sub MOBILEALERTS_ActionDetector($) {
   The MOBILEALERTS is a fhem module for the german MobileAlerts devices and TFA WEATHERHUB devices.
   <br><br>
   The fhem module represents a MobileAlerts device. The connection is provided by the <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> module.
-  Currently supported: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000<br>
+  Currently supported: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000, TFA30.3060.01.IT<br>
   Supported but untested: ./.<br>
   <br>
 
   <a name="MOBILEALERTSdefine"></a>
   <b>Define</b>
   <ul>
-    <code>define &lt;name&gt; MOBILEALERTS &lt;deviceID&gt; &lt;corrTempIn&gt; &lt;corrHumIn&gt; &lt;corrTempOut&gt; &lt;corrHumOut&gt; &lt;corrTemp3&gt; &lt;corrHum3&gt; &lt;corrTemp4&gt; &lt;corrHum4&gt;</code><br>
+    <code>define &lt;name&gt; MOBILEALERTS &lt;deviceID&gt; &lt;corrTempIn&gt; &lt;corrHumIn&gt; &lt;corrTempOut&gt; &lt;corrHumOut&gt; &lt;corrTemp2&gt; &lt;corrHum2&gt; &lt;corrTemp3&gt; &lt;corrHum3&gt;</code><br>
     <br>
     deviceID is the sensorcode on the sensor.
     <br>
@@ -1158,17 +1291,17 @@ sub MOBILEALERTS_ActionDetector($) {
     <br>
     corrHumIn optional: correction humidity
     <br>
-    corrTempOut optional: correction temperature out / 2
+    corrTempOut optional: correction temperature out / sensor 1
     <br>
-    corrHumOut optional: correction humidity out / 2
+    corrHumOut optional: correction humidity out / sensor 1
     <br>
-    corrTemp3 optional: correction temperature 3
+    corrTemp3 optional: correction temperature sensor 2
     <br>
-    corrHum3 optional: correction humidity 3
+    corrHum3 optional: correction humidity sensor 2
    <br>
-    corrTemp4 optional: correction temperature 4
+    corrTemp4 optional: correction temperature sensor 3
     <br>
-    corrHum4 optional: correction humidity 4
+    corrHum4 optional: correction humidity sensor 3
   </ul>
   <br>
 
@@ -1238,14 +1371,14 @@ sub MOBILEALERTS_ActionDetector($) {
   <br><br>
   Dieses FHEM Modul stellt jeweils ein MobileAlerts Ger&auml;t dar. Die Verbindung wird durch das 
   <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> Modul bereitgestellt.<br>
-  Aktuell werden unterst&uuml;zt: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000<br>
+  Aktuell werden unterst&uuml;zt: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000, TFA30.3060.01.IT<br>
   Unterst&uuml;zt aber ungetestet: ./.<br>
   <br>
 
   <a name="MOBILEALERTSdefine"></a>
   <b>Define</b>
   <ul>
-    <code>define &lt;name&gt; MOBILEALERTS &lt;deviceID&gt; &lt;corrTempIn&gt; &lt;corrHumIn&gt; &lt;corrTempOut&gt; &lt;corrHumOut&gt; &lt;corrTemp3&gt; &lt;corrHum3&gt; &lt;corrTemp4&gt; &lt;corrHum4&gt;</code><br>
+    <code>define &lt;name&gt; MOBILEALERTS &lt;deviceID&gt; &lt;corrTempIn&gt; &lt;corrHumIn&gt; &lt;corrTempOut&gt; &lt;corrHumOut&gt; &lt;corrTemp2&gt; &lt;corrHum2&gt; &lt;corrTemp3&gt; &lt;corrHum3&gt;</code><br>
     <br>
     deviceID ist der Sensorcode auf dem Sensor.
     <br>
@@ -1253,17 +1386,17 @@ sub MOBILEALERTS_ActionDetector($) {
     <br>
     corrHumIn optional: Korrekturwert f&uuml;r die Luftfeuchte
     <br>
-    corrTempOut optional: Korrekturwert f&uuml;r Temperatur Out / 2
+    corrTempOut optional: Korrekturwert f&uuml;r Temperatur Out / Sensor 1
     <br>
-    corrHumOut optional: Korrekturwert f&uuml;r die Luftfeuchte Out / 2
+    corrHumOut optional: Korrekturwert f&uuml;r die Luftfeuchte Out / Sensor 1
     <br>
-    corrTemp3 optional: Korrekturwert f&uuml;r Temperatur 3
+    corrTemp2 optional: Korrekturwert f&uuml;r Temperatur Sensor 2
     <br>
-    corrHum3 optional: Korrekturwert f&uuml;r die Luftfeuchte 3
+    corrHum2 optional: Korrekturwert f&uuml;r die Luftfeuchte Sensor 2
     <br>
-    corrTemp4 optional: Korrekturwert f&uuml;r Temperatur 4
+    corrTemp3 optional: Korrekturwert f&uuml;r Temperatur Sensor 3
     <br>
-    corrHum4 optional: Korrekturwert f&uuml;r die Luftfeuchte 4       
+    corrHum3 optional: Korrekturwert f&uuml;r die Luftfeuchte Sensor 3
   </ul>
   <br>
 
