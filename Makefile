@@ -18,11 +18,12 @@ test: deploylocal
 	@echo === Starte Tests ===
 	test/test.sh 01
 	test/test.sh 02
+	test/test.sh MA10120PRO	
 	test/test.sh MA10320PRO
 	test/test.sh MA10650
 	test/test.sh MA10660
 	test/test.sh MA10450
 	test/test.sh TFA30_3312_02
 	test/test.sh WL2000
-	test/test.sh TFA30_3060_01
+	test/test.sh TFA30_3060_01	
 	@echo === Alles Tests ok beendet ===
