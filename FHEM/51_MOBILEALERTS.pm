@@ -1019,7 +1019,7 @@ sub MOBILEALERTS_decodeTemperature($) {
     $temperature &= 0x7ff;
 
     #Negativ Values
-    return ( 0x800 - ( $temperature & 0x7ff ) ) * -0.1
+    return ( 0x800 - $temperature ) * -0.1
       if ( $temperature > 1100 );
 
     #Positiv Values
