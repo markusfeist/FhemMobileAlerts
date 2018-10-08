@@ -1,8 +1,8 @@
 Internals:
    CFGFN      
-   DEF        093a732dda8f
-   DeviceID   093a732dda8f
-   NAME       MA_093a732dda8f
+   DEF        09ffffffffff
+   DeviceID   09ffffffffff
+   NAME       MA_09ffffffffff
    STATE      In T: 21 H: 41 Out T: 20
    TYPE       MOBILEALERTS
    OLDREADINGS:
@@ -25,11 +25,11 @@ Attributes:
 
 Internals:
    CFGFN      
-   DEF        093a732dda8f
-   DeviceID   093a732dda8f
+   DEF        09ffffffffff
+   DeviceID   09ffffffffff
    LASTInputDev test
    MSGCNT     1
-   NAME       MA_093a732dda8f
+   NAME       MA_09ffffffffff
    STATE      In T: 21 H: 41 Out T: 20
    TYPE       MOBILEALERTS
    OLDREADINGS:
@@ -56,11 +56,11 @@ Attributes:
 
 Internals:
    CFGFN      
-   DEF        093a732dda8f 1 1 1 1
-   DeviceID   093a732dda8f
+   DEF        09ffffffffff 1 1 1 1
+   DeviceID   09ffffffffff
    LASTInputDev test
    MSGCNT     1
-   NAME       MA_093a732dda8f
+   NAME       MA_09ffffffffff
    STATE      In T: 22 H: 42 Out T: 21
    TYPE       MOBILEALERTS
    corrHumidity 1
@@ -84,3 +84,179 @@ Internals:
      2017-11-17 10:05:51   txCounter       10130
 Attributes:
    expert     4
+
+Internals:
+   CFGFN      
+   DEF        09ffffffffff
+   DeviceID   09ffffffffff
+   NAME       MA_09ffffffffff
+   NR         47
+   STATE      In T: 24.1 H: 46 Out T: 104.7
+   TYPE       MOBILEALERTS
+   OLDREADINGS:
+   READINGS:
+     2018-10-07 13:56:36   deviceType      MA10320PRO
+     2018-10-07 13:56:36   humidity        46
+     2018-10-07 13:56:36   humidityString  46%
+     2018-10-07 13:56:36   lastRcv         2018-10-07 13:56:36
+     2018-10-07 13:56:36   state           In T: 24.1 H: 46 Out T: 104.7
+     2018-10-07 13:56:36   temperatureIn   24.1
+     2018-10-07 13:56:36   temperatureOut  104.7
+     2018-10-07 13:56:36   temperatureStringIn 24.1°C
+     2018-10-07 13:56:36   temperatureStringOut 104.7°C
+     2018-10-07 13:56:36   triggered       0
+     2018-10-07 13:56:36   txCounter       14427
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        09ffffffffff
+   DeviceID   09ffffffffff
+   LASTInputDev test
+   MSGCNT     1
+   NAME       MA_09ffffffffff
+   NR         47
+   STATE      In T: 24.6 H: 46 Out T: 103.3
+   TYPE       MOBILEALERTS
+   test_MSGCNT 1
+   test_TIME  2018-10-08 19:48:26
+   OLDREADINGS:
+   READINGS:
+     2018-10-07 13:56:36   deviceType      MA10320PRO
+     2018-10-07 13:56:36   humidity        46
+     2018-10-07 13:56:36   humidityString  46%
+     2018-10-07 14:00:12   lastRcv         2018-10-07 14:00:12
+     2018-10-07 14:00:12   state           In T: 24.6 H: 46 Out T: 103.3
+     2018-10-07 14:00:12   temperatureIn   24.6
+     2018-10-07 14:00:12   temperatureOut  103.3
+     2018-10-07 14:00:12   temperatureStringIn 24.6°C
+     2018-10-07 14:00:12   temperatureStringOut 103.3°C
+     2018-10-07 13:56:36   triggered       0
+     2018-10-07 14:00:12   txCounter       14428
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        09ffffffffff
+   DeviceID   09ffffffffff
+   LASTInputDev test
+   MSGCNT     2
+   NAME       MA_09ffffffffff
+   NR         47
+   STATE      In T: 25 H: 46 Out T: 103.1
+   TYPE       MOBILEALERTS
+   test_MSGCNT 2
+   test_TIME  2018-10-08 19:48:26
+   OLDREADINGS:
+   READINGS:
+     2018-10-07 13:56:36   deviceType      MA10320PRO
+     2018-10-07 13:56:36   humidity        46
+     2018-10-07 13:56:36   humidityString  46%
+     2018-10-07 14:03:47   lastRcv         2018-10-07 14:03:47
+     2018-10-07 14:03:47   state           In T: 25 H: 46 Out T: 103.1
+     2018-10-07 14:03:47   temperatureIn   25
+     2018-10-07 14:03:47   temperatureOut  103.1
+     2018-10-07 14:03:47   temperatureStringIn 25°C
+     2018-10-07 14:03:47   temperatureStringOut 103.1°C
+     2018-10-07 13:56:36   triggered       0
+     2018-10-07 14:03:47   txCounter       14429
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        09ffffffffff
+   DeviceID   09ffffffffff
+   LASTInputDev test
+   MSGCNT     3
+   NAME       MA_09ffffffffff
+   NR         47
+   STATE      In T: 25.5 H: 45 Out T: 104.2
+   TYPE       MOBILEALERTS
+   test_MSGCNT 3
+   test_TIME  2018-10-08 19:48:26
+   OLDREADINGS:
+   READINGS:
+     2018-10-07 13:56:36   deviceType      MA10320PRO
+     2018-10-07 14:07:22   humidity        45
+     2018-10-07 14:07:22   humidityString  45%
+     2018-10-07 14:07:22   lastRcv         2018-10-07 14:07:22
+     2018-10-07 14:07:22   state           In T: 25.5 H: 45 Out T: 104.2
+     2018-10-07 14:07:22   temperatureIn   25.5
+     2018-10-07 14:07:22   temperatureOut  104.2
+     2018-10-07 14:07:22   temperatureStringIn 25.5°C
+     2018-10-07 14:07:22   temperatureStringOut 104.2°C
+     2018-10-07 13:56:36   triggered       0
+     2018-10-07 14:07:22   txCounter       14430
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        09ffffffffff
+   DeviceID   09ffffffffff
+   LASTInputDev test
+   MSGCNT     4
+   NAME       MA_09ffffffffff
+   NR         47
+   STATE      In T: 25.8 H: 44 Out T: 103.2
+   TYPE       MOBILEALERTS
+   test_MSGCNT 4
+   test_TIME  2018-10-08 19:48:26
+   OLDREADINGS:
+   READINGS:
+     2018-10-07 13:56:36   deviceType      MA10320PRO
+     2018-10-07 14:10:58   humidity        44
+     2018-10-07 14:10:58   humidityString  44%
+     2018-10-07 14:10:58   lastRcv         2018-10-07 14:10:58
+     2018-10-07 14:10:58   state           In T: 25.8 H: 44 Out T: 103.2
+     2018-10-07 14:10:58   temperatureIn   25.8
+     2018-10-07 14:10:58   temperatureOut  103.2
+     2018-10-07 14:10:58   temperatureStringIn 25.8°C
+     2018-10-07 14:10:58   temperatureStringOut 103.2°C
+     2018-10-07 13:56:36   triggered       0
+     2018-10-07 14:10:58   txCounter       14431
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        09ffffffffff
+   DeviceID   09ffffffffff
+   LASTInputDev test
+   MSGCNT     5
+   NAME       MA_09ffffffffff
+   NR         47
+   STATE      In T: 26 H: 45 Out T: 103.5
+   TYPE       MOBILEALERTS
+   test_MSGCNT 5
+   test_TIME  2018-10-08 19:50:59
+   OLDREADINGS:
+   READINGS:
+     2018-10-07 13:56:36   deviceType      MA10320PRO
+     2018-10-07 14:14:33   humidity        45
+     2018-10-07 14:14:33   humidityString  45%
+     2018-10-07 14:14:33   lastRcv         2018-10-07 14:14:33
+     2018-10-07 14:14:33   state           In T: 26 H: 45 Out T: 103.5
+     2018-10-07 14:14:33   temperatureIn   26
+     2018-10-07 14:14:33   temperatureOut  103.5
+     2018-10-07 14:14:33   temperatureStringIn 26°C
+     2018-10-07 14:14:33   temperatureStringOut 103.5°C
+     2018-10-07 13:56:36   triggered       0
+     2018-10-07 14:14:33   txCounter       14432
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
