@@ -54,3 +54,36 @@ Attributes:
    expert     4
    room       MOBILEALERTS
    timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        0e137a0f12ff
+   DeviceID   0e137a0f12ff
+   LASTInputDev test
+   MSGCNT     2
+   NAME       MA_0e137a0f12ff
+   NR         59
+   STATE      T: 3 H: 95.4
+   TYPE       MOBILEALERTS
+   test_MSGCNT 2
+   test_TIME  2018-12-10 18:35:17
+   OLDREADINGS:
+   READINGS:
+     2017-12-01 17:52:59   deviceType      TFA30.3312.02
+     2018-11-26 17:29:23   humidity        95.4
+     2018-11-26 17:29:23   humidityString  95.4%
+     2018-11-26 17:29:23   lastRcv         2018-11-26 17:29:23
+     2018-11-26 17:29:23   prevHumidity    95.5
+     2018-11-26 17:29:23   prevHumidity2   95.3
+     2018-11-26 17:29:23   prevTemperature 3
+     2018-11-26 17:29:23   prevTemperature2 3
+     2018-11-26 17:29:23   state           T: 3 H: 95.4
+     2018-11-26 17:29:23   temperature     3
+     2018-11-26 17:29:23   temperatureString 3°C
+     2018-11-26 17:29:23   triggered       0
+     2018-11-26 17:29:23   txCounter       15541
+Attributes:
+   event-on-change-reading .*
+   expert     4
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
