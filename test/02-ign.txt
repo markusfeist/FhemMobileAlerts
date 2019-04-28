@@ -1,5 +1,6 @@
    NR         .*
    test_.*
+   FUUID .*
 .*GW_001D8C0E2EEF_.*
 .*Gateways.*
      .*   state           Initialized
