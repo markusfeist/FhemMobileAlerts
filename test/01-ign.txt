@@ -1,3 +1,4 @@
    NR         .*
    test_.*
+   FUUID .*
      .*   state           Initialized
