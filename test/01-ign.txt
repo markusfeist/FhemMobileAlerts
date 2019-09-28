@@ -1,4 +1,5 @@
    NR         .*
+   FD .*
    test_.*
    FUUID .*
      .*   state           Initialized

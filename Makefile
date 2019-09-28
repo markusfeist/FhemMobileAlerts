@@ -4,15 +4,18 @@
 
 deploylocal: /opt/fhem/FHEM/50_MOBILEALERTSGW.pm /opt/fhem/FHEM/51_MOBILEALERTS.pm
 	sudo /etc/init.d/fhem stop || true
+	sudo systemctl stop fhem || true
 	sudo rm /opt/fhem/log/fhem-*.log || true
 	sudo cp test/fhem.cfg /opt/fhem/fhem.cfg
 	sudo rm /opt/fhem/log/fhem.save || true
-	sudo TZ=Europe/Berlin /etc/init.d/fhem start
+	test -e /etc/init.d/fhem && sudo TZ=Europe/Berlin /etc/init.d/fhem start || true
+	test -e /etc/init.d/fhem || sudo TZ=Europe/Berlin systemctl start fhem
 
 undeploylocal:
 	sudo /etc/init.d/fhem stop
+	sudo systemctl stop fhem || true
 	sudo rm /opt/fhem/FHEM/50_MOBILEALERTSGW.pm /opt/fhem/FHEM/51_MOBILEALERTS.pm
-	sudo TZ=Europe/Berlin /etc/init.d/fhem start
+	cd /opt/fhem && sudo TZ=Europe/Berlin /usr/bin/perl fhem.pl fhem.cfg
 
 test: deploylocal
 	@echo === Starte Tests ===
