@@ -28,5 +28,6 @@ test: deploylocal
 	test/test.sh MA10450
 	test/test.sh TFA30_3312_02
 	test/test.sh WL2000
-	test/test.sh TFA30_3060_01	
+	test/test.sh TFA30_3060_01
+	test/test.sh MA10880
 	@echo === Alles Tests ok beendet ===

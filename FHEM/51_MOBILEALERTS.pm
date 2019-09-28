@@ -350,6 +350,8 @@ sub MOBILEALERTS_Parse_15_ce ($$) {
         my $triggerCnt = ReadingsVal( $channel, "trigger_cnt", "0" );
         $triggerCnt += 1;
         readingsBeginUpdate($channelHash);
+        $channelHash->{".updateTimestamp"}=$hash->{".updateTimestamp"};
+        $channelHash->{".expertMode"}=$hash->{".expertMode"};
         MOBILEALERTS_readingsBulkUpdate( $channelHash, 0, "state",
             $state_name . "_" . $triggerCnt );
         MOBILEALERTS_readingsBulkUpdate( $channelHash, 0, "trigger_cnt",
