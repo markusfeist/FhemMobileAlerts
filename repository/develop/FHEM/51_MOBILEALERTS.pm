@@ -331,6 +331,9 @@ sub MOBILEALERTS_Parse_15_ce ($$) {
     else {
         $state_name = "Unknown";
     }
+    if (($button < 1) || ($button > 4)) {
+        return;
+    }
 
     my $channel = $hash->{ "channel_" . sprintf( "%02d", $button ) };
     if ( !$channel ) {
