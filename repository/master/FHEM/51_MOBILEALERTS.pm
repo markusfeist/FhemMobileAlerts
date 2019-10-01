@@ -10,12 +10,13 @@ use constant MA_RAIN_FACTOR => 0.258;
 sub MOBILEALERTS_Initialize($) {
     my ($hash) = @_;
 
-    $hash->{DefFn}   = "MOBILEALERTS_Define";
-    $hash->{UndefFn} = "MOBILEALERTS_Undef";
-    $hash->{SetFn}   = "MOBILEALERTS_Set";
-    $hash->{AttrFn}  = "MOBILEALERTS_Attr";
-    $hash->{ParseFn} = "MOBILEALERTS_Parse";
-    $hash->{Match}   = "^.*";
+    $hash->{DefFn}    = "MOBILEALERTS_Define";
+    $hash->{UndefFn}  = "MOBILEALERTS_Undef";
+    $hash->{SetFn}    = "MOBILEALERTS_Set";
+    $hash->{AttrFn}   = "MOBILEALERTS_Attr";
+    $hash->{ParseFn}  = "MOBILEALERTS_Parse";
+    $hash->{RenameFn} = "MOBILEALERTS_Rename";
+    $hash->{Match}    = "^.*";
     $hash->{AttrList} =
         "actCycle "
       . "lastMsg:0,1 "
@@ -58,8 +59,8 @@ sub MOBILEALERTS_Define($$) {
     $corrTemp3 =~ s/,/./g;
     $corrHum3 =~ s/,/./g;
     return
-"Usage: define <name> MOBILEALERTS <id-12 stellig hex > <opt. corrTempIn> <opt. corrHumIn> <opt. corrTempOut/1> <opt. corrHumOut/1> <opt. corrTemp2> <opt. corrHum2> <opt. corrTemp3> <opt. corrHum3>"
-      if ( ( $deviceID !~ m/^[0-9a-f]{12}$/ )
+"Usage: define <name> MOBILEALERTS <id-12 stellig hex <_Kanalnummer>> <opt. corrTempIn> <opt. corrHumIn> <opt. corrTempOut/1> <opt. corrHumOut/1> <opt. corrTemp2> <opt. corrHum2> <opt. corrTemp3> <opt. corrHum3>"
+      if ( ( $deviceID !~ m/^[0-9a-f]{12}(_[0-9]{2})?$/ )
         || ( $corrTempIn !~ m/^-?[0-9]*\.?[0-9]*$/ )
         || ( $corrHumIn !~ m/^-?[0-9]*\.?[0-9]*$/ )
         || ( $corrTempOut !~ m/^-?[0-9]*\.?[0-9]*$/ )
@@ -69,8 +70,21 @@ sub MOBILEALERTS_Define($$) {
         || ( $corrTemp3 !~ m/^-?[0-9]*\.?[0-9]*$/ )
         || ( $corrHum3 !~ m/^-?[0-9]*\.?[0-9]*$/ ) );
 
-    $modules{MOBILEALERTS}{defptr}{$deviceID} = $hash;
-    $hash->{DeviceID} = $deviceID;
+    if ( length($deviceID) == 15 ) {    # define a channel
+        my $parentID = substr( $deviceID, 0,  12 );
+        my $chn      = substr( $deviceID, 13, 2 );
+        my $parentHash = $modules{MOBILEALERTS}{defptr}{$parentID};
+        return "please define a device with id:" . $parentID . " first"
+          if ( !$parentHash );
+        my $parentName = $parentHash->{NAME};
+        $hash->{device}               = $parentName;
+        $hash->{chanNo}               = $chn;
+        $parentHash->{"channel_$chn"} = $name;
+    }
+    else {
+        $modules{MOBILEALERTS}{defptr}{$deviceID} = $hash;
+        $hash->{DeviceID} = $deviceID;
+    }
     delete $hash->{corrTemperature};
     $hash->{corrTemperature} = $corrTempIn + 0 if ( $corrTempIn != 0 );
     $hash->{".corrTemperature"} = $corrTempIn + 0;
@@ -113,10 +127,38 @@ sub MOBILEALERTS_Define($$) {
     return undef;
 }
 
+sub MOBILEALERTS_Rename($$$) {    #############################
+    my ( $name, $oldName ) = @_;
+    my $hash = $defs{$name};
+    return if ( $hash->{TYPE} ne "MOBILEALERTS" );
+    if ( $hash->{chanNo} ) {      # we are channel, inform the device
+        my $devName = $hash->{device};
+        my $devHash = $defs{$devName};
+        $devHash->{ "channel_" . $hash->{chanNo} } = $name;
+    }
+    else {                        # we are a device - inform channels if exist
+        foreach ( grep ( /^channel_/, keys %{$hash} ) ) {
+            next if ( !$_ );
+            my $chnHash = $defs{ $hash->{$_} };
+            $chnHash->{device} = $name;
+        }
+    }
+}
+
 sub MOBILEALERTS_Undef($$) {
     my ( $hash, $name ) = @_;
-    delete $modules{MOBILEALERTS}{defptr}{ $hash->{DeviceID} };
     RemoveInternalTimer( $hash, "MOBILEALERTS_CheckRainSensorTimed" );
+    my $chn = $hash->{chanNo};
+    if ($chn) {    # delete a channel
+        my $devName = $hash->{device};
+        my $devHash = $defs{$devName};
+        delete $devHash->{"channel_$chn"} if ($devName);
+    }
+    else {         # delete a device
+        CommandDelete( undef, $hash->{$_} )
+          foreach ( grep( /^channel_/, keys %{$hash} ) );
+        delete $modules{MOBILEALERTS}{defptr}{ $hash->{DeviceID} };
+    }
     return undef;
 }
 
@@ -193,12 +235,12 @@ sub MOBILEALERTS_Parse ($$) {
       unpack( "H2NCH12", $message );
     my $name = $io_hash->{NAME};
 
-    Log3 $name, 5, "$name MOBILELAERTS: Search for Device ID: $deviceID";
+    Log3 $name, 5, "$name MOBILEALERTS: Search for Device ID: $deviceID";
     if ( my $hash = $modules{MOBILEALERTS}{defptr}{$deviceID} ) {
         my $verbose = GetVerbose( $hash->{NAME} );
-        Log3 $name, 5, "$name MOBILELAERTS: Found Device: " . $hash->{NAME};
+        Log3 $name, 5, "$name MOBILEALERTS: Found Device: " . $hash->{NAME};
         Log3 $hash->{NAME}, 5,
-          "$hash->{NAME} MOBILELAERTS: Message: " . unpack( "H*", $message )
+          "$hash->{NAME} MOBILEALERTS: Message: " . unpack( "H*", $message )
           if ( $verbose >= 5 );
 
         # Nachricht für $hash verarbeiten
@@ -267,6 +309,60 @@ sub MOBILEALERTS_Parse_02_ce ($$) {
     MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
         "MA10100/MA10101" );
     MOBILEALERTS_Parse_ce( $hash, $message );
+}
+
+sub MOBILEALERTS_Parse_15_ce ($$) {
+    my ( $hash, $message ) = @_;
+    MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
+        "MA10880" );
+    my ( $txCounter, $buttonstate ) = unpack( "nC", $message );
+    my $button = $buttonstate >> 4;
+    my $state  = $buttonstate & 0xF;
+    my $state_name;
+    if ( $state == 1 ) {
+        $state_name = "Short";
+    }
+    elsif ( $state == 2 ) {
+        $state_name = "DblShort";
+    }
+    elsif ( $state == 3 ) {
+        $state_name = "Long";
+    }
+    else {
+        $state_name = "Unknown";
+    }
+    if (($button < 1) || ($button > 4)) {
+        return;
+    }
+
+    my $channel = $hash->{ "channel_" . sprintf( "%02d", $button ) };
+    if ( !$channel ) {
+        my $chnName = $hash->{NAME} . "_Btn_" . sprintf( "%02d", $button );
+        my $chnId   = $hash->{DeviceID} . "_" . sprintf( "%02d", $button );
+        Log3 $hash->{NAME}, 3, "Erzeuge nicht vorhandenen Channel " . $chnName;
+        CommandDefine( undef, $chnName . ' MOBILEALERTS ' . $chnId );
+        $channel = $chnName;
+    }
+    my $channelHash = $defs{$channel};
+    if ( !$channelHash ) {
+        Log3 $hash->{NAME}, 3,
+          "Fehler beim Erzeugen des nicht vorhandenen Channel fuer " . $button;
+        $channel = "Btn" . $button;
+    }
+    else {
+        my $triggerCnt = ReadingsVal( $channel, "trigger_cnt", "0" );
+        $triggerCnt += 1;
+        readingsBeginUpdate($channelHash);
+        $channelHash->{".updateTimestamp"}=$hash->{".updateTimestamp"};
+        $channelHash->{".expertMode"}=$hash->{".expertMode"};
+        MOBILEALERTS_readingsBulkUpdate( $channelHash, 0, "state",
+            $state_name . "_" . $triggerCnt );
+        MOBILEALERTS_readingsBulkUpdate( $channelHash, 0, "trigger_cnt",
+            $triggerCnt );
+        readingsEndUpdate( $channelHash, 1 );
+    }
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "state",
+        "$channel $state_name" );
 }
 
 sub MOBILEALERTS_Parse_ce ($$) {
@@ -1318,7 +1414,7 @@ sub MOBILEALERTS_ActionDetector($) {
   The MOBILEALERTS is a fhem module for the german MobileAlerts devices and TFA WEATHERHUB devices.
   <br><br>
   The fhem module represents a MobileAlerts device. The connection is provided by the <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> module.
-  Currently supported: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000, TFA30.3060.01.IT, MA10120PRO<br>
+  Currently supported: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000, TFA30.3060.01.IT, MA10120PRO, MA10880<br>
   Supported but untested: ./.<br>
   <br>
 
@@ -1328,6 +1424,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <code>define &lt;name&gt; MOBILEALERTS &lt;deviceID&gt; &lt;corrTempIn&gt; &lt;corrHumIn&gt; &lt;corrTempOut&gt; &lt;corrHumOut&gt; &lt;corrTemp2&gt; &lt;corrHum2&gt; &lt;corrTemp3&gt; &lt;corrHum3&gt;</code><br>
     <br>
     deviceID is the sensorcode on the sensor.
+    alternative: deviceID_&lt;ChannelNumber&gt;
     <br>
     corrTempIn optional: correction temperature
     <br>
@@ -1413,7 +1510,7 @@ sub MOBILEALERTS_ActionDetector($) {
   <br><br>
   Dieses FHEM Modul stellt jeweils ein MobileAlerts Ger&auml;t dar. Die Verbindung wird durch das 
   <a href="#MOBILEALERTSGW">MOBILELAERTSGW</a> Modul bereitgestellt.<br>
-  Aktuell werden unterst&uuml;zt: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000, TFA30.3060.01.IT, MA10120PRO<br>
+  Aktuell werden unterst&uuml;zt: MA10100, MA10101, MA10200, MA10230, MA10300, MA10650, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000, TFA30.3060.01.IT, MA10120PRO, MA10880<br>
   Unterst&uuml;zt aber ungetestet: ./.<br>
   <br>
 
@@ -1423,6 +1520,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <code>define &lt;name&gt; MOBILEALERTS &lt;deviceID&gt; &lt;corrTempIn&gt; &lt;corrHumIn&gt; &lt;corrTempOut&gt; &lt;corrHumOut&gt; &lt;corrTemp2&gt; &lt;corrHum2&gt; &lt;corrTemp3&gt; &lt;corrHum3&gt;</code><br>
     <br>
     deviceID ist der Sensorcode auf dem Sensor.
+    Alternativ: deviceID_&lt;Kanalnummer&gt;
     <br>
     corrTempIn optional: Korrekturwert f&uuml;r Temperatur (bzw. Temperatur in)
     <br>
