@@ -1,0 +1,262 @@
+Internals:
+   CFGFN      
+   DEF        15ffffffffff
+   DeviceID   15ffffffffff
+   NAME       MA_15ffffffffff
+   NR         69
+   STATE      MA_15ffffffffff_Btn_01 Short
+   TYPE       MOBILEALERTS
+   channel_01 MA_15ffffffffff_Btn_01
+   READINGS:
+     2019-09-24 21:27:10   deviceType      MA10880
+     2019-09-24 21:27:10   lastRcv         2019-09-24 21:27:10
+     2019-09-24 21:27:10   state           MA_15ffffffffff_Btn_01 Short
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff_01
+   NAME       MA_15ffffffffff_Btn_01
+   NR         70
+   STATE      Short_1
+   TYPE       MOBILEALERTS
+   chanNo     01
+   device     MA_15ffffffffff
+   READINGS:
+     2019-09-24 21:27:10   state           Short_1
+     2019-09-24 21:27:10   trigger_cnt     1
+Attributes:
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff
+   DeviceID   15ffffffffff
+   LASTInputDev test
+   MSGCNT     1
+   NAME       MA_15ffffffffff
+   NR         69
+   STATE      MA_15ffffffffff_Btn_02 Short
+   TYPE       MOBILEALERTS
+   channel_01 MA_15ffffffffff_Btn_01
+   channel_02 MA_15ffffffffff_Btn_02
+   test_MSGCNT 1
+   test_TIME  2019-09-28 19:26:25
+   READINGS:
+     2019-09-24 21:27:10   deviceType      MA10880
+     2019-09-25 21:57:18   lastRcv         2019-09-25 21:57:18
+     2019-09-25 21:57:18   state           MA_15ffffffffff_Btn_02 Short
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff_02
+   NAME       MA_15ffffffffff_Btn_02
+   NR         72
+   STATE      Short_1
+   TYPE       MOBILEALERTS
+   chanNo     02
+   device     MA_15ffffffffff
+   CHANGED:
+     Short_1
+     trigger_cnt: 1
+   CHANGEDWITHSTATE:
+   CHANGETIME:
+     2019-09-25 21:57:18
+     2019-09-25 21:57:18
+   READINGS:
+     2019-09-25 21:57:18   state           Short_1
+     2019-09-25 21:57:18   trigger_cnt     1
+Attributes:
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff
+   DeviceID   15ffffffffff
+   LASTInputDev test
+   MSGCNT     2
+   NAME       MA_15ffffffffff
+   NR         69
+   STATE      MA_15ffffffffff_Btn_03 Short
+   TYPE       MOBILEALERTS
+   channel_01 MA_15ffffffffff_Btn_01
+   channel_02 MA_15ffffffffff_Btn_02
+   channel_03 MA_15ffffffffff_Btn_03
+   test_MSGCNT 2
+   test_TIME  2019-09-28 19:26:25
+   READINGS:
+     2019-09-24 21:27:10   deviceType      MA10880
+     2019-09-25 22:02:49   lastRcv         2019-09-25 22:02:49
+     2019-09-25 22:02:49   state           MA_15ffffffffff_Btn_03 Short
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff_03
+   NAME       MA_15ffffffffff_Btn_03
+   NR         73
+   STATE      Short_1
+   TYPE       MOBILEALERTS
+   chanNo     03
+   device     MA_15ffffffffff
+   CHANGED:
+     Short_1
+     trigger_cnt: 1
+   CHANGEDWITHSTATE:
+   CHANGETIME:
+     2019-09-25 22:02:49
+     2019-09-25 22:02:49
+   READINGS:
+     2019-09-25 22:02:49   state           Short_1
+     2019-09-25 22:02:49   trigger_cnt     1
+Attributes:
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff
+   DeviceID   15ffffffffff
+   LASTInputDev test
+   MSGCNT     3
+   NAME       MA_15ffffffffff
+   NR         69
+   STATE      MA_15ffffffffff_Btn_04 Short
+   TYPE       MOBILEALERTS
+   channel_01 MA_15ffffffffff_Btn_01
+   channel_02 MA_15ffffffffff_Btn_02
+   channel_03 MA_15ffffffffff_Btn_03
+   channel_04 MA_15ffffffffff_Btn_04
+   test_MSGCNT 3
+   test_TIME  2019-09-28 19:26:25
+   READINGS:
+     2019-09-24 21:27:10   deviceType      MA10880
+     2019-09-25 22:05:49   lastRcv         2019-09-25 22:05:49
+     2019-09-25 22:05:49   state           MA_15ffffffffff_Btn_04 Short
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff_04
+   NAME       MA_15ffffffffff_Btn_04
+   NR         74
+   STATE      Short_1
+   TYPE       MOBILEALERTS
+   chanNo     04
+   device     MA_15ffffffffff
+   CHANGED:
+     Short_1
+     trigger_cnt: 1
+   CHANGEDWITHSTATE:
+   CHANGETIME:
+     2019-09-25 22:05:49
+     2019-09-25 22:05:49
+   READINGS:
+     2019-09-25 22:05:49   state           Short_1
+     2019-09-25 22:05:49   trigger_cnt     1
+Attributes:
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff
+   DeviceID   15ffffffffff
+   LASTInputDev test
+   MSGCNT     4
+   NAME       MA_15ffffffffff
+   NR         68
+   STATE      MA_15ffffffffff_Btn_01 Long
+   TYPE       MOBILEALERTS
+   channel_01 MA_15ffffffffff_Btn_01
+   channel_02 MA_15ffffffffff_Btn_02
+   channel_03 MA_15ffffffffff_Btn_03
+   channel_04 MA_15ffffffffff_Btn_04
+   test_MSGCNT 4
+   test_TIME  2019-09-28 19:35:21
+   READINGS:
+     2019-09-24 21:27:10   deviceType      MA10880
+     2019-09-25 22:08:16   lastRcv         2019-09-25 22:08:16
+     2019-09-25 22:08:16   state           MA_15ffffffffff_Btn_01 Long
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff_01
+   NAME       MA_15ffffffffff_Btn_01
+   NR         69
+   STATE      Long_2
+   TYPE       MOBILEALERTS
+   chanNo     01
+   device     MA_15ffffffffff
+   CHANGED:
+     Long_2
+     trigger_cnt: 2
+   CHANGEDWITHSTATE:
+   CHANGETIME:
+     2019-09-25 22:08:16
+     2019-09-25 22:08:16
+   READINGS:
+     2019-09-25 22:08:16   state           Long_2
+     2019-09-25 22:08:16   trigger_cnt     2
+Attributes:
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff
+   DeviceID   15ffffffffff
+   LASTInputDev test
+   MSGCNT     5
+   NAME       MA_15ffffffffff
+   NR         68
+   STATE      MA_15ffffffffff_Btn_01 DblShort
+   TYPE       MOBILEALERTS
+   channel_01 MA_15ffffffffff_Btn_01
+   channel_02 MA_15ffffffffff_Btn_02
+   channel_03 MA_15ffffffffff_Btn_03
+   channel_04 MA_15ffffffffff_Btn_04
+   test_MSGCNT 5
+   test_TIME  2019-09-28 19:35:21
+   READINGS:
+     2019-09-24 21:27:10   deviceType      MA10880
+     2019-09-25 22:18:08   lastRcv         2019-09-25 22:18:08
+     2019-09-25 22:18:08   state           MA_15ffffffffff_Btn_01 DblShort
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        15ffffffffff_01
+   NAME       MA_15ffffffffff_Btn_01
+   NR         69
+   STATE      DblShort_3
+   TYPE       MOBILEALERTS
+   chanNo     01
+   device     MA_15ffffffffff
+   CHANGED:
+     Long_2
+     trigger_cnt: 2
+     DblShort_3
+     trigger_cnt: 3
+   CHANGEDWITHSTATE:
+   CHANGETIME:
+     2019-09-25 22:08:16
+     2019-09-25 22:08:16
+     2019-09-25 22:18:08
+     2019-09-25 22:18:08
+   READINGS:
+     2019-09-25 22:18:08   state           DblShort_3
+     2019-09-25 22:18:08   trigger_cnt     3
+Attributes:
