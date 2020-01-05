@@ -316,6 +316,12 @@ sub MOBILEALERTS_Parse_15_ce ($$) {
     MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
         "MA10880" );
     my ( $txCounter, $buttonstate ) = unpack( "nC", $message );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
+        MOBILEALERTS_decodeTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
+        MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     my $button = $buttonstate >> 4;
     my $state  = $buttonstate & 0xF;
     my $state_name;
@@ -374,6 +380,8 @@ sub MOBILEALERTS_Parse_ce ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperature =
       MOBILEALERTS_decodeTemperature($temperature) +
       $hash->{".corrTemperature"};
@@ -399,6 +407,8 @@ sub MOBILEALERTS_Parse_0f_d2 ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperatureIn =
       MOBILEALERTS_decodeTemperature($temperatureIn) +
       $hash->{".corrTemperature"};
@@ -440,6 +450,8 @@ sub MOBILEALERTS_Parse_d2 ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperature =
       MOBILEALERTS_decodeTemperature($temperature) +
       $hash->{".corrTemperature"};
@@ -479,6 +491,8 @@ sub MOBILEALERTS_Parse_d4 ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperature =
       MOBILEALERTS_decodeTemperature($temperature) +
       $hash->{".corrTemperature"};
@@ -517,6 +531,8 @@ sub MOBILEALERTS_Parse_05_da ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperatureIn =
       MOBILEALERTS_decodeTemperature($temperatureIn) +
       $hash->{".corrTemperature"};
@@ -580,6 +596,8 @@ sub MOBILEALERTS_Parse_da ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperatureIn =
       MOBILEALERTS_decodeTemperature($temperatureIn) +
       $hash->{".corrTemperature"};
@@ -648,6 +666,8 @@ sub MOBILEALERTS_Parse_e1 ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperature =
       MOBILEALERTS_decodeTemperature($temperature) +
       $hash->{".corrTemperature"};
@@ -702,6 +722,10 @@ sub MOBILEALERTS_Parse_e2 ($$) {
 
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
         MOBILEALERTS_decodeTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
+        MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "direction", $dirTable[$dir] );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "directionInt", $dir );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "windSpeed",    $windSpeed );
@@ -728,6 +752,8 @@ sub MOBILEALERTS_Parse_d8 ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperature =
       MOBILEALERTS_decodeTemperature($temperature) +
       $hash->{".corrTemperature"};
@@ -816,6 +842,8 @@ sub MOBILEALERTS_Parse_d9 ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperature =
       MOBILEALERTS_decodeTemperature($temperature) +
       $hash->{".corrTemperature"};
@@ -881,6 +909,8 @@ sub MOBILEALERTS_Parse_d6 ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperatureIn =
       MOBILEALERTS_decodeTemperature($temperatureIn) +
       $hash->{".corrTemperature"};
@@ -931,6 +961,8 @@ sub MOBILEALERTS_Parse_01_d2 ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     $temperatureIn =
       MOBILEALERTS_decodeTemperature($temperatureIn) +
       $hash->{".corrTemperature"};
@@ -979,6 +1011,8 @@ sub MOBILEALERTS_Parse_ea ($$) {
         MOBILEALERTS_decodeTxCounter($txCounter) );
     MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
         MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
 
     # Sensor 1
     $temperature1 = MOBILEALERTS_decodeTemperature($temperature1) +
@@ -1100,6 +1134,14 @@ sub MOBILEALERTS_triggeredTxCounter($) {
         return 1;
     }
     return 0;
+}
+
+sub MOBILEALERTS_batteryStateTxCounter($) {
+    my ($txCounter) = @_;
+    if ( ( $txCounter & 0x8000 ) == 0x8000 ) {
+        return "low";
+    }
+    return "ok";
 }
 
 sub MOBILEALERTS_decodeTemperature($) {
@@ -1452,6 +1494,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li>lastRcv<br>Timestamp of last message.</li>
     <li>actStatus<br>Shows 'unknown', 'alive', 'dead', 'switchedOff' depending on attribut actCycle</li>
     <li>txCounter<br>Counter of last message.</li>
+    <li>batteryState<br>State of Battery (low or ok)</li>
     <li>triggered<br>1=last message was triggered by a event.</li>
     <li>tempertature, prevTemperature, temperatureIn, temperatureOut, prevTemperatureIn, prevTemperatureOut<br>Temperature (depending on device and attribut expert).</li>
     <li>tempertatureString, prevTemperatureString, temperatureInString, temperatureOutString, prevTemperatureInString, prevTemperatureOutString<br>Temperature as string (depending on device and attribut expert).</li>
@@ -1548,6 +1591,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li>lastRcv<br>Timestamp der letzten Nachricht.</li>
     <li>actStatus<br>Zeigt 'unknown', 'alive', 'dead', 'switchedOff' abh&auml;ngig vom Attribut actCycle</li>
     <li>txCounter<br>Counter des letzten Nachricht (wird 0 nach Batteriewechsel).</li>
+    <li>batteryState<br>Status der Batterie (low oder ok)</li>
     <li>triggered<br>1=letzte Nachricht wurde von einem Ereignis ausgel&ouml;st.</li>
     <li>tempertature, prevTemperature, temperatureIn, temperatureOut, prevTemperatureIn, prevTemperatureOut<br>Temperatur (abh&auml;nging vom Ger&auml;t und dem Attribut expert).</li>
     <li>tempertatureString, prevTemperatureString, temperatureInString, temperatureOutString, prevTemperatureInString, prevTemperatureOutString<br>Temperatur als Zeichkette.</li>
