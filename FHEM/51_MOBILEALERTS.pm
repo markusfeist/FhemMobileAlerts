@@ -316,6 +316,12 @@ sub MOBILEALERTS_Parse_15_ce ($$) {
     MOBILEALERTS_readingsBulkUpdateIfChanged( $hash, 0, "deviceType",
         "MA10880" );
     my ( $txCounter, $buttonstate ) = unpack( "nC", $message );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "txCounter",
+        MOBILEALERTS_decodeTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "triggered",
+        MOBILEALERTS_triggeredTxCounter($txCounter) );
+    MOBILEALERTS_readingsBulkUpdate( $hash, 0, "batteryState",
+        MOBILEALERTS_batteryStateTxCounter($txCounter) );
     my $button = $buttonstate >> 4;
     my $state  = $buttonstate & 0xF;
     my $state_name;
