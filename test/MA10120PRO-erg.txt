@@ -8,6 +8,7 @@ Internals:
    TYPE       MOBILEALERTS
    OLDREADINGS:
    READINGS:
+     2018-08-18 18:57:12   batteryState    ok
      2018-08-18 18:57:12   deviceType      MA10120PRO
      2018-08-18 18:57:12   lastRcv         2018-08-18 18:57:12
      2018-08-18 18:57:12   state           In T: 26.1 Out T: -22.1
@@ -36,6 +37,7 @@ Internals:
    test_TIME  2018-08-29 17:11:33
    OLDREADINGS:
    READINGS:
+     2018-08-18 18:57:12   batteryState    ok
      2018-08-18 18:57:12   deviceType      MA10120PRO
      2018-08-18 18:57:12   lastRcv         2018-08-18 18:57:12
      2018-08-18 18:57:12   prevTemperatureIn 27.8

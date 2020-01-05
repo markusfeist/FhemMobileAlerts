@@ -8,6 +8,7 @@ Internals:
    TYPE       MOBILEALERTS
    OLDREADINGS:
    READINGS:
+     2018-08-18 08:58:47   batteryState    ok
      2018-08-18 08:58:47   deviceType      TFA30.3060.01.IT
      2018-08-18 08:58:47   humidity1       60
      2018-08-18 08:58:47   humidity2       81
@@ -48,6 +49,7 @@ Internals:
    test_TIME  2018-08-28 16:30:47
    OLDREADINGS:
    READINGS:
+     2018-08-18 08:58:47   batteryState    ok
      2018-08-18 08:58:47   deviceType      TFA30.3060.01.IT
      2018-08-18 08:58:47   humidity1       60
      2018-08-18 08:58:47   humidity2       81
