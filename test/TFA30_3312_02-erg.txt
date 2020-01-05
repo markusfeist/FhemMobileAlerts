@@ -8,6 +8,7 @@ Internals:
    TYPE       MOBILEALERTS
    OLDREADINGS:
    READINGS:
+     2017-12-01 17:52:59   batteryState    ok
      2017-12-01 17:52:59   deviceType      TFA30.3312.02
      2017-12-01 17:52:59   humidity        84.1
      2017-12-01 17:52:59   humidityString  84.1%
@@ -36,6 +37,7 @@ Internals:
    test_TIME  2017-12-02 00:36:54
    OLDREADINGS:
    READINGS:
+     2017-12-01 17:52:59   batteryState    ok
      2017-12-01 17:52:59   deviceType      TFA30.3312.02
      2017-12-01 17:52:59   humidity        84.1
      2017-12-01 17:52:59   humidityString  84.1%
@@ -69,6 +71,7 @@ Internals:
    test_TIME  2018-12-10 18:35:17
    OLDREADINGS:
    READINGS:
+     2017-12-01 17:52:59   batteryState    ok
      2017-12-01 17:52:59   deviceType      TFA30.3312.02
      2018-11-26 17:29:23   humidity        95.4
      2018-11-26 17:29:23   humidityString  95.4%

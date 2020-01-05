@@ -7,6 +7,7 @@ Internals:
    TYPE       MOBILEALERTS
    OLDREADINGS:
    READINGS:
+     2017-11-17 10:05:51   batteryState    ok
      2017-11-17 10:05:51   deviceType      MA10320PRO
      2017-11-17 10:05:51   humidity        41
      2017-11-17 10:05:51   humidityString  41%
@@ -34,6 +35,7 @@ Internals:
    TYPE       MOBILEALERTS
    OLDREADINGS:
    READINGS:
+     2017-11-17 10:05:51   batteryState    ok
      2017-11-17 10:05:51   deviceType      MA10320PRO
      2017-11-17 10:05:51   humidity        41
      2017-11-17 10:05:51   humidityString  41%
@@ -68,6 +70,7 @@ Internals:
    corrTemperature 1
    corrTemperatureOut 1
    READINGS:
+     2017-11-17 10:05:51   batteryState    ok
      2017-11-17 10:05:51   deviceType      MA10320PRO
      2017-11-17 10:05:51   humidity        42
      2017-11-17 10:05:51   humidityString  42%
@@ -95,6 +98,7 @@ Internals:
    TYPE       MOBILEALERTS
    OLDREADINGS:
    READINGS:
+     2018-10-07 13:56:36   batteryState    ok
      2018-10-07 13:56:36   deviceType      MA10320PRO
      2018-10-07 13:56:36   humidity        46
      2018-10-07 13:56:36   humidityString  46%
@@ -125,6 +129,7 @@ Internals:
    test_TIME  2018-10-08 19:48:26
    OLDREADINGS:
    READINGS:
+     2018-10-07 13:56:36   batteryState    ok
      2018-10-07 13:56:36   deviceType      MA10320PRO
      2018-10-07 13:56:36   humidity        46
      2018-10-07 13:56:36   humidityString  46%
@@ -155,6 +160,7 @@ Internals:
    test_TIME  2018-10-08 19:48:26
    OLDREADINGS:
    READINGS:
+     2018-10-07 13:56:36   batteryState    ok
      2018-10-07 13:56:36   deviceType      MA10320PRO
      2018-10-07 13:56:36   humidity        46
      2018-10-07 13:56:36   humidityString  46%
@@ -185,6 +191,7 @@ Internals:
    test_TIME  2018-10-08 19:48:26
    OLDREADINGS:
    READINGS:
+     2018-10-07 13:56:36   batteryState    ok
      2018-10-07 13:56:36   deviceType      MA10320PRO
      2018-10-07 14:07:22   humidity        45
      2018-10-07 14:07:22   humidityString  45%
@@ -215,6 +222,7 @@ Internals:
    test_TIME  2018-10-08 19:48:26
    OLDREADINGS:
    READINGS:
+     2018-10-07 13:56:36   batteryState    ok
      2018-10-07 13:56:36   deviceType      MA10320PRO
      2018-10-07 14:10:58   humidity        44
      2018-10-07 14:10:58   humidityString  44%
@@ -245,6 +253,7 @@ Internals:
    test_TIME  2018-10-08 19:50:59
    OLDREADINGS:
    READINGS:
+     2018-10-07 13:56:36   batteryState    ok
      2018-10-07 13:56:36   deviceType      MA10320PRO
      2018-10-07 14:14:33   humidity        45
      2018-10-07 14:14:33   humidityString  45%

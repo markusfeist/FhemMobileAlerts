@@ -8,6 +8,7 @@ Internals:
    TYPE       MOBILEALERTS
    OLDREADINGS:
    READINGS:
+     2017-12-01 21:58:08   batteryState    ok
      2017-12-01 21:58:08   deviceType      MA10450
      2017-12-01 21:58:08   lastRcv         2017-12-01 21:58:08
      2017-12-01 21:58:08   state           In T: 20 Out T: 20.1
@@ -36,6 +37,7 @@ Internals:
    test_TIME  2017-12-02 00:06:36
    OLDREADINGS:
    READINGS:
+     2017-12-01 21:58:08   batteryState    ok
      2017-12-01 21:58:08   deviceType      MA10450
      2017-12-01 21:58:08   lastRcv         2017-12-01 21:58:08
      2017-12-01 21:58:08   prevTemperatureIn 20.1
