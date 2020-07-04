@@ -17,7 +17,7 @@ Von jemanden anderen getestet:
 MA10101, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000, TFA30.3060.01.IT, MA10880
 
 Unterstützt (aber nicht getestet):
-./. (aktuell keine)
+MA10238
 
 ## Installation
 ### Modul

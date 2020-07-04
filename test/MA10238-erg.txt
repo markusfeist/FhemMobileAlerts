@@ -1,0 +1,88 @@
+Internals:
+   CFGFN      
+   DEF        18ffffffffff
+   DeviceID   18ffffffffff
+   FUUID      5f006d0f-f33f-449b-0fe5-63d0aa5f62d11eee
+   NAME       MA_18ffffffffff
+   NR         75
+   STATE      T: 26 H: 47 A: 1022.5
+   TYPE       MOBILEALERTS
+   READINGS:
+     2020-07-03 16:40:07   airPressure     1022.5
+     2020-07-03 16:40:07   airPressureString 1022.5hPa
+     2020-07-03 16:40:07   batteryState    ok
+     2020-07-03 16:40:07   deviceType      MA10238
+     2020-07-03 16:40:07   humidity        47
+     2020-07-03 16:40:07   humidityString  47%
+     2020-07-03 16:40:07   lastRcv         2020-07-03 16:40:07
+     2020-07-03 16:40:07   state           T: 26 H: 47 A: 1022.5
+     2020-07-03 16:40:07   temperature     26
+     2020-07-03 16:40:07   temperatureString 26°C
+     2020-07-03 16:40:07   triggered       1
+     2020-07-03 16:40:07   txCounter       451
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        18ffffffffff
+   DeviceID   18ffffffffff
+   FUUID      5f006d0f-f33f-449b-0fe5-63d0aa5f62d11eee
+   LASTInputDev test
+   MSGCNT     1
+   NAME       MA_18ffffffffff
+   NR         75
+   STATE      T: 25.9 H: 47 A: 1022.3
+   TYPE       MOBILEALERTS
+   test_MSGCNT 1
+   test_TIME  2020-07-04 13:50:39
+   READINGS:
+     2020-07-03 16:46:07   airPressure     1022.3
+     2020-07-03 16:46:07   airPressureString 1022.3hPa
+     2020-07-03 16:40:07   batteryState    ok
+     2020-07-03 16:40:07   deviceType      MA10238
+     2020-07-03 16:40:07   humidity        47
+     2020-07-03 16:40:07   humidityString  47%
+     2020-07-03 16:46:07   lastRcv         2020-07-03 16:46:07
+     2020-07-03 16:46:07   state           T: 25.9 H: 47 A: 1022.3
+     2020-07-03 16:46:07   temperature     25.9
+     2020-07-03 16:46:07   temperatureString 25.9°C
+     2020-07-03 16:40:07   triggered       1
+     2020-07-03 16:46:07   txCounter       452
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        18ffffffffff
+   DeviceID   18ffffffffff
+   FUUID      5f006d0f-f33f-449b-0fe5-63d0aa5f62d11eee
+   LASTInputDev test
+   MSGCNT     2
+   NAME       MA_18ffffffffff
+   NR         75
+   STATE      T: 25.9 H: 47 A: 1022.4
+   TYPE       MOBILEALERTS
+   test_MSGCNT 2
+   test_TIME  2020-07-04 13:50:39
+   READINGS:
+     2020-07-03 17:04:07   airPressure     1022.4
+     2020-07-03 17:04:07   airPressureString 1022.4hPa
+     2020-07-03 16:40:07   batteryState    ok
+     2020-07-03 16:40:07   deviceType      MA10238
+     2020-07-03 16:40:07   humidity        47
+     2020-07-03 16:40:07   humidityString  47%
+     2020-07-03 17:04:07   lastRcv         2020-07-03 17:04:07
+     2020-07-03 17:04:07   state           T: 25.9 H: 47 A: 1022.4
+     2020-07-03 16:46:07   temperature     25.9
+     2020-07-03 16:46:07   temperatureString 25.9°C
+     2020-07-03 16:40:07   triggered       1
+     2020-07-03 17:04:07   txCounter       455
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
