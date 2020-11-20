@@ -12,6 +12,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Set Timezone
+        uses: actions/set-timezone-action@v1.1
+        with:
+          timezoneLinux: "Europe/Berlin"
       - name: Setup fhem
         run: |
           wget -qO - http://debian.fhem.de/archive.key | sudo apt-key add -
