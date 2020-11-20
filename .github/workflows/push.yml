@@ -1,0 +1,39 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ "*" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup fhem
+        run: |
+          wget -qO - http://debian.fhem.de/archive.key | sudo apt-key add -
+          echo "deb http://debian.fhem.de/nightly/ /" | sudo tee -a /etc/apt/sources.list
+          sudo apt-get update -qq
+          sudo apt-get install fhem -y
+      - name: Run Test
+        run: make test
+      - name: Build Package
+        run: |
+            mkdir public
+            mkdir public/FHEM
+            ./MakeUpd.sh
+            mv controls_mobilealerts.txt public/controls_mobilealerts.txt
+            cp CHANGED public/CHANGED
+            cp FHEM/* public/FHEM/.
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch      
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          destination_dir: repository/${{ steps.extract_branch.outputs.branch }}
