@@ -27,6 +27,7 @@ sub MOBILEALERTS_Initialize($) {
     $hash->{AutoCreate} = {
         "MA_.*" => {
             ATTR => "event-on-change-reading:.* timestamp-on-change-reading:.*",
+            GPLOT => "",
             FILTER => "%NAME"
         }
     };
