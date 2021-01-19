@@ -15,8 +15,6 @@ Internals:
      2017-12-06 22:32:41   lastEventString 0 s
      2017-12-06 22:32:41   lastRcv         2017-12-06 22:32:41
      2017-12-06 22:32:41   mmRain          1.806
-     2017-12-06 22:32:41   mmRainActDay    1.806
-     2017-12-06 22:32:41   mmRainActHour   1.806
      2017-12-06 22:32:41   state           T: 17.9 C: 7
      2017-12-06 22:32:41   temperature     17.9
      2017-12-06 22:32:41   temperatureString 17.9°C
@@ -64,8 +62,8 @@ Internals:
      2017-12-06 22:32:41   lastEventString 0 s
      2017-12-06 22:34:10   lastRcv         2017-12-06 22:34:10
      2017-12-06 22:34:10   mmRain          2.064
-     2017-12-06 22:34:10   mmRainActDay    2.064
-     2017-12-06 22:34:10   mmRainActHour   2.064
+     2017-12-06 22:34:10   mmRainActDay    0.258
+     2017-12-06 22:34:10   mmRainActHour   0.258
      2017-12-06 22:34:10   state           T: 17.9 C: 8
      2017-12-06 22:32:41   temperature     17.9
      2017-12-06 22:32:41   temperatureString 17.9°C
@@ -114,9 +112,9 @@ Internals:
      2017-12-06 22:32:41   lastEventString 0 s
      2017-12-06 23:32:41   lastRcv         2017-12-06 23:32:41
      2017-12-06 23:32:41   mmRain          2.322
-     2017-12-06 23:32:41   mmRainActDay    2.322
+     2017-12-06 23:32:41   mmRainActDay    0.516
      2017-12-06 23:32:41   mmRainActHour   0.258
-     2017-12-06 22:34:10   mmRainLastHour  2.064
+     2017-12-06 22:34:10   mmRainLastHour  0.258
      2017-12-06 23:32:41   state           T: 17.9 C: 9
      2017-12-06 22:32:41   temperature     17.9
      2017-12-06 22:32:41   temperatureString 17.9°C
@@ -168,7 +166,7 @@ Internals:
      2017-12-07 22:32:41   mmRainActDay    0.258
      2017-12-07 22:32:41   mmRainActHour   0.258
      2017-12-07 22:32:41   mmRainLastHour  0
-     2017-12-06 23:32:41   mmRainYesterday 2.322
+     2017-12-06 23:32:41   mmRainYesterday 0.516
      2017-12-07 22:32:41   state           T: 17.9 C: 10
      2017-12-06 22:32:41   temperature     17.9
      2017-12-06 22:32:41   temperatureString 17.9°C
