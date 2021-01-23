@@ -1557,7 +1557,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li>lastEvent, lastEvent&lt;X&gt; ,lastEventString, lastEvent&lt;X&gt;String<br>Time when last event (rain) happend (MA10650 only).</li>
     <li>mmRain, mmRainActHour, mmRainLastHour, mmRainActDay, mmRainYesterday<br>Rain since reset of counter, current hour, last hour, current day, yesterday.</li>
     <li>direction, directionInt<br>Direction of wind.</li>
-    <li>windSpeed, gustSpeed<br>Windspeed.</li>
+    <li>windSpeed, gustSpeed<br>Windspeed in m/s.</li>
     <li>airPressure<br>Barometric pressure in hPa</li>
     <li>airPressureString<br>Barometric pressure as String</li>
   </ul>
@@ -1656,7 +1656,7 @@ sub MOBILEALERTS_ActionDetector($) {
     <li>lastEvent, lastEvent&lt;X&gt; ,lastEventString, lastEvent&lt;X&gt;String<br>Zeitpunkt wann das letzte Event (Regen) stattgefunden hat (nur MA10650).</li>
     <li>mmRain, mmRainActHour, mmRainLastHour, mmRainActDay, mmRainYesterday<br>Regen seit dem letzten Reset des Counters, in der aktuellen Stunde, seit der letzten Stunden, am aktuellen Tagn, gestern.</li>
     <li>direction, directionInt<br>Richtung des Winds.</li>
-    <li>windSpeed, gustSpeed<br>Windgeschwindigkeit.</li>
+    <li>windSpeed, gustSpeed<br>Windgeschwindigkeit in m/s.</li>
     <li>airPressure<br>Luftdruck in hPa</li>
     <li>airPressureString<br>Luftdruck in hPa als Zeichenkette</li>
   </ul>
