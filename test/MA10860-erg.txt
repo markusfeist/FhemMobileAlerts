@@ -1,0 +1,212 @@
+Internals:
+   CFGFN      
+   DEF        0affffffffff
+   DeviceID   0affffffffff
+   FUUID      613693a5-f33f-449b-0b6d-9d1a5f651543b0c8
+   NAME       MA_0affffffffff
+   NR         78
+   STATE      T: 28.4 on off off off
+   TYPE       MOBILEALERTS
+   READINGS:
+     2021-09-06 22:58:32   alarm1          on
+     2021-09-06 22:58:32   alarm2          off
+     2021-09-06 22:58:32   alarm3          off
+     2021-09-06 22:58:32   alarm4          off
+     2021-09-06 22:58:32   batteryState    ok
+     2021-09-06 22:58:32   deviceType      MA 10860
+     2021-09-06 22:58:32   lastRcv         2021-09-06 22:58:32
+     2021-09-06 22:58:32   state           T: 28.4 on off off off
+     2021-09-06 22:58:32   temperature     28.4
+     2021-09-06 22:58:32   temperatureString 28.4°C
+     2021-09-06 22:58:32   triggered       1
+     2021-09-06 22:58:32   txCounter       3
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        0affffffffff
+   DeviceID   0affffffffff
+   FUUID      613693a5-f33f-449b-0b6d-9d1a5f651543b0c8
+   LASTInputDev test
+   MSGCNT     1
+   NAME       MA_0affffffffff
+   NR         78
+   STATE      T: 27.4 on off off off
+   TYPE       MOBILEALERTS
+   test_MSGCNT 1
+   test_TIME  2021-09-07 00:18:13
+   READINGS:
+     2021-09-06 22:58:32   alarm1          on
+     2021-09-06 22:58:32   alarm2          off
+     2021-09-06 22:58:32   alarm3          off
+     2021-09-06 22:58:32   alarm4          off
+     2021-09-06 22:58:32   batteryState    ok
+     2021-09-06 22:58:32   deviceType      MA 10860
+     2021-09-06 23:17:36   lastRcv         2021-09-06 23:17:36
+     2021-09-06 23:17:36   state           T: 27.4 on off off off
+     2021-09-06 23:17:36   temperature     27.4
+     2021-09-06 23:17:36   temperatureString 27.4°C
+     2021-09-06 22:58:32   triggered       1
+     2021-09-06 23:17:36   txCounter       7
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        0affffffffff
+   DeviceID   0affffffffff
+   FUUID      613693a5-f33f-449b-0b6d-9d1a5f651543b0c8
+   LASTInputDev test
+   MSGCNT     2
+   NAME       MA_0affffffffff
+   NR         78
+   STATE      T: 27.9 off on off off
+   TYPE       MOBILEALERTS
+   test_MSGCNT 2
+   test_TIME  2021-09-07 00:18:13
+   READINGS:
+     2021-09-06 23:25:22   alarm1          off
+     2021-09-06 23:25:22   alarm2          on
+     2021-09-06 22:58:32   alarm3          off
+     2021-09-06 22:58:32   alarm4          off
+     2021-09-06 22:58:32   batteryState    ok
+     2021-09-06 22:58:32   deviceType      MA 10860
+     2021-09-06 23:25:22   lastRcv         2021-09-06 23:25:22
+     2021-09-06 23:25:22   state           T: 27.9 off on off off
+     2021-09-06 23:25:22   temperature     27.9
+     2021-09-06 23:25:22   temperatureString 27.9°C
+     2021-09-06 22:58:32   triggered       1
+     2021-09-06 23:25:22   txCounter       11
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        0affffffffff
+   DeviceID   0affffffffff
+   FUUID      613693a5-f33f-449b-0b6d-9d1a5f651543b0c8
+   LASTInputDev test
+   MSGCNT     3
+   NAME       MA_0affffffffff
+   NR         78
+   STATE      T: 27.7 on on off off
+   TYPE       MOBILEALERTS
+   test_MSGCNT 3
+   test_TIME  2021-09-07 00:18:13
+   READINGS:
+     2021-09-06 23:31:30   alarm1          on
+     2021-09-06 23:25:22   alarm2          on
+     2021-09-06 22:58:32   alarm3          off
+     2021-09-06 22:58:32   alarm4          off
+     2021-09-06 22:58:32   batteryState    ok
+     2021-09-06 22:58:32   deviceType      MA 10860
+     2021-09-06 23:31:30   lastRcv         2021-09-06 23:31:30
+     2021-09-06 23:31:30   state           T: 27.7 on on off off
+     2021-09-06 23:31:30   temperature     27.7
+     2021-09-06 23:31:30   temperatureString 27.7°C
+     2021-09-06 22:58:32   triggered       1
+     2021-09-06 23:31:30   txCounter       14
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        0affffffffff
+   DeviceID   0affffffffff
+   FUUID      613693a5-f33f-449b-0b6d-9d1a5f651543b0c8
+   LASTInputDev test
+   MSGCNT     4
+   NAME       MA_0affffffffff
+   NR         78
+   STATE      T: 26.5 off off off off
+   TYPE       MOBILEALERTS
+   test_MSGCNT 4
+   test_TIME  2021-09-07 00:18:13
+   READINGS:
+     2021-09-06 23:33:40   alarm1          off
+     2021-09-06 23:33:40   alarm2          off
+     2021-09-06 22:58:32   alarm3          off
+     2021-09-06 22:58:32   alarm4          off
+     2021-09-06 22:58:32   batteryState    ok
+     2021-09-06 22:58:32   deviceType      MA 10860
+     2021-09-06 23:33:40   lastRcv         2021-09-06 23:33:40
+     2021-09-06 23:33:40   state           T: 26.5 off off off off
+     2021-09-06 23:33:40   temperature     26.5
+     2021-09-06 23:33:40   temperatureString 26.5°C
+     2021-09-06 22:58:32   triggered       1
+     2021-09-06 23:33:40   txCounter       15
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        0affffffffff
+   DeviceID   0affffffffff
+   FUUID      613693a5-f33f-449b-0b6d-9d1a5f651543b0c8
+   LASTInputDev test
+   MSGCNT     5
+   NAME       MA_0affffffffff
+   NR         78
+   STATE      T: 27.3 off off off off
+   TYPE       MOBILEALERTS
+   test_MSGCNT 5
+   test_TIME  2021-09-07 00:18:13
+   READINGS:
+     2021-09-06 23:33:40   alarm1          off
+     2021-09-06 23:33:40   alarm2          off
+     2021-09-06 22:58:32   alarm3          off
+     2021-09-06 22:58:32   alarm4          off
+     2021-09-06 22:58:32   batteryState    ok
+     2021-09-06 22:58:32   deviceType      MA 10860
+     2021-09-06 23:36:18   lastRcv         2021-09-06 23:36:18
+     2021-09-06 23:36:18   state           T: 27.3 off off off off
+     2021-09-06 23:36:18   temperature     27.3
+     2021-09-06 23:36:18   temperatureString 27.3°C
+     2021-09-06 22:58:32   triggered       1
+     2021-09-06 23:36:18   txCounter       16
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
+Internals:
+   CFGFN      
+   DEF        0affffffffff
+   DeviceID   0affffffffff
+   FUUID      613693a5-f33f-449b-0b6d-9d1a5f651543b0c8
+   LASTInputDev test
+   MSGCNT     6
+   NAME       MA_0affffffffff
+   NR         78
+   STATE      T: 27.4 off off on off
+   TYPE       MOBILEALERTS
+   test_MSGCNT 6
+   test_TIME  2021-09-07 00:18:13
+   READINGS:
+     2021-09-06 23:33:40   alarm1          off
+     2021-09-06 23:33:40   alarm2          off
+     2021-09-06 23:36:52   alarm3          on
+     2021-09-06 22:58:32   alarm4          off
+     2021-09-06 22:58:32   batteryState    ok
+     2021-09-06 22:58:32   deviceType      MA 10860
+     2021-09-06 23:36:52   lastRcv         2021-09-06 23:36:52
+     2021-09-06 23:36:52   state           T: 27.4 off off on off
+     2021-09-06 23:36:52   temperature     27.4
+     2021-09-06 23:36:52   temperatureString 27.4°C
+     2021-09-06 22:58:32   triggered       1
+     2021-09-06 23:36:52   txCounter       17
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*

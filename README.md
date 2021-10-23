@@ -11,13 +11,13 @@ Der Hauptgrund, warum ich dieses Modul geschrieben habe, war, dass ich auf meine
 
 ## Unterstütze Module
 Aktuell sind unterstützt und von mir getestet:
-MA10100, MA10200, MA10230, MA10300, MA10650
+MA10100, MA10200, MA10230, MA10238, MA10300, MA10350, MA10650, MA10860
 
 Von jemanden anderen getestet:
-MA10101, MA10320PRO, MA10350, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000, TFA30.3060.01.IT, MA10880
+MA10101, MA10120PRO, MA10320PRO, MA10410, MA10450, MA10660, MA10700, TFA 30.3312.02, MA10800, WL2000, TFA30.3060.01.IT, MA10880
 
 Unterstützt (aber nicht getestet):
-MA10238
+./.
 
 ## Installation
 ### Modul
@@ -111,8 +111,7 @@ Sollte lediglich ein Geräte nicht richtig angezeigt werden oder ein neues Gerä
 Informationen sind auch im [FHEM Forum](https://forum.fhem.de/index.php/topic,78878.0.html). Hier können auch Fehler gemeldet werden. Alternativ per PM im Forum oder hier auf GitHub.
 
 ## Offene Punkte
-Folgende Punkte sind noch offen, bzw. bekannte Fehler:
-* Es wird kein Batteriestatus ausgegeben. (Leider ist noch unbekannt, wie dieser in die Nachrichten kodiert sind). Wenn dies jemand von ELV liest. Ich wäre für einen Tip dankbar.
+Aktuell keine offenen Punkte
 
 ## Lizenz
 Ich veröffentliche hier die FHEM Module unter der GPL V2 siehe auch [LICENSE](LICENSE).
