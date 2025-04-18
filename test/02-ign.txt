@@ -2,6 +2,7 @@
    test_.*
    FD .*
    FUUID .*
+   eventCount .*
 .*GW_001D8C0E2EEF_.*
 .*Gateways.*
      .*   state           Initialized

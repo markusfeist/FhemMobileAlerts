@@ -2,4 +2,5 @@
    FD .*
    test_.*
    FUUID .*
+   eventCount .*
      .*   state           Initialized

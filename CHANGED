@@ -1,4 +1,6 @@
 MOBILEALERTSGW last change:
+18.04.2025 - Added Internal lastGateway
+
 06.02.2018 - Added Attribut directionInt for MA10660
            - Changed direct delete READINGS to function readingsDelete
 
