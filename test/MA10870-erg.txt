@@ -1,0 +1,24 @@
+Internals:
+   CFGFN      
+   DEF        17184c76401e
+   DeviceID   17184c76401e
+   FUUID      613693a5-f33f-449b-0b6d-9d1a5f651543b0c8
+   NAME       MA_17184c76401e
+   NR         78
+   STATE      T: 21.8 power: ok
+   TYPE       MOBILEALERTS
+   READINGS:
+     2026-10-22 09:42:41   alarm           off
+     2026-10-22 09:42:41   deviceType      MA10870
+     2026-10-22 09:42:41   lastRcv         2026-10-22 09:42:41
+     2026-10-22 09:42:41   power           ok
+     2026-10-22 09:42:41   state           T: 21.8 power: ok
+     2026-10-22 09:42:41   temperature     21.8
+     2026-10-22 09:42:41   temperatureString 21.8°C
+     2026-10-22 09:42:41   triggered       0
+     2026-10-22 09:42:41   txCounter       3540
+Attributes:
+   event-on-change-reading .*
+   room       MOBILEALERTS
+   timestamp-on-change-reading .*
+
