@@ -7,6 +7,7 @@ Internals:
    NR         78
    STATE      T: 21.8 power: ok
    TYPE       MOBILEALERTS
+   OLDREADINGS:
    READINGS:
      2026-10-22 09:42:41   alarm           off
      2026-10-22 09:42:41   deviceType      MA10870
